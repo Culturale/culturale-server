@@ -12,7 +12,7 @@ Explanation about what we want to achieve with this PR.
 
 ## Support documents
 
-- Taiga Ticket: [PRODDEV-XX](https://paacklogistics.atlassian.net/browse/PRODDEV-XXX)
+- Taiga Ticket: [ticket](link)
 
 - UI/UX design: [link](https://paack.co)
 

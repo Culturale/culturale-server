@@ -1,11 +1,14 @@
 import express from 'express';
-import { routes } from './routes';
+import { routes } from './infrastructure/routes';
+import { connect } from 'mongoose';
+
 const app = express();
 
 //middleware
 app.use(express.json());
 
 app.use('/', routes);
+connect('');
 
 const PORT = 3000;
 

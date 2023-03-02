@@ -1,4 +1,9 @@
 name: Deploy to K8s cluster
 
+on:
+  push:
+    branches:
+      - main
+
 - name: Deploy to Kubernetes cluster
   uses: Azure/k8s-deploy@v4.9

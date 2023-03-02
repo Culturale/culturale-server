@@ -1,1 +1,3 @@
-export function logIn() {}
+export function logIn() {
+  console.log('login');
+}

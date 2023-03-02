@@ -1,1 +1,3 @@
-export interface IUserController {}
+export interface IUserController {
+  createUser?: () => void;
+}

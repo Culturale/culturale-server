@@ -9,6 +9,7 @@ services:
     environment:
       NODE_ENV: production
       MONGODB_URI: mongodb://mongo:27017/mydb
+      NODE_PORT: 3000
   mongo:
     image: mongo:4.4
     ports:

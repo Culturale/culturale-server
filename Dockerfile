@@ -20,5 +20,5 @@ EXPOSE 3000
 ENV NODE_ENV production
 ENV MONGODB_URI mongodb://mongo:27017/mydb
 
-# Start the app
-CMD ["npm", "start"]
+# Build & Start the app
+CMD ["npm", "build", "&&", "npm", "start"]

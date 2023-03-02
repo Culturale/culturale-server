@@ -2,7 +2,6 @@
   "name": "culturale-server",
   "version": "1.0.0",
   "main": "src/server.ts",
-  "type": "module",
   "repository": "https://github.com/Culturale/culturale-server.git",
   "author": "quimvi <quim.baget@estudiantat.upc.edu>",
   "license": "MIT",
@@ -10,7 +9,8 @@
     "build": "tsc",
     "lint": "eslint src --ext .js,.ts,.tsx",
     "lint:no-cycles": "eslint src --ext .js,.ts,.tsx --rule 'import/no-cycle: 2'",
-    "test": "jest"
+    "test": "jest",
+    "start": "ts-node src/server.ts"
   },
   "devDependencies": {
     "@types/express": "^4.17.17",
@@ -25,6 +25,7 @@
     "typescript": "^4.9.5"
   },
   "dependencies": {
+    "dotenv": "^16.0.3",
     "express": "^4.18.2",
     "mongodb": "^5.1.0",
     "mongoose": "^7.0.0"

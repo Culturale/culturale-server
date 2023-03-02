@@ -1,11 +1,11 @@
 {
   "compilerOptions": {
-      "module": "commonjs",
+      "module": "CommonJS",
       "esModuleInterop": true,
       "allowSyntheticDefaultImports": true,
       "target": "esnext",
       "noImplicitAny": true,
-      "moduleResolution": "node",
+      "moduleResolution": "Node",
       "sourceMap": true,
       "outDir": "dist",
       "baseUrl": ".",
@@ -15,9 +15,17 @@
       "noUnusedLocals": true,
       "paths": {
         "~/*": ["src/*"]
-      }
+      },
+      "rootDir": "./"
+  },
+  "ts-node": {
+    "esm": true
   },
   "include": [
-      "src/**/*"
+    "src/**/*.ts",
+    "src/server.ts"
+  ],
+  "exclude":[
+    "node_modules"
   ]
 }

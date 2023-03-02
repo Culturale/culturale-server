@@ -71,7 +71,7 @@ jobs:
           output: report-markdown
           package-manager: yarn
           test-script: yarn test
-          # github-token: ${{ secrets.GITHUB_TOKEN }}
+          github-token: ${{ secrets.TOKEN_GITHUB }}
       - name: comment
         uses: marocchino/sticky-pull-request-comment@v2
         with:

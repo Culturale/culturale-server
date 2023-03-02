@@ -1,0 +1,49 @@
+ {
+  "root": true,
+  "parser": "@typescript-eslint/parser",
+  "extends": [
+    "prettier",
+    "plugin:@typescript-eslint/recommended",
+    "eslint:recommended",
+    "plugin:@typescript-eslint/eslint-recommended",
+  ],
+  "plugins": ["@typescript-eslint", "import"],
+  "parserOptions": {
+    "project": "./tsconfig.json"
+  },
+  "settings": {
+    "import/parsers": {
+      "@typescript-eslint/parser": [".ts", ".tsx"],
+      "babel-eslint": [".js", ".jsx"]
+    },
+    "import/resolver": {
+      "typescript": {
+        "project": "./tsconfig.json"
+      }
+    }
+  },
+  "globals": {
+    "__DEV__": false,
+    "jasmine": false,
+    "beforeAll": false,
+    "afterAll": false,
+    "beforeEach": false,
+    "afterEach": false,
+    "test": false,
+    "expect": false,
+    "describe": false,
+    "jest": false,
+    "it": false
+  },
+  "ignorePatterns": ["node_modules", "dist"],
+  "rules": {
+    "semi": [2, "always"],
+    "generator-star-spacing": 0,
+    "space-before-function-parent": 0,
+    "@typescript-eslint/no-explicit-any": 0,
+    "@typescript-eslint/no-object-literal-type-assertion": 0,
+    "@typescript-eslint/no-use-before-define": 2,
+    "@typescript-eslint/no-namespace": ["error", { "allowDeclarations": true }],
+    "no-useless-constructor": 0
+  }
+}

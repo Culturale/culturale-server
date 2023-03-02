@@ -1,0 +1,23 @@
+{
+  "name": "culturale-server",
+  "version": "1.0.0",
+  "main": "src/server.ts",
+  "type": "module",
+  "repository": "https://github.com/Culturale/culturale-server.git",
+  "author": "BalisticMan <quim.baget@estudiantat.upc.edu>",
+  "license": "MIT",
+  "scripts": {
+    "build": "tsc",
+    "lint": "eslint src --ext .js,.ts,.tsx",
+    "lint:no-cycles": "eslint src --ext .js,.ts,.tsx --rule 'import/no-cycle: 2'"
+  },
+  "devDependencies": {
+    "@types/node": "^18.14.4",
+    "@typescript-eslint/eslint-plugin": "^5.54.0",
+    "@typescript-eslint/parser": "^5.54.0",
+    "eslint": "^8.35.0",
+    "eslint-config-prettier": "^8.6.0",
+    "eslint-plugin-import": "^2.27.5",
+    "typescript": "^4.9.5"
+  }
+}

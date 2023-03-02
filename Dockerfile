@@ -9,6 +9,8 @@ COPY package*.json ./
 
 # Install dependencies
 RUN npm install
+# Build the app
+RUN npm build
 
 # Copy app source code
 COPY . .
@@ -20,5 +22,5 @@ EXPOSE 3000
 ENV NODE_ENV production
 ENV MONGODB_URI mongodb://mongo:27017/mydb
 
-# Build & Start the app
-CMD ["npm", "build", "&&", "npm", "start"]
+# Start the app
+CMD [ "npm", "start"]

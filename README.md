@@ -5,9 +5,19 @@ Backend NodeJS application that works as an API for Culturale apps.
 ## Project architecture
 ```
 ├── application
+│   ├── controllers
+│   │   ├── index.ts
+│   │   └── user-controller
+│   │       ├── index.ts
+│   │       ├── user-controller.interface.ts
+│   │       ├── user-controller.test.ts
+│   │       └── user-controller.ts
 │   ├── index.ts
 │   └── use-cases
-│       └── index.ts
+│       ├── index.ts
+│       └── log-in
+│           ├── index.ts
+│           └── log-in.ts
 ├── domain
 │   ├── entities
 │   │   └── index.ts
@@ -15,6 +25,16 @@ Backend NodeJS application that works as an API for Culturale apps.
 │   └── repositories
 │       └── index.ts
 ├── infrastructure
-│   └── index.ts
+│   ├── database
+│   │   ├── database.interface.ts
+│   │   ├── database.ts
+│   │   └── index.ts
+│   ├── index.ts
+│   ├── infrastructure.interface.ts
+│   └── infrastructure.ts
+├── routes
+│   ├── index.ts
+│   ├── routes.ts
+│   └── user-routes.ts
 └── server.ts
 ```

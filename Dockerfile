@@ -23,4 +23,4 @@ ENV NODE_ENV production
 ENV MONGODB_URI mongodb://mongo:27017/mydb
 
 # Start the app
-CMD [ "npm", "start"]
+CMD ["npm", "start"]

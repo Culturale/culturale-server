@@ -1,4 +1,4 @@
-name: Deploy to K8s cluster
+name: CD
 
 on:
   push:

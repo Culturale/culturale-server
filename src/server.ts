@@ -1,5 +1,5 @@
 import express from 'express';
-import { routes } from './infrastructure/routes';
+import { routes } from './infrastructure/api';
 import { connect } from 'mongoose';
 
 const app = express();

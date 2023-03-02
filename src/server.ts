@@ -1,6 +1,6 @@
 import express from 'express';
 import { connect } from 'mongoose';
-import { routes } from './infrastructure';
+import { routes } from '~/infrastructure';
 import * as dotenv from 'dotenv';
 
 dotenv.config();

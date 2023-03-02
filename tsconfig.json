@@ -19,7 +19,8 @@
       "rootDir": "./"
   },
   "ts-node": {
-    "esm": true
+    "esm": true,
+    "require": ["tsconfig-paths/register"]
   },
   "include": [
     "src/**/*.ts",

@@ -4,7 +4,7 @@
   "main": "src/server.ts",
   "type": "module",
   "repository": "https://github.com/Culturale/culturale-server.git",
-  "author": "BalisticMan <quim.baget@estudiantat.upc.edu>",
+  "author": "quimvi <quim.baget@estudiantat.upc.edu>",
   "license": "MIT",
   "scripts": {
     "build": "tsc",

@@ -3,7 +3,7 @@ Backend NodeJS application that works as an API for Culturale apps.
 
 
 ## Project architecture
-
+```
 ├── application
 │   ├── index.ts
 │   └── use-cases
@@ -17,3 +17,4 @@ Backend NodeJS application that works as an API for Culturale apps.
 ├── infrastructure
 │   └── index.ts
 └── server.ts
+```

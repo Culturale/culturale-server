@@ -12,7 +12,7 @@ Backend NodeJS application that works as an API for Culturale apps.
 
 #### Install brew
 
-*Brew is a package manager that helps you to install software in your computer **
+**Brew is a package manager that helps you to install software in your computer**
 
 - Open a terminal and input `/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"`
 
@@ -24,7 +24,7 @@ Backend NodeJS application that works as an API for Culturale apps.
 
 #### Install node
 
-** NodeJS is the runtime environment that runs on the V8 Javascript engine which is capable of executing Javascript code OUTSIDE the browser (meaning in your computer) **
+**NodeJS is the runtime environment that runs on the V8 Javascript engine which is capable of executing Javascript code OUTSIDE the browser (meaning in your computer)**
 
 - `brew install node`
 - Check that node is installed correctly using `node -v`, you should see the version installed

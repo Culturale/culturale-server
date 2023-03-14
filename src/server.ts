@@ -16,8 +16,9 @@ const { DB_USER, DB_PASSWORD, DB_HOST, DB_PORT, DB_NAME } = process.env;
 async function connectToMongo() {
   const MONGO_URI = `mongodb://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}?authSource=admin`;
   console.log('Connecting to database...');
-  console.log('MONGO URI: ', MONGO_URI);
-  connect(MONGO_URI).then(() => console.log('Connected to Database'));
+  connect(MONGO_URI).then(() =>
+    console.log('Connected to database: ', DB_NAME),
+  );
 }
 
 connectToMongo();
@@ -25,7 +26,6 @@ connectToMongo();
 const PORT = process.env.NODE_LOCAL_PORT;
 
 app.listen(PORT, () => {
-  console.log('TEST');
   console.log('Server is running on port', PORT);
 });
 

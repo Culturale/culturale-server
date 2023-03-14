@@ -88,6 +88,16 @@ sudo xcode-select -s /Applications/Xcode.app/Contents/Developer
 4. Cocoapods - Dependency manager for native iOS Applications
 `sudo gem install cocoapods`
 
+## Start server and database in local environment
+
+*In order to do this step you should have all the previous dependencies installed*
+
+1. Run the Docker Compose to run the NodeJS application and MongoDB instance
+`docker-compose up --build -d`
+
+2. Now, the docker container should be running in background
+3. You can stall making calls to `localhost:8080`
+
 
 ## Project architecture
 ```

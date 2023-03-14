@@ -6,19 +6,14 @@ WORKDIR /app
 
 # Copy package.json and package-lock.json
 COPY package*.json ./
-COPY tsconfig.json ./
-COPY tsconfig-paths-bootstrap.js ./
-
-# Copy app source code
-COPY ./src .
-
-# Install dependencies
 RUN npm install
-# Build the app
-RUN npm build
+COPY tsconfig-paths-bootstrap.js ./
+COPY tsconfig.json ./
 
-# Expose port 3000
-EXPOSE 3000
+COPY src ./src
 
-# Start the app
-CMD ["npm", "start"]
+RUN ls -a
+
+RUN npm run build
+
+CMD ["npm","run","start"]

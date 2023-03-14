@@ -27,7 +27,7 @@ services:
       - DB_PASSWORD=$MONGODB_PASSWORD
       - DB_NAME=$MONGODB_DATABASE
       - DB_PORT=$MONGODB_DOCKER_PORT
-      - NODE_LOCAL_PORT=3000
+      - NODE_LOCAL_PORT=$NODE_LOCAL_PORT
     stdin_open: true
     tty: true
 volumes:

@@ -3,11 +3,6 @@ Backend NodeJS application that works as an API for Culturale apps.
 
 ## Installation instructions manual for developing in React Native and NodeJS
 
-### General programs
-
-- Install Android Studio
-- Install XCode if you own a MacOS
-
 ### Linux & Mac Dependencies
 
 #### Install brew
@@ -40,6 +35,13 @@ Backend NodeJS application that works as an API for Culturale apps.
 
 - `npm install --global yarn`
 
+#### Install Docker and Docker Compose
+
+**Docker is a containerization software. It is capable of wrapping up an application like a NodeJS server and all it's dependencies in a container, which simulates a virtual machine, in order to run the application**
+
+- Install docker using `brew cask install docker`
+- Install docker-compose using `brew install docker-compose`
+
 #### Android installation
 
 1. Android Studio
@@ -62,7 +64,7 @@ brew install --cask android-platform-tools
 brew install bundletool
 ```
 
-#### XCode installation
+#### XCode installation - Only for MacOS
 
 1. XCode IDE
 `brew install --cask xcode`

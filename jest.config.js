@@ -9,11 +9,7 @@ module.exports = {
   },
   testMatch: ['**/*.test.(ts|tsx)'],
   collectCoverageFrom: ['src/**/*.{js,ts}'],
-  coveragePathIgnorePatterns: [
-    '<rootDir>/server.ts',
-    '*.schema.ts',
-    'index.ts',
-  ],
+  coveragePathIgnorePatterns: ['<rootDir>/server.ts', '.schema.ts', 'index.ts'],
   globals: {
     __TEST__: true,
   },

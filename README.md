@@ -49,28 +49,6 @@ Backend NodeJS application that works as an API for Culturale apps.
 
 It will install all the dependencies of the project
 
-### Android installation
-
-1. Android Studio
-```
-brew install --cask adoptopenjdk8
-brew install --cask android-studio
-
-touch ~/.android/repositories.cfg
-sdkmanager --update
-sdkmanager "platform-tools" "platforms;android-28"
-```
-
-Add this env variable to your system to configure Android Studio
-
-`export ANDROID_HOME=/usr/local/share/android-sdk/`
-
-2. Android Platform tools (adb)
-```
-brew install --cask android-platform-tools
-brew install bundletool
-```
-
 ### XCode installation - Only for MacOS
 
 1. XCode IDE

@@ -22,7 +22,7 @@ userRouter.post('/users/create', async (req: Request, res: Response) => {
     createUserDto.username = req.body.username;
 
     const errors = await validate(createUserDto);
-    if (!!errors.length) {
+    if (errors.length) {
       res.status(400).json({ errors });
       return;
     }

@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+      "experimentalDecorators": true,
       "module": "CommonJS",
       "esModuleInterop": true,
       "allowSyntheticDefaultImports": true,

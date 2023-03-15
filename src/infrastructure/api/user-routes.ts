@@ -16,7 +16,6 @@ userRouter.get('/test-user', (req: Request, res: Response) => {
 
 userRouter.post('/users/create', async (req: Request, res: Response) => {
   res.setHeader('Content-Type', 'application/json');
-  console.log(req.body);
   try {
     const createUserDto = new CreateUserDto();
     createUserDto.email = req.body.email;
@@ -34,6 +33,23 @@ userRouter.post('/users/create', async (req: Request, res: Response) => {
     res.status(200);
     res.json({
       message: 'user created',
+    });
+  } catch (e) {
+    res.status(500);
+    res.json({
+      error: e,
+    });
+  }
+});
+
+userRouter.get('/users', async (req: Request, res: Response) => {
+  res.setHeader('Content-Type', 'application/json');
+  try {
+    const users: IUser[] = await UserController.getAllUsers();
+
+    res.status(200);
+    res.json({
+      users: users,
     });
   } catch (e) {
     res.status(500);

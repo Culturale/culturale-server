@@ -74,7 +74,7 @@ sudo xcode-select -s /Applications/Xcode.app/Contents/Developer
 `docker-compose up --build`
 
 2. Now, the docker container should be running in background
-3. You can stall making calls to `localhost:8080`
+3. You can start making calls to `localhost:8080`
 
 
 ## Project architecture

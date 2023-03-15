@@ -71,7 +71,7 @@ sudo xcode-select -s /Applications/Xcode.app/Contents/Developer
 *In order to do this step you should have all the previous dependencies installed*
 
 1. Run the Docker Compose to run the NodeJS application and MongoDB instance
-`docker-compose up --build -d`
+`docker-compose up --build`
 
 2. Now, the docker container should be running in background
 3. You can stall making calls to `localhost:8080`

@@ -5,5 +5,5 @@ on:
     branches:
       - main
 
-- name: Deploy to Kubernetes cluster
-  uses: Azure/k8s-deploy@v4.9
+# - name: Deploy to Kubernetes cluster
+# uses: Azure/k8s-deploy@v4.9

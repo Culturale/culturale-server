@@ -1,3 +1,3 @@
-export function logIn() {
-  console.log('login');
+export function logIn(): void {
+  return null;
 }

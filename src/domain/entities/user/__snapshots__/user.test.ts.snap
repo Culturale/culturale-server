@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`User Entity can be created 1`] = `
+User {
+  "email": "test-email",
+  "id": "test-id",
+  "username": "test-username",
+}
+`;

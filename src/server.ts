@@ -2,7 +2,6 @@ import express from 'express';
 import { connect } from 'mongoose';
 import { routes } from '~/infrastructure';
 import * as dotenv from 'dotenv';
-
 dotenv.config();
 
 const app = express();
@@ -12,15 +11,19 @@ app.use(express.json());
 
 app.use('/', routes);
 
+const { DB_USER, DB_PASSWORD, DB_HOST, DB_PORT, DB_NAME } = process.env;
+
 async function connectToMongo() {
+  const MONGO_URI = `mongodb://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}?authSource=admin`;
   console.log('Connecting to database...');
-  await connect('mongodb://test');
-  console.log('Connected to Database');
+  connect(MONGO_URI).then(() =>
+    console.log('Connected to database: ', DB_NAME),
+  );
 }
 
 connectToMongo();
 
-const PORT = process.env.NODE_PORT;
+const PORT = process.env.NODE_LOCAL_PORT;
 
 app.listen(PORT, () => {
   console.log('Server is running on port', PORT);

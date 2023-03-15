@@ -6,21 +6,14 @@ WORKDIR /app
 
 # Copy package.json and package-lock.json
 COPY package*.json ./
-
-# Install dependencies
 RUN npm install
-# Build the app
-RUN npm build
+COPY tsconfig-paths-bootstrap.js ./
+COPY tsconfig.json ./
 
-# Copy app source code
-COPY . .
+COPY src ./src
 
-# Expose port 3000
-EXPOSE 3000
+RUN ls -a
 
-# Set environment variables
-ENV NODE_ENV production
-ENV MONGODB_URI mongodb://mongo:27017/mydb
+RUN npm run build
 
-# Start the app
-CMD ["npm", "start"]
+CMD ["npm","run","start"]

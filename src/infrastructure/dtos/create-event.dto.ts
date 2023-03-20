@@ -3,7 +3,7 @@ import { validate } from "class-validator";
 import type { NextFunction, Request, Response } from "express";
 
 class CreateEventDto {
-@IsString()
+  @IsString()
   @IsNotEmpty()
   denominacio: string;
 
@@ -15,7 +15,7 @@ class CreateEventDto {
 export async function createEventDto(
   req: Request,
   res: Response,
-  next: NextFunction,
+  next: NextFunction
 ) {
   const DTO = new CreateEventDto();
   DTO.denominacio = req.body.denominacio;

@@ -20,7 +20,10 @@ export class EventController {
     }
   }
 
-  public static async getAllEvents(_req: Request, res: Response): Promise<void> {
+  public static async getAllEvents(
+    _req: Request,
+    res: Response
+  ): Promise<void> {
     try {
       const events: IEvent[] = await EventRepository.getAllEvents();
       res.status(200);

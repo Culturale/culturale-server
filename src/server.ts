@@ -12,7 +12,7 @@ const app = express();
 app.use(
   express.urlencoded({
     extended: true,
-  }),
+  })
 );
 app.use(express.json());
 app.use("/", routes);
@@ -23,7 +23,7 @@ async function connectToMongo() {
   const MONGO_URI = `mongodb://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}?authSource=admin`;
   console.log("Connecting to database...");
   connect(MONGO_URI).then(() =>
-    console.log("Connected to database: ", DB_NAME),
+    console.log("Connected to database: ", DB_NAME)
   );
 }
 

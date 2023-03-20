@@ -1,7 +1,7 @@
 import type { Request, Response } from "express";
 import express from "express";
 
-import { EventController } from "~/application"; 
+import { EventController } from "~/application";
 import { createEventDto } from "~/infrastructure/dtos";
 
 export const eventRouter = express.Router();

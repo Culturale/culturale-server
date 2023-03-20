@@ -1,6 +1,5 @@
 export interface IEvent {
-    id: string;
-    denominacio: string;
-    descripcio: string;
-  }
-  
+  id: string;
+  denominacio: string;
+  descripcio: string;
+}

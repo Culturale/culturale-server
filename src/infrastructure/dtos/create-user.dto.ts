@@ -15,7 +15,7 @@ class CreateUserDto {
 export async function createUserDto(
   req: Request,
   res: Response,
-  next: NextFunction,
+  next: NextFunction
 ) {
   const DTO = new CreateUserDto();
   DTO.email = req.body.email;

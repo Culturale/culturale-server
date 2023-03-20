@@ -1,4 +1,4 @@
-import type { IEvent} from "~/domain/entities/event";
+import type { IEvent } from "~/domain/entities/event";
 import { EventModel } from "~/domain/entities/event";
 
 export class EventRepository {

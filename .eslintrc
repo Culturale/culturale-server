@@ -89,6 +89,6 @@
     ],
     "quotes": 1,
     "semi": [2, "always"],
-    "sort-keys": ["error", "asc", { "caseSensitive": true, "natural": true }],
+    "sort-keys": ["error", "asc", { "caseSensitive": true, "natural": true }]
   }
 }

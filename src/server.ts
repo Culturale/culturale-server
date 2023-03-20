@@ -14,7 +14,7 @@ app.use(
     extended: true,
   }),
 );
-
+app.use(express.json());
 app.use("/", routes);
 
 const { DB_USER, DB_PASSWORD, DB_HOST, DB_PORT, DB_NAME } = process.env;

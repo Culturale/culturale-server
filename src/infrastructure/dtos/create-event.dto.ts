@@ -1,25 +1,25 @@
-import { IsString, IsEmail, IsNotEmpty } from "class-validator";
+import { IsString, IsNotEmpty } from "class-validator";
 import { validate } from "class-validator";
 import type { NextFunction, Request, Response } from "express";
 
-class CreateUserDto {
-  @IsEmail()
+class CreateEventDto {
+  @IsString()
   @IsNotEmpty()
-  email: string;
+  denominacio: string;
 
   @IsString()
   @IsNotEmpty()
-  username: string;
+  descripcio: string;
 }
 
-export async function createUserDto(
+export async function createEventDto(
   req: Request,
   res: Response,
   next: NextFunction
 ) {
-  const DTO = new CreateUserDto();
-  DTO.email = req.body.email;
-  DTO.username = req.body.username;
+  const DTO = new CreateEventDto();
+  DTO.denominacio = req.body.denominacio;
+  DTO.descripcio = req.body.descripcio;
 
   const errors = await validate(DTO);
   if (errors.length) {

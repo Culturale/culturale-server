@@ -5,6 +5,8 @@ import jwt from "jsonwebtoken";
 import { UserModel } from "~/domain/entities/user";
 
 export async function logIn(req: Request, res: Response): Promise<void> {
+  res.setHeader("Content-Type", "application/json");
+
   try {
     const user = await UserModel.findOne({ username: req.body.username });
     if (user) {

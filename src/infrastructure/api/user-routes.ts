@@ -19,4 +19,4 @@ userRouter.post('/users/create', createUserDto, UserController.createUser);
 
 userRouter.get('/users', UserController.getAllUsers);
 
-userRouter.post('/login', loginDto, logIn);
+userRouter.post('/users/login', loginDto, logIn);

@@ -3,12 +3,12 @@ import { Schema, model } from "mongoose";
 import type { IEvent } from "./event.interface";
 
 const EventSchema = new Schema({
+  adress: { required: false, type: String },
+  dataFi: { required: true, type: Date },
+  dataIni: { required: true, type: Date },
   denominacio: { required: true, type: String },
   descripcio: { required: true, type: String },
-  dataIni: { required: true, type: Date },
-  dataFi: { required: true, type: Date },
   horari: { required: false, type: String },
-  adress: { required: false, type: String },
   url: { required: true, type: String },
 });
 

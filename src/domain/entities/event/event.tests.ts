@@ -5,7 +5,17 @@ describe("Event Entity", function () {
   let instance: IEvent;
 
   beforeEach(function () {
-    instance = new Event("test-id", "test-denominacio", "test-descripcio");
+    const date: Date = new Date();
+    instance = new Event(
+      "test-id",
+      "test-denominacio",
+      "test-descripcio",
+      date,
+      date,
+      "test-horari",
+      "test-adress",
+      "test-url"
+    );
   });
 
   it("can be created", function () {

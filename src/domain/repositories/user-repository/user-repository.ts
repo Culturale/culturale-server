@@ -1,4 +1,4 @@
-import type { IUser} from "~/domain/entities/user";
+import type { IUser } from "~/domain/entities/user";
 import { UserModel } from "~/domain/entities/user";
 
 export class UserRepository {

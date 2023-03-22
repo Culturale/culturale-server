@@ -1,0 +1,16 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\src",
+    "\\src\\application",
+    "\\src\\application\\controllers",
+    "\\src\\application\\controllers\\user-controller",
+    "\\src\\domain",
+    "\\src\\domain\\entities",
+    "\\src\\domain\\entities\\user",
+    "\\src\\infrastructure",
+    "\\src\\infrastructure\\api"
+  ],
+  "SelectedNode": "\\src\\application\\use-cases\\sign-up\\index.ts",
+  "PreviewInSolutionExplorer": false
+}

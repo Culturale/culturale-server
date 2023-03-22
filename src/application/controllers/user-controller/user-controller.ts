@@ -1,6 +1,7 @@
 import type { Request, Response } from "express";
+
 //import { MongoNetworkTimeoutError } from "mongodb";
-import { IUser } from "~/domain/entities/user";
+import type { IUser } from "~/domain/entities/user";
 import { UserRepository } from "~/domain/repositories/user-repository/user-repository";
 //import { isNull } from "util";
 

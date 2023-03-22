@@ -23,7 +23,7 @@ export class UserRepository {
 
   
   public static async existParam(param: string, tipusAtribut: string): Promise<boolean> {
-    var existe: boolean;
+    let existe: boolean;
     switch (tipusAtribut) {
       case "username":
         existe = !(await UserModel.exists({ username: param }) == null);

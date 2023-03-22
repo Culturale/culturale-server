@@ -3,13 +3,29 @@ import { validate } from "class-validator";
 import type { NextFunction, Request, Response } from "express";
 
 class CreateUserDto {
-  @IsEmail()
-  @IsNotEmpty()
-  email: string;
+    @IsString()
+    @IsNotEmpty()
+    username: string;
 
-  @IsString()
-  @IsNotEmpty()
-  username: string;
+    @IsString()
+    @IsNotEmpty()
+    name: string;
+
+    @IsString()
+    @IsNotEmpty()
+    password: string;
+
+    @IsEmail()
+    @IsNotEmpty()
+    email: string;
+
+    @IsString()
+    @IsNotEmpty()
+    profilePicture: string;
+
+    @IsString()
+    @IsNotEmpty()
+    phoneNumber: string;
 }
 
 export async function createUserDto(
@@ -17,15 +33,19 @@ export async function createUserDto(
   res: Response,
   next: NextFunction
 ) {
-  const DTO = new CreateUserDto();
-  DTO.email = req.body.email;
-  DTO.username = req.body.username;
+    const DTO = new CreateUserDto();
+    DTO.username = req.body.username;
+    DTO.name = req.body.name;
+    DTO.password = req.body.password;
+    DTO.email = req.body.email;
+    DTO.profilePicture = req.body.profilePicture;
+    DTO.phoneNumber = req.body.phoneNumber;
 
-  const errors = await validate(DTO);
-  if (errors.length) {
+    const errors = await validate(DTO);
+    if (errors.length) {
     res.status(400).json({ errors });
     return;
-  }
+    }
 
-  next();
+    next();
 }

@@ -20,4 +20,4 @@ userRouter.post("/users/create", createUserDto, UserController.createUser);
 userRouter.get("/users", UserController.getAllUsers);
 
 
-userRouter.post("/users/edit", editParamDTO, UserController.editParam );
+userRouter.post("/users/edit", editParamDTO, UserController.editUser );

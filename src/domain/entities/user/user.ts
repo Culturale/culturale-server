@@ -1,13 +1,17 @@
 import type { IUser } from "./user.interface";
 
 export class User implements IUser {
-  public id: string;
-  public email: string;
-  public username: string;
+    public username: string;
+    public name: string;
+    public password: string;
+    public email: string;
+    public profilePicture: string;
+    public phoneNumber: string;
 
-  constructor(id: string, email: string, username: string) {
-    this.id = id;
-    this.email = email;
-    this.username = username;
+    constructor(username: string, name: string, password: string, email: string, profilePicture: string, phoneNumber: string) {
+      this.username = username;
+      this.name = name;
+      this.password = password;
+      this.email = email;
   }
 }

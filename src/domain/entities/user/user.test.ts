@@ -5,7 +5,7 @@ describe("User Entity", function () {
   let instance: IUser;
 
   beforeEach(function () {
-    instance = new User("test-id", "test-email", "test-username");
+    instance = new User("test-username", "test-name","test-password","test-email","test-profilePicture","test-phone");
   });
 
   it("can be created", function () {

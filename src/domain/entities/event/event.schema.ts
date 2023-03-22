@@ -14,6 +14,10 @@ const EventSchema = new Schema({
   url: { required: true, type: String },
   valoracions: { required: false, type: [Schema.Types.ObjectId], model: 'Review' },
   participants: { required: false, type: [Schema.Types.ObjectId], model: 'User' },
+  lat: { required: false, type: Number },
+  long: { required: false, type: Number },
+  price: { required: false, type: String },
+  photo: { required: false, type: String },
 });
 
 

@@ -15,7 +15,11 @@ export type EventProps = {
   dataFi: Date;
   horari: string;
   adress: string;
+  lat: number;
+  long: number;
+  price: string;
   url: string;
+  photo?: string;
   chat?: IChat;
   participants?: IUser[];
   valoracions?: IReview[];
@@ -30,13 +34,17 @@ export class Event implements IEvent {
   public dataFi: Date;
   public horari: string;
   public adress: string;
+  public lat: number;
+  public long: number;
+  public price: string;
   public url: string;
+  public photo: string;
   public chat: IChat;
   public participants: IUser[];
   public valoracions: IReview[];
 
-  constructor(props: EventProps) {
-    const {id, codi, denominacio, descripcio, dataIni, dataFi, horari, adress, url, chat, participants, valoracions} = props;
+  constructor(props: EventProps) {ç
+    const {id, codi, denominacio, descripcio, dataIni, dataFi, horari, adress, valoracions, lat, long, price, url, photo, chat, participants} = props;
     this.id = id;
     this.codi = codi;
     this.denominacio = denominacio;
@@ -45,7 +53,11 @@ export class Event implements IEvent {
     this.dataFi = dataFi;
     this.horari = horari;
     this.adress = adress;
+    this.lat = lat;
+    this.long = long;
+    this.price = price;
     this.url = url;
+    this.photo = photo;
     this.chat = chat;
     this.participants = participants || [];
     this.valoracions = valoracions || [];

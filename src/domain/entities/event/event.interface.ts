@@ -14,7 +14,11 @@ export interface IEvent {
   dataFi: Date;
   horari?: string;
   adress?: string;
-  url: string;
+  lat?: number;
+  long?: number;
+  price?: string;
+  url?: string;
+  photo?: string;
   chat: IChat;
   valoracions?: IReview[];
   

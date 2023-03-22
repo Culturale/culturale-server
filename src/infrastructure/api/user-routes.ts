@@ -2,8 +2,8 @@ import type { Request, Response } from "express";
 import express from "express";
 
 import { UserController } from "~/application";
-import { createUserDto, editParamDTO, loginDto} from "~/infrastructure/dtos";
 import { logIn } from "~/application/use-cases";
+import { createUserDto, editParamDTO, loginDto} from "~/infrastructure/dtos";
 import { authMiddleware } from "~/infrastructure/middlewares";
 
 export const userRouter = express.Router();

@@ -1,5 +1,6 @@
 import bcrypt from "bcrypt";
 import type { Request, Response } from "express";
+
 import type { IUser } from "~/domain/entities/user";
 import { UserRepository } from "~/domain/repositories/user-repository/user-repository";
 

@@ -18,7 +18,7 @@ export class UserRepository {
       case "email":
          await UserModel.findOneAndUpdate({ email: oldParam }, { email: nouParam, },{ returnOriginal: false });
          break;
-      case "email":
+      case "password":
         await UserModel.findOneAndUpdate({ password: oldParam }, { password: nouParam, },{ returnOriginal: false });
         break;
 

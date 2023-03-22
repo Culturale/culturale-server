@@ -4,6 +4,7 @@ exports[`User Entity can be created 1`] = `
 User {
   "email": "test-email",
   "id": "test-id",
+  "password": "test-password",
   "username": "test-username",
 }
 `;

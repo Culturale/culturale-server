@@ -1,4 +1,4 @@
-import { IsString, IsNotEmpty } from "class-validator";
+import { IsString, IsNotEmpty, IsDate } from "class-validator";
 import { validate } from "class-validator";
 import type { NextFunction, Request, Response } from "express";
 
@@ -10,6 +10,24 @@ class CreateEventDto {
   @IsString()
   @IsNotEmpty()
   descripcio: string;
+
+  @IsDate()
+  @IsNotEmpty()
+  dataIni: Date;
+
+  @IsDate()
+  @IsNotEmpty()
+  dataFi: Date;
+
+  @IsString()
+  horari: String;
+
+  @IsString()
+  adress: String;
+
+  @IsString()
+  @IsNotEmpty()
+  url: String;
 }
 
 export async function createEventDto(
@@ -20,6 +38,11 @@ export async function createEventDto(
   const DTO = new CreateEventDto();
   DTO.denominacio = req.body.denominacio;
   DTO.descripcio = req.body.descripcio;
+  DTO.dataIni = new Date(req.body.dataIni);
+  DTO.dataFi = new Date(req.body.dataFi);
+  DTO.horari = req.body.horari;
+  DTO.adress = req.body.adress;
+  DTO.url = req.body.url;
 
   const errors = await validate(DTO);
   if (errors.length) {

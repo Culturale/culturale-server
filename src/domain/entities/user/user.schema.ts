@@ -8,7 +8,8 @@ const UserSchema = new Schema({
     password: { type: String, required: true },
     email: { type: String, required: true },
     profilePicture: { type: String, required: true },
-    phoneNumber: { type: String, required: true }
+    phoneNumber: { type: String, required: true },
+    usertype: { type: String, required: true }
 });
 
 const UserModel = model<IUser>("User", UserSchema);

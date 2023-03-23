@@ -7,13 +7,15 @@ export class User implements IUser {
     public email: string;
     public profilePicture: string;
     public phoneNumber: string;
+    public usertype: string;
 
-    constructor(username: string, name: string, password: string, email: string, profilePicture: string, phoneNumber: string) {
-      this.username = username;
-      this.name = name;
-      this.password = password;
-      this.email = email;
-      this.profilePicture = profilePicture;
-      this.phoneNumber = phoneNumber;
-  }
+    constructor(username: string, name: string, password: string, email: string, profilePicture: string, phoneNumber: string, usertype: string) {
+        this.username = username;
+        this.name = name;
+        this.password = password;
+        this.email = email;
+        this.profilePicture = profilePicture;
+        this.phoneNumber = phoneNumber;
+        this.usertype = usertype;
+    }
 }

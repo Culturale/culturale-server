@@ -13,5 +13,7 @@ export class User implements IUser {
       this.name = name;
       this.password = password;
       this.email = email;
+      this.profilePicture = profilePicture;
+      this.phoneNumber = phoneNumber;
   }
 }

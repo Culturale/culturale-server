@@ -21,6 +21,12 @@ export class UserRepository {
       case "password":
         await UserModel.findOneAndUpdate({ password: oldParam }, { password: nouParam, },{ returnOriginal: false });
         break;
+      case "telefon":
+        await UserModel.findOneAndUpdate({ telefon: oldParam }, { telefon: nouParam, },{ returnOriginal: false });
+        break;
+      case "image":
+        await UserModel.findOneAndUpdate({ image: oldParam }, { image: nouParam, },{ returnOriginal: false });
+        break;
 
     }
     }

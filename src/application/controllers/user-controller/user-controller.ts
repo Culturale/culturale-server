@@ -45,7 +45,7 @@ export class UserController {
         const oldParameter: string = _req.body.oldParam;
         const tipusAtribut: string = _req.body.tipusAtribut;
          if(newParameter != oldParameter){
-            await UserRepository.updateUser(newParameter, oldParameter,tipusAtribut);
+            await UserRepository.updateUser(newParameter, oldParameter, tipusAtribut);
             res.status(200).json({message: tipusAtribut + " editado, su nuevo " + tipusAtribut + " es: " + newParameter});
            }
           else{ // Si el nuevo paramtero es igual al anterior da error

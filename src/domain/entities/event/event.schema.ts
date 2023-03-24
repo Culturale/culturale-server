@@ -10,6 +10,12 @@ const EventSchema = new Schema({
   descripcio: { required: true, type: String },
   horari: { required: false, type: String },
   url: { required: true, type: String },
+  longitud: {required: true, type: Number},
+  latitud: {required: true, type: Number},
+  categoria: {required: true, type: String},
+  telefon: {required: true, type: Number},
+  aforament: {required: true, type: Number},
+  Nasis: {required: true, type: Number},
 });
 
 const EventModel = model<IEvent>("Event", EventSchema);

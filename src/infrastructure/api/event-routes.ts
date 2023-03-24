@@ -16,13 +16,11 @@ eventRouter.get("/test-event", (req: Request, res: Response) => {
 
 eventRouter.post("/events/create", createEventDto, EventController.createEvent);
 
+//GET /events
 eventRouter.get("/events", EventController.getAllEvents);
-
-//GET /event/:denominacio
+//GET /events/denominacio/:denominacio
 eventRouter.get('/events/denominacio/:denominacio', EventController.getEventbydenominacio);
-
-//GET /event/:dataIni
+//GET /events/dataIni/:dataIni
 eventRouter.get('/events/dataIni/:dataIni', EventController.getEventbydataIni);
-
-//GET /event/:dataFi
+//GET /events/dataFi/:dataFi
 eventRouter.get('/events/dataFi/:dataFi', EventController.getEventbydataFi);

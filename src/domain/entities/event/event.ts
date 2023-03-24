@@ -9,8 +9,14 @@ export class Event implements IEvent {
   public horari: String;
   public adress: String;
   public url: String;
+  public latitud: Number;
+  public longitud: Number;
+  public categoria: String;
+  public telefon: Number;
+  public aforament: Number;
+  public Nasis: Number;
 
-  constructor(
+  constructor (
     id: string,
     denominacio: string,
     descripcio: string,
@@ -18,7 +24,13 @@ export class Event implements IEvent {
     dataFi: Date,
     horari: String,
     adress: String,
-    url: String
+    url: String,
+    latitud: Number,
+    longitud: Number,
+    categoria: String,
+    telefon: Number,
+    aforament: Number,
+    Nasis: Number,
   ) {
     this.id = id;
     this.denominacio = denominacio;
@@ -28,5 +40,11 @@ export class Event implements IEvent {
     this.horari = horari;
     this.adress = adress;
     this.url = url;
+    this.latitud = latitud;
+    this.longitud = longitud;
+    this.categoria = categoria;
+    this.telefon = telefon;
+    this.aforament = aforament;
+    this.Nasis = Nasis;
   }
 }

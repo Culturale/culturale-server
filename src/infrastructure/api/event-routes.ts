@@ -18,11 +18,12 @@ eventRouter.post("/events/create", createEventDto, EventController.createEvent);
 
 eventRouter.get("/events", EventController.getAllEvents);
 
-//GET /event/:denominacio
+//GET /event/denominacio/:denominacio
 eventRouter.get('/events/denominacio/:denominacio', EventController.getEventbydenominacio);
 
-//GET /event/:dataIni
+//GET /event/dataIni/:dataIni
 eventRouter.get('/events/dataIni/:dataIni', EventController.getEventbydataIni);
-
-//GET /event/:dataFi
+//GET /events/dataFi/:dataFi
 eventRouter.get('/events/dataFi/:dataFi', EventController.getEventbydataFi);
+//GET /events/categoria/:categoria
+eventRouter.get('/events/categoria/:categoria', EventController.getEventbycategoria);

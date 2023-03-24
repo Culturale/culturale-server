@@ -21,4 +21,8 @@ export class EventRepository {
   public static async getEventbydataFi(data: Date): Promise<IEvent[]> {
     return await EventModel.find({dataFi: data});
   }
+
+  public static async getEventbycategoria(cat: String): Promise<IEvent[]> {
+    return await EventModel.find({categoria: cat})
+  }
 }

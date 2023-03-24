@@ -100,4 +100,26 @@ export class EventController {
       });
     }
   }
+
+  public static async getEventbycategoria(req: Request, res: Response): Promise<void> {
+    try {
+      const event: IEvent[] = await EventRepository.getEventbycategoria(req.params.categoria);
+      if (event.length == 0) {
+        res.status(404);
+        res.json({
+          error: 'No event with that categoria found',
+        });
+      }
+      res.status(200);
+      res.json({
+        event,
+      });
+    }
+    catch (e) {
+      res.status(500);
+      res.json({
+        error: e,
+      });
+    }
+  }
 }

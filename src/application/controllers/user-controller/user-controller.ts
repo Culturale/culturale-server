@@ -37,4 +37,22 @@ export class UserController {
       });
     }
   }
+
+  public static async deleteUser(req: Request, res: Response): Promise<void> {
+    try {
+      const id: String = req.params.id;
+      const user: IUser = await UserRepository.deleteUser(id);
+
+      res.status(200);
+      res.json({
+        message: "User deleted",
+        username: user.username,
+      });
+    } catch (e) {
+      res.status(500);
+      res.json({
+        error: e
+      });
+    }
+  }
 }

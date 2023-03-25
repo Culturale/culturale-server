@@ -9,4 +9,8 @@ export class UserRepository {
   public static async getAllUsers(): Promise<IUser[]> {
     return await UserModel.find();
   }
+
+  public static async deleteUser(id: String): Promise<IUser> {
+    return await UserModel.findOneAndDelete({_id: id});
+  }
 }

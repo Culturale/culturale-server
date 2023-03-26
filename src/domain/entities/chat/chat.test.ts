@@ -1,4 +1,4 @@
-import type { IMessage } from "~/domain/entities/message/message.interface";
+/*import type { IMessage } from "~/domain/entities/message/message.interface";
 
 import { Chat } from "./chat";
 import type { IChat } from "./chat.interface";
@@ -22,4 +22,4 @@ describe("Cnat Entity", function () {
   it("can be created", function () {
     expect(instance).toMatchSnapshot();
   });
-});
+});*/

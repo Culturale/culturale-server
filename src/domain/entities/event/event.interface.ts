@@ -1,5 +1,6 @@
 export interface IEvent {
   id: string;
+  codi: number;
   denominacio: String;
   descripcio: String;
   dataIni: Date;

@@ -8,6 +8,7 @@ describe("Event Entity", function () {
     const date: Date = new Date();
     instance = new Event(
       "test-id",
+      20211006023,
       "test-denominacio",
       "test-descripcio",
       date,

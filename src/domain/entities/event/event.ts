@@ -2,6 +2,7 @@ import type { IEvent } from "./event.interface";
 
 export class Event implements IEvent {
   public id: string;
+  public codi: number;
   public denominacio: string;
   public descripcio: string;
   public dataIni: Date;
@@ -12,6 +13,7 @@ export class Event implements IEvent {
 
   constructor(
     id: string,
+    codi: number,
     denominacio: string,
     descripcio: string,
     dataIni: Date,
@@ -21,6 +23,7 @@ export class Event implements IEvent {
     url: String
   ) {
     this.id = id;
+    this.codi = codi;
     this.denominacio = denominacio;
     this.descripcio = descripcio;
     this.dataIni = dataIni;

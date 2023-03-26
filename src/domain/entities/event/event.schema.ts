@@ -4,6 +4,7 @@ import type { IEvent } from "./event.interface";
 
 const EventSchema = new Schema({
   adress: { required: false, type: String },
+  codi: { required: true, type: Number },
   dataFi: { required: true, type: Date },
   dataIni: { required: true, type: Date },
   denominacio: { required: true, type: String },

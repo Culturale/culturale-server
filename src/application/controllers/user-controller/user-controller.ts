@@ -51,7 +51,7 @@ export class UserController {
     } catch (e) {
       res.status(500);
       res.json({
-        error: e
+        error: "Cannot find user with that id"
       });
     }
   }

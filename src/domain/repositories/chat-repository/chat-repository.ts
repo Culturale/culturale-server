@@ -1,13 +1,11 @@
 import type { IChat } from "~/domain/entities/chat";
+import { Chat } from "~/domain/entities/chat";
 import { ChatModel } from "~/domain/entities/chat";
 
 export class ChatRepository {
-  public static async createEmptyChat(chat: IChat): Promise<void> {
-    await ChatModel.create(chat);
-  }
-
-  public static async findChat(codiEvent: String): Promise<IChat> {
-    const query = { codiEsdeveniment: codiEvent };
-    return await ChatModel.findOne(query);
+  public static async createEmptyChat(): Promise<IChat> {
+    const chatDocuments = await ChatModel.create();
+    const chatObject = chatDocuments[0].toObject();
+    return new Chat(chatObject.id, chatObject.messages);
   }
 }

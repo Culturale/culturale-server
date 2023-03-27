@@ -1,3 +1,5 @@
+import type { IChat } from "../chat";
+
 import type { IEvent } from "./event.interface";
 
 export class Event implements IEvent {
@@ -10,6 +12,7 @@ export class Event implements IEvent {
   public horari: String;
   public adress: String;
   public url: String;
+  public chat: IChat;
 
   constructor(
     id: string,
@@ -20,7 +23,8 @@ export class Event implements IEvent {
     dataFi: Date,
     horari: String,
     adress: String,
-    url: String
+    url: String,
+    chat: IChat
   ) {
     this.id = id;
     this.codi = codi;
@@ -31,5 +35,6 @@ export class Event implements IEvent {
     this.horari = horari;
     this.adress = adress;
     this.url = url;
+    this.chat = chat;
   }
 }

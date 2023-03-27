@@ -15,5 +15,3 @@ chatRouter.get("/test-chat", (req: Request, res: Response) => {
 });
 
 chatRouter.post("/chat/create", createChatDto, ChatController.createEmptyChat);
-
-chatRouter.get("/chats/findChat", ChatController.findChat);

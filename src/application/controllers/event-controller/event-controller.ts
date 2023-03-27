@@ -1,13 +1,16 @@
 import type { Request, Response } from "express";
 
+import type { Chat } from "~/domain/entities/chat";
 import type { IEvent } from "~/domain/entities/event";
+import { ChatRepository } from "~/domain/repositories/chat-repository/chat-repository";
 import { EventRepository } from "~/domain/repositories/event-repository/event-repository";
 
 export class EventController {
   public static async createEvent(req: Request, res: Response): Promise<void> {
     try {
       const event: IEvent = req.body;
-      await EventRepository.addEvent(event);
+      const chat: Chat = await ChatRepository.createEmptyChat();
+      await EventRepository.addEvent(event, chat);
       res.status(200);
       res.json({
         message: "event created",

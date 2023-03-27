@@ -1,3 +1,5 @@
+import type { IChat } from "~/domain/entities/chat/chat.interface";
+
 import { Event } from "./event";
 import type { IEvent } from "./event.interface";
 
@@ -9,7 +11,7 @@ describe("Event Entity", function () {
   beforeEach(function () {
     const time = Date.now();
     const date = new Date(time);
-
+    const chat: IChat = null;
     instance = new Event(
       "test-id",
       20211006023,
@@ -19,7 +21,8 @@ describe("Event Entity", function () {
       date,
       "test-horari",
       "test-adress",
-      "test-url"
+      "test-url",
+      chat
     );
   });
 

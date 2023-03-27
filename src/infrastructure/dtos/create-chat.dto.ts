@@ -1,14 +1,10 @@
-import { IsNotEmpty, IsEmpty, IsNumber } from "class-validator";
+import { IsEmpty } from "class-validator";
 import { validate } from "class-validator";
 import type { NextFunction, Request, Response } from "express";
 
 import type { IMessage } from "~/domain/entities/message/message.interface";
 
 class CreateChatDto {
-  @IsNotEmpty()
-  @IsNumber()
-  codiEsdeveniment: number;
-
   @IsEmpty()
   messages: IMessage[];
 }
@@ -19,7 +15,6 @@ export async function createChatDto(
   next: NextFunction
 ) {
   const DTO = new CreateChatDto();
-  DTO.codiEsdeveniment = req.body.codiEsdeveniment;
   DTO.messages = req.body.messages;
 
   const errors = await validate(DTO);

@@ -1,11 +1,13 @@
+import type { IChat } from "~/domain/entities/chat/chat.interface";
 export interface IEvent {
   id: string;
   codi: number;
-  denominacio: String;
-  descripcio: String;
+  denominacio: string;
+  descripcio: string;
   dataIni: Date;
   dataFi: Date;
-  horari: String;
-  adress: String;
-  url: String;
+  horari?: string;
+  adress?: string;
+  url: string;
+  chat: IChat;
 }

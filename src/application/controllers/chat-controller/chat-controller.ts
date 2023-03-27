@@ -9,25 +9,7 @@ export class ChatController {
     res: Response
   ): Promise<void> {
     try {
-      const chat: IChat = req.body;
-      await ChatRepository.createEmptyChat(chat);
-      res.status(200);
-      res.json({
-        message: "empty chat created",
-      });
-    } catch (e) {
-      res.status(500);
-      res.json({
-        error: e,
-      });
-    }
-  }
-
-  public static async findChat(req: Request, res: Response): Promise<void> {
-    try {
-      const eventId: string = req.params.eventId;
-      const chat: IChat = await ChatRepository.findChat(eventId);
-
+      const chat: IChat = await ChatRepository.createEmptyChat();
       res.status(200);
       res.json({
         chat,

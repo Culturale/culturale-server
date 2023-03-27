@@ -9,15 +9,6 @@ describe("User Entity", function () {
   });
 
   it("can be created", function () {
-    //expect(instance).toMatchSnapshot();
-      expect(instance).toEqual({
-          username: "test-username",
-          name: "test-name",
-          password: "test-password",
-          email: "test-email",
-          profilePicture: "test-profilePicture",
-          phoneNumber: "test-phone",
-          usertype: "test-type"
-      });
+    expect(instance).toMatchSnapshot();
   });
 });

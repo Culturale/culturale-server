@@ -8,7 +8,7 @@ describe("User Entity", function () {
     instance = new User("test-username", "test-name","test-password","test-email","test-profilePicture","test-phone", "test-type");
   });
 
-  it("cant be created", function () {
+  it("can be created", function () {
     //expect(instance).toMatchSnapshot();
       it("can be created", function () {
           expect(instance).toEqual({

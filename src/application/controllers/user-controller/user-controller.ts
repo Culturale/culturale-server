@@ -43,10 +43,11 @@ export class UserController {
     try{
       const oldUser = await UserRepository.findUser(req.body.username);
       const newUser: IUser = {
-        id: oldUser.id,
         email: req.body.email || oldUser.email,
-        username: oldUser.username,
+        id: oldUser.id,
         password: req.body.password || oldUser.password,
+        username: oldUser.username,
+        
        // telefon: req.body.telefon || oldUser.telefon,
        // image: req.body.image || oldUser.image,
       };

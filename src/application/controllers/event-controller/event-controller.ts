@@ -41,7 +41,7 @@ export class EventController {
       if (event.length == 0) {
         res.status(404);
         res.json({
-          error: 'No event with that denomination found',
+          error: "No event with that denomination found",
         });
       }
       res.status(200);
@@ -63,7 +63,7 @@ export class EventController {
       if (event.length == 0) {
         res.status(404);
         res.json({
-          error: 'No event with that dateIni found',
+          error: "No event with that dateIni found",
         });
       }
       res.status(200);
@@ -85,7 +85,7 @@ export class EventController {
       if (event.length == 0) {
         res.status(404);
         res.json({
-          error: 'No event with that dataFi found',
+          error: "No event with that dataFi found",
         });
       }
       res.status(200);

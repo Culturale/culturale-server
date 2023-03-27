@@ -4,8 +4,12 @@ import type { IEvent } from "./event.interface";
 describe("Event Entity", function () {
   let instance: IEvent;
 
+  const dateSpy = jest.spyOn(Date, "now").mockImplementation(() => 1234);
+
   beforeEach(function () {
-    const date: Date = new Date();
+    const time = Date.now();
+    const date = new Date(time);
+
     instance = new Event(
       "test-id",
       20211006023,
@@ -21,5 +25,6 @@ describe("Event Entity", function () {
 
   it("can be created", function () {
     expect(instance).toMatchSnapshot();
+    dateSpy.mockReset();
   });
 });

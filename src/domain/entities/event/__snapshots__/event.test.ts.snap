@@ -4,8 +4,8 @@ exports[`Event Entity can be created 1`] = `
 Event {
   "adress": "test-adress",
   "codi": 20211006023,
-  "dataFi": 2023-03-26T12:14:41.094Z,
-  "dataIni": 2023-03-26T12:14:41.094Z,
+  "dataFi": 1970-01-01T00:00:01.234Z,
+  "dataIni": 1970-01-01T00:00:01.234Z,
   "denominacio": "test-denominacio",
   "descripcio": "test-descripcio",
   "horari": "test-horari",

@@ -39,18 +39,19 @@ export class UserController {
   }
 
    
-  public static async editUser(_req: Request, res: Response): Promise<void> {
+  public static async editUser(req: Request, res: Response): Promise<void> {
     try{
-        const newParameter: string = _req.body.newParam;
-        const oldParameter: string = _req.body.oldParam;
-        const tipusAtribut: string = _req.body.tipusAtribut;
-         if(newParameter != oldParameter){
-            await UserRepository.updateUser(newParameter, oldParameter, tipusAtribut);
-            res.status(200).json({message: tipusAtribut + " editado, su nuevo " + tipusAtribut + " es: " + newParameter});
-           }
-          else{ // Si el nuevo paramtero es igual al anterior da error
-            res.status(406).json({ message: "El" + tipusAtribut + " no ha sido editado porque el nuevo" +tipusAtribut+" es igual al anterior."});
-          }
+      const oldUser = await UserRepository.findUser(req.body.username);
+      const newUser: IUser = {
+        id: oldUser.id,
+        username: oldUser.username,
+        email: req.body.email || oldUser.email,
+        password: req.body.password || oldUser.password,
+       // telefon: req.body.telefon || oldUser.telefon,
+       // image: req.body.image || oldUser.image,
+      };
+      await UserRepository.editarUsuari(oldUser, newUser);
+       res.status(200).json({message: "Ususario editado correctamente"});  
       }
     catch (e) {
         res.status(500);

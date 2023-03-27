@@ -1,6 +1,5 @@
 import type { Request, Response } from "express";
 import express from "express";
-
 import { EventController } from "~/application";
 import { createEventDto } from "~/infrastructure/dtos";
 
@@ -17,3 +16,5 @@ eventRouter.get("/test-event", (req: Request, res: Response) => {
 eventRouter.post("/events/create", createEventDto, EventController.createEvent);
 
 eventRouter.get("/events", EventController.getAllEvents);
+
+eventRouter.post("/events/delete", EventController.deleteEvent );

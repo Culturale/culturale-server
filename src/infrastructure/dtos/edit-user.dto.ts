@@ -1,20 +1,18 @@
-import { IsString, IsNotEmpty } from "class-validator";
+import { IsString, IsNotEmpty, IsEmail } from "class-validator";
 import { validate } from "class-validator";
 import type { NextFunction, Request, Response } from "express";
 
 export class EditParamDTO {
     @IsString()
     @IsNotEmpty()
-    oldParam: string;
+    username: string;
     
-    @IsNotEmpty()
-    @IsString()
-    newParam: string;
+    @IsEmail()
+    email: string | null;
 
-    @IsNotEmpty()
     @IsString()
-    tipusAtribut: string;
-
+    password: string | null;
+    
   
 }
 
@@ -24,9 +22,10 @@ export async function editParamDTO(
   next: NextFunction,
 ) {
   const DTO = new EditParamDTO();
-  DTO.oldParam = req.body.oldParam;
-  DTO.newParam = req.body.newParam;
-  DTO.tipusAtribut = req.body.tipusAtribut;
+  
+  DTO.username = req.body.username;
+  DTO.email = req.body.email;
+  DTO.password = req.body.password;
 
   const errors = await validate(DTO);
   if (errors.length) {

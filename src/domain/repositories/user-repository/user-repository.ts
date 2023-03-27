@@ -10,26 +10,17 @@ export class UserRepository {
     return await UserModel.find();
   }
 
-  public static async updateUser(nouParam: string, oldParam: string, tipusAtribut: string ): Promise<void> {
-    switch (tipusAtribut) {
-      case "username":
-         await UserModel.findOneAndUpdate({ username: oldParam }, { username: nouParam }, { returnOriginal: false });
-         break;
-      case "email":
-         await UserModel.findOneAndUpdate({ email: oldParam }, { email: nouParam, },{ returnOriginal: false });
-         break;
-      case "password":
-        await UserModel.findOneAndUpdate({ password: oldParam }, { password: nouParam, },{ returnOriginal: false });
-        break;
-      case "telefon":
-        await UserModel.findOneAndUpdate({ telefon: oldParam }, { telefon: nouParam, },{ returnOriginal: false });
-        break;
-      case "image":
-        await UserModel.findOneAndUpdate({ image: oldParam }, { image: nouParam, },{ returnOriginal: false });
-        break;
+  public static async findUser(usernameUsuari: string): Promise<IUser> {
+    let usuari: IUser = await UserModel.findOne({username: usernameUsuari});
+    console.log(usuari);
+    return usuari;
+  }
 
-    }
-    }
+  public static async editarUsuari(oldUser: IUser, newUser: IUser): Promise<void> {
+    await UserModel.replaceOne(oldUser, newUser);
+  }
+
+  
 
 }
  

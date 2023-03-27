@@ -1,16 +1,16 @@
 export interface IEvent {
   id: string;
-  denominacio: String;
-  descripcio: String; 
+  denominacio: string;
+  descripcio: string; 
   dataIni: Date;
   dataFi: Date;
-  horari: String;
-  adress: String;
-  url: String;
-  latitud: Number;
-  longitud: Number;
-  categoria: String;
-  telefon: Number;
-  aforament: Number;
-  Nasis: Number;
+  horari: string;
+  adress: string;
+  url: string;
+  latitud: number;
+  longitud: number;
+  categoria: string;
+  telefon: number;
+  aforament: number;
+  Nasis: number;
 }

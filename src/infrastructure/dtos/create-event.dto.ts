@@ -1,4 +1,4 @@
-import { IsString, IsNotEmpty, IsDate } from "class-validator";
+import { IsString, IsNotEmpty, IsDate, IsNumber } from "class-validator";
 import { validate } from "class-validator";
 import type { NextFunction, Request, Response } from "express";
 
@@ -28,6 +28,30 @@ class CreateEventDto {
   @IsString()
   @IsNotEmpty()
   url: String;
+
+  @IsNumber()
+  @IsNotEmpty()
+  longitud: Number;
+
+  @IsNumber()
+  @IsNotEmpty()
+  latitud: Number;
+
+  @IsString()
+  @IsNotEmpty()
+  categoria: String;
+
+  @IsNumber()
+  @IsNotEmpty()
+  telefon: Number;
+
+  @IsNumber()
+  @IsNotEmpty()
+  aforament: Number;
+
+  @IsNumber()
+  @IsNotEmpty()
+  Nasis: Number;
 }
 
 export async function createEventDto(
@@ -43,6 +67,12 @@ export async function createEventDto(
   DTO.horari = req.body.horari;
   DTO.adress = req.body.adress;
   DTO.url = req.body.url;
+  DTO.latitud = Number(req.body.latitud);
+  DTO.longitud = Number(req.body.longitud);
+  DTO.categoria = req.body.categoria;
+  DTO.telefon = Number(req.body.telefon);
+  DTO.aforament = Number(req.body.aforament);
+  DTO.Nasis = Number(req.body.Nasis);
 
   const errors = await validate(DTO);
   if (errors.length) {

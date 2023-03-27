@@ -6,15 +6,15 @@ export class Event implements IEvent {
   public descripcio: string;
   public dataIni: Date;
   public dataFi: Date;
-  public horari: String;
-  public adress: String;
-  public url: String;
-  public latitud: Number;
-  public longitud: Number;
-  public categoria: String;
-  public telefon: Number;
-  public aforament: Number;
-  public Nasis: Number;
+  public horari: string;
+  public adress: string;
+  public url: string;
+  public latitud: number;
+  public longitud: number;
+  public categoria: string;
+  public telefon: number;
+  public aforament: number;
+  public Nasis: number;
 
   constructor (
     id: string,
@@ -22,15 +22,15 @@ export class Event implements IEvent {
     descripcio: string,
     dataIni: Date,
     dataFi: Date,
-    horari: String,
-    adress: String,
-    url: String,
-    latitud: Number,
-    longitud: Number,
-    categoria: String,
-    telefon: Number,
-    aforament: Number,
-    Nasis: Number,
+    horari: string,
+    adress: string,
+    url: string,
+    latitud: number,
+    longitud: number,
+    categoria: string,
+    telefon: number,
+    aforament: number,
+    Nasis: number,
   ) {
     this.id = id;
     this.denominacio = denominacio;

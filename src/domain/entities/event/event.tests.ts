@@ -6,7 +6,6 @@ describe("Event Entity", function () {
 
   beforeEach(function () {
     const date: Date = new Date();
-    const number: Number = new Number();
     instance = new Event(
       "test-id",
       "test-denominacio",
@@ -16,12 +15,12 @@ describe("Event Entity", function () {
       "test-horari",
       "test-adress",
       "test-url",
-      number,
-      number,
+      41.3850639,
+      2.2471186,
       "test-categoria",
-      number,
-      number,
-      number,
+      123456789,
+      999999,
+      999999,
     );
   });
 

@@ -11,7 +11,7 @@ export class UserRepository {
   }
 
   public static async findUser(usernameUsuari: string): Promise<IUser> {
-    let usuari: IUser = await UserModel.findOne({username: usernameUsuari});
+    const usuari: IUser = await UserModel.findOne({username: usernameUsuari});
     console.log(usuari);
     return usuari;
   }

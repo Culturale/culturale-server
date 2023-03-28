@@ -1,8 +1,9 @@
 /* eslint-disable no-console */
-import express from 'express';
-import { connect } from 'mongoose';
-import * as dotenv from 'dotenv';
-import { routes } from '~/infrastructure';
+import * as dotenv from "dotenv";
+import express from "express";
+import { connect } from "mongoose";
+
+import { routes } from "~/infrastructure";
 dotenv.config();
 
 const app = express();
@@ -14,7 +15,7 @@ app.use(
   }),
 );
 app.use(express.json());
-app.use('/', routes);
+app.use("/", routes);
 
 const { DB_USER, DB_PASSWORD, DB_HOST, DB_PORT, DB_NAME } = process.env;
 
@@ -22,9 +23,9 @@ async function connectToMongo() {
   // @ts-ignore
   if (!global.__TEST__) {
     const MONGO_URI = `mongodb://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}?authSource=admin`;
-    console.log('Connecting to database...');
+    console.log("Connecting to database...");
     connect(MONGO_URI).then(() =>
-      console.log('Connected to database: ', DB_NAME),
+      console.log("Connected to database: ", DB_NAME),
     );
   }
 }
@@ -35,7 +36,7 @@ connectToMongo();
 if (!global.__TEST__) {
   const PORT = process.env.NODE_LOCAL_PORT;
   app.listen(PORT, () => {
-    console.log('Listening on port: ', PORT);
+    console.log("Listening on port: ", PORT);
   });
 }
 

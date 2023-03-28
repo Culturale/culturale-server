@@ -26,7 +26,6 @@ export class EventRepository {
 
   public static async getChatEvent(codi: number): Promise<IChat | null> {
     const event = await EventModel.findOne({ codi: codi });
-    console.log(event.chat.messages, event.chat.id);
     if (!event) return null;
     return event.chat as IChat;
   }

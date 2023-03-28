@@ -5,9 +5,9 @@ exports[`User Routes The requests that require authorization GET /users if we ar
   "users": [
     {
       "__v": 0,
-      "_id": "642322093f31a157eebf3f96",
+      "_id": "642322b17d8a64f0ee9a4a00",
       "email": "email@example.com",
-      "password": "$2b$10$kxXEqWkmUkovIPth1F5M9eSdhfpYAzvRyTAvUAd2zRiQb9pHQtEfa",
+      "password": "$2b$10$UgXXHWiSvNn1EkP7GSQwSutentLM3tmIf2SW89QZH36VAyJttYW2K",
       "username": "test-user",
     },
   ],

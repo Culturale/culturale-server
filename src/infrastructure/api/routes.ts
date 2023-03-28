@@ -1,7 +1,7 @@
-import express from "express";
+import express from 'express';
 
-import { eventRouter } from "./event-routes";
-import { userRouter } from "./user-routes";
+import { eventRouter } from './event-router';
+import { userRouter } from './user-router';
 
 export const routes = express.Router();
 

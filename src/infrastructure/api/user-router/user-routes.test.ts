@@ -56,7 +56,7 @@ describe('User Routes', function () {
     });
   });
 
-  describe.only('The requests that require authorization', function () {
+  describe('The requests that require authorization', function () {
     let authHeaders = {
       Authorization: '',
     };

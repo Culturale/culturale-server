@@ -1,0 +1,15 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`User Routes The requests that require authorization GET /users if we are logged in it returns the list of users 1`] = `
+{
+  "users": [
+    {
+      "__v": 0,
+      "_id": "642322093f31a157eebf3f96",
+      "email": "email@example.com",
+      "password": "$2b$10$kxXEqWkmUkovIPth1F5M9eSdhfpYAzvRyTAvUAd2zRiQb9pHQtEfa",
+      "username": "test-user",
+    },
+  ],
+}
+`;

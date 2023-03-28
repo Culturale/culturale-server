@@ -1,5 +1,7 @@
-import dotenv from "dotenv";
+import dotenv from 'dotenv';
 
 dotenv.config({
-  path: "../.env",
+  path: '../.env',
 });
+
+jest.setTimeout(30000);

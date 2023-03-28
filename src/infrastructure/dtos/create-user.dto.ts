@@ -1,6 +1,6 @@
-import { IsString, IsEmail, IsNotEmpty } from "class-validator";
-import { validate } from "class-validator";
-import type { NextFunction, Request, Response } from "express";
+import { IsString, IsEmail, IsNotEmpty } from 'class-validator';
+import { validate } from 'class-validator';
+import type { NextFunction, Request, Response } from 'express';
 
 class CreateUserDto {
   @IsEmail()
@@ -21,6 +21,7 @@ export async function createUserDto(
   res: Response,
   next: NextFunction,
 ) {
+  console.log('dto');
   const DTO = new CreateUserDto();
   DTO.email = req.body.email;
   DTO.username = req.body.username;
@@ -31,6 +32,6 @@ export async function createUserDto(
     res.status(400).json({ errors });
     return;
   }
-
+  console.log('dto is good');
   next();
 }

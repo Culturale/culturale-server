@@ -4,7 +4,7 @@ import type { IChat } from "./chat.interface";
 
 export class Chat implements IChat {
   public id: string;
-  public messages?: IMessage[];
+  public messages: IMessage[];
 
   constructor(id: string, messages: IMessage[]) {
     this.id = id;

@@ -1,16 +1,9 @@
-import {
-  IsString,
-  IsNotEmpty,
-  IsDate,
-  Matches,
-  IsNumber,
-} from "class-validator";
+import { IsString, IsNotEmpty, IsDate, Matches } from "class-validator";
 import { validate } from "class-validator";
 import type { NextFunction, Request, Response } from "express";
 
 class CreateEventDto {
   @IsNotEmpty()
-  @IsNumber()
   @Matches(/^[0-9]{11}$/) // Specifies the code has to have 11 digits
   codi: number;
 

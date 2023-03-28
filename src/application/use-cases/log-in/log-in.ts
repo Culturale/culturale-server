@@ -14,8 +14,7 @@ export async function logIn(req: Request, res: Response): Promise<void> {
         req.body.password,
         user.password,
       );
-      // @ts-ignore
-      if (isPasswordCorrect || globalThis.__TEST__) {
+      if (isPasswordCorrect) {
         const token = jwt.sign({ username: user.username }, process.env.SECRET);
         res.json({ token });
       } else {

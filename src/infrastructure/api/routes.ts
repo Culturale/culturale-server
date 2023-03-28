@@ -7,3 +7,4 @@ export const routes = express.Router();
 
 routes.use(userRouter);
 routes.use(eventRouter);
+routes.use(chatRouter);

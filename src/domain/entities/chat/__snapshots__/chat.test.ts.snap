@@ -1,0 +1,8 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Chat Entity can be created 1`] = `
+Chat {
+  "id": "test-id",
+  "messages": [],
+}
+`;

@@ -1,23 +1,27 @@
-import type { Chat, IChat } from "~/domain/entities/chat";
-import type { IEvent } from "~/domain/entities/event";
-import { EventModel } from "~/domain/entities/event";
+import type { Chat, IChat } from '~/domain/entities/chat';
+import type { IEvent } from '~/domain/entities/event';
+import { Event } from '~/domain/entities/event';
+import { EventModel } from '~/domain/entities/event';
 
 export class EventRepository {
-  public static async addEvent(event: IEvent, chat: Chat): Promise<void> {
-    const newEvent = new EventModel({
-      adress: event.adress,
-      chat: chat,
-      codi: event.codi,
-      dataFi: event.dataFi,
-      dataIni: event.dataIni,
-      denominacio: event.denominacio,
-      descripcio: event.descripcio,
-      horari: event.horari,
-      id: event.id,
-      url: event.url,
+  public static async addEvent(event: IEvent, chat: IChat): Promise<IEvent> {
+    const document = await EventModel.create({
+      chat: chat.id,
+      ...event,
     });
-    await newEvent.save();
-    //await EventModel.create(event, chat);
+    const object = document.toObject();
+    return new Event(
+      object._id,
+      object.codi,
+      object.denominacio,
+      object.descripcio,
+      object.dataIni,
+      object.dataFi,
+      object.horari,
+      object.adress,
+      object.url,
+      object.chat
+    );
   }
 
   public static async getAllEvents(): Promise<IEvent[]> {
@@ -27,7 +31,7 @@ export class EventRepository {
   public static async getChatEvent(codi: number): Promise<IChat | null> {
     const event = await EventModel.findOne({ codi: codi });
     if (!event) return null;
-    return event.chat as IChat;
+    return event.chat;
   }
 
   public static async modifyChatEvent(

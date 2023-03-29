@@ -1,10 +1,20 @@
-import { IsString, IsNotEmpty, IsDate, Matches } from "class-validator";
-import { validate } from "class-validator";
-import type { NextFunction, Request, Response } from "express";
+/* eslint-disable no-octal */
+import {
+  IsString,
+  IsNotEmpty,
+  IsDate,
+  Max,
+  IsNumber,
+  Min,
+} from 'class-validator';
+import { validate } from 'class-validator';
+import type { NextFunction, Request, Response } from 'express';
 
 class CreateEventDto {
   @IsNotEmpty()
-  @Matches(/^[0-9]{11}$/) // Specifies the code has to have 11 digits
+  @IsNumber()
+  @Min(11111111111)
+  @Max(99999999999)
   codi: number;
 
   @IsString()
@@ -24,14 +34,14 @@ class CreateEventDto {
   dataFi: Date;
 
   @IsString()
-  horari: String;
+  horari: string;
 
   @IsString()
-  adress: String;
+  adress: string;
 
   @IsString()
   @IsNotEmpty()
-  url: String;
+  url: string;
 }
 
 export async function createEventDto(

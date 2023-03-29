@@ -1,21 +1,26 @@
-import type { Request, Response } from "express";
+/* eslint-disable quotes */
+/* eslint-disable no-console */
+import { emitWarning } from 'process';
 
-import type { Chat, IChat } from "~/domain/entities/chat";
-import type { IEvent } from "~/domain/entities/event";
-import type { IMessage } from "~/domain/entities/message";
-import { ChatRepository } from "~/domain/repositories/chat-repository/chat-repository";
-import { EventRepository } from "~/domain/repositories/event-repository/event-repository";
-import { MessageRepository } from "~/domain/repositories/message-repository/message-repository";
+import type { Request, Response } from 'express';
+
+import type { Chat, IChat } from '~/domain/entities/chat';
+import type { IEvent } from '~/domain/entities/event';
+import type { IMessage } from '~/domain/entities/message';
+import { ChatRepository } from '~/domain/repositories/chat-repository/chat-repository';
+import { EventRepository } from '~/domain/repositories/event-repository/event-repository';
+import { MessageRepository } from '~/domain/repositories/message-repository/message-repository';
 
 export class EventController {
   public static async createEvent(req: Request, res: Response): Promise<void> {
     try {
       const event: IEvent = req.body;
       const chat: Chat = await ChatRepository.createEmptyChat();
-      await EventRepository.addEvent(event, chat);
+      const eventCreated = await EventRepository.addEvent(event, chat);
       res.status(200);
       res.json({
-        message: "event created",
+        message: 'event created',
+        event: eventCreated,
       });
     } catch (e) {
       res.status(500);
@@ -47,18 +52,22 @@ export class EventController {
     req: Request,
     res: Response
   ): Promise<void> {
+    emitWarning("a");
     try {
       const codiEvent = req.body.codi;
-      const message: IMessage = await MessageRepository.create(
-        req.body.content,
-        req.body.date,
-        req.body.userId
-      );
+      console.log("A");
       const chatEvent: IChat = await EventRepository.getChatEvent(codiEvent);
-      const chat: Chat = await ChatRepository.addMessage(chatEvent, message);
+      console.log("A");
+      const newMessage: IMessage = await MessageRepository.addMessage(req.body.content, req.body.userId, req.body.date );
+      console.log("A");
+      const chat: Chat = await ChatRepository.addMessage(chatEvent, newMessage);
+      console.log("A");
       await EventRepository.modifyChatEvent(codiEvent, chat);
       res.status(200);
-      res.json({ message: "chat was sent it" });
+      res.json({ 
+        message: 'chat sent it',
+        chat: newMessage,
+      });
     } catch (e) {
       res.status(500);
       res.json({
@@ -74,7 +83,7 @@ export class EventController {
     try {
       const codiEvent = req.body.codi;
       const chatEvent: IChat = await EventRepository.getChatEvent(codiEvent);
-      const messages: IMessage[] = await ChatRepository.getMessages(chatEvent);
+      const messages: IMessage = await ChatRepository.getMessages(chatEvent);
       res.status(200);
       res.json({
         messages,

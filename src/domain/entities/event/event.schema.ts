@@ -1,10 +1,10 @@
-import { Schema, model } from "mongoose";
+import { Schema, model } from 'mongoose';
 
-import type { IEvent } from "./event.interface";
+import type { IEvent } from './event.interface';
 
 const EventSchema = new Schema({
   adress: { required: false, type: String },
-  chat: { requied: true, type: Schema.Types.ObjectId },
+  chat: { required: true, type: Schema.Types.ObjectId, ref: 'Chat' },
   codi: { required: true, type: Number },
   dataFi: { required: true, type: Date },
   dataIni: { required: true, type: Date },
@@ -14,6 +14,6 @@ const EventSchema = new Schema({
   url: { required: true, type: String },
 });
 
-const EventModel = model<IEvent>("Event", EventSchema);
+const EventModel = model<IEvent>('Event', EventSchema);
 
 export { EventModel };

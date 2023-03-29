@@ -1,21 +1,24 @@
-import type { IMessage } from "~/domain/entities/message";
-import { MessageModel } from "~/domain/entities/message";
+import type { IMessage } from '~/domain/entities/message';
+import { Message } from '~/domain/entities/message';
+import { MessageModel } from '~/domain/entities/message';
 
 export class MessageRepository {
-  public static async create(
-    content: string,
-    date: Date,
-    userId: string
-  ): Promise<IMessage> {
-    const newMessage = new MessageModel({
+  public static async addMessage(content: string, userId: Number, date: Date): Promise<IMessage> {
+    const document = await MessageModel.create({
       content: content,
-      date: date,
       userId: userId,
+      date: date,
     });
-    return newMessage;
+    const object = document.toObject();
+    return new Message(
+      object._id,
+      object.content,
+      object.userId,
+      object.date,
+    );
   }
-
-  public static async getMessage(message: IMessage): Promise<IMessage[]> {
-    return await MessageModel.find(message);
+  public static async getMessage(message: string): Promise<IMessage> {
+    return await MessageModel.findById(message);
   }
 }
+

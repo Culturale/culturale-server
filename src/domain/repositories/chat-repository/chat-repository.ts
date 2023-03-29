@@ -1,15 +1,18 @@
+/* eslint-disable no-console */
 //import { ObjectId } from "mongodb";
-import type { IChat } from "~/domain/entities/chat";
-import type { Chat } from "~/domain/entities/chat";
-import { ChatModel } from "~/domain/entities/chat";
-import type { IMessage } from "~/domain/entities/message/message.interface";
-import { MessageModel } from "~/domain/entities/message/message.schema";
+import type { IChat } from '~/domain/entities/chat';
+import { Chat } from '~/domain/entities/chat';
+import { ChatModel } from '~/domain/entities/chat';
+import type { IMessage } from '~/domain/entities/message/message.interface';
+
+import { MessageRepository } from '../message-repository/message-repository';
+
 
 export class ChatRepository {
   public static async createEmptyChat(): Promise<IChat> {
-    const chat = new ChatModel({ messages: [] as IMessage[] });
-    await chat.save();
-    return chat;
+    const chatDocument = await ChatModel.create({ messages: [] });
+    const chatObject = chatDocument.toObject();
+    return new Chat(chatObject._id, chatObject.messages);
   }
   public static async addMessage(
     chatId: IChat,
@@ -17,31 +20,19 @@ export class ChatRepository {
   ): Promise<Chat> {
     const chat = await ChatModel.findById(chatId);
     chat.messages.push(message);
-    const modifiedChat = await chat.save();
-    return modifiedChat;
+    const updatedChat = await chat.save();
+    return updatedChat;
   }
-  public static async getMessages(chatId: IChat): Promise<IMessage[]> {
+  public static async getMessages(chatId: IChat): Promise<IMessage> {
     const chat = await ChatModel.findById(chatId.toString()).populate(
-      "messages"
+      'messages'
     );
-    const messages = chat.messages;
-    console.log(typeof chat.messages[0]);
-    const messageValues = [];
-    console.log(messages);
-    for (let i = 0; i < messages.length; i++) {
-      const messageId = messages[i];
-      console.log("First elem - ", messageId, typeof messageId);
-      const message = await MessageModel.findById(messageId);
-      console.log("message -", message);
-      const messageObject = {
-        content: message.content,
-        date: message.date,
-        id: message.id,
-        userId: message.userId,
-      };
-      console.log(messageObject);
-      messageValues.push(messageObject);
-    }
-    return messageValues;
+    console.log(chat);
+    const messagesChat = chat.toObject().messages;
+    const messageValues = new Chat(chat.toObject()._id, messagesChat);
+    console.log(messageValues.messages[16].toString());
+    const content = await MessageRepository.getMessage(messageValues.messages[0].toString());
+    console.log(content);
+    return content;
   }
 }

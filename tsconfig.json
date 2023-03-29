@@ -26,7 +26,7 @@
   "include": [
     "src/**/*.ts",
     "src/server.ts",
-    "test/setup-tests.ts",
+    "test/setup-tests.ts"
   ],
   "exclude":[
     "node_modules"

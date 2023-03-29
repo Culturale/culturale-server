@@ -1,8 +1,15 @@
-import { IsString, IsNotEmpty, IsDate } from "class-validator";
+import {
+  IsString,
+  IsNotEmpty,
+  IsDate,
+} from "class-validator";
 import { validate } from "class-validator";
 import type { NextFunction, Request, Response } from "express";
 
 class CreateEventDto {
+  @IsNotEmpty()
+  codi: number;
+
   @IsString()
   @IsNotEmpty()
   denominacio: string;
@@ -36,6 +43,7 @@ export async function createEventDto(
   next: NextFunction
 ) {
   const DTO = new CreateEventDto();
+  DTO.codi = req.body.codi;
   DTO.denominacio = req.body.denominacio;
   DTO.descripcio = req.body.descripcio;
   DTO.dataIni = new Date(req.body.dataIni);

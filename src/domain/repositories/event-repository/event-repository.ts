@@ -27,4 +27,14 @@ export class EventRepository {
   public static async getAllEvents(): Promise<IEvent[]> {
     return await EventModel.find();
   }
+
+  public static async findEvent(codiEvent: string): Promise<IEvent> {
+    const event: IEvent = await EventModel.findOne({codi: codiEvent});
+    return event;
+  }
+
+  public static async editarEvent(oldEvent: IEvent, newEvent: IEvent): Promise<void> {
+    await EventModel.replaceOne(oldEvent, newEvent);
+  }
+
 }

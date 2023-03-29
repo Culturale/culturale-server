@@ -1,8 +1,8 @@
-import { IsString, IsEmail, IsNotEmpty, IsIn } from "class-validator";
-import { validate } from "class-validator";
-import type { NextFunction, Request, Response } from "express";
+import { IsString, IsEmail, IsNotEmpty, IsIn } from 'class-validator';
+import { validate } from 'class-validator';
+import type { NextFunction, Request, Response } from 'express';
 
-const usertypes = ["usuario", "empresa"] as const;
+const usertypes = ['usuario', 'empresa'] as const;
 
 class CreateUserDto {
     @IsString()

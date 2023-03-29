@@ -1,4 +1,4 @@
-import type { IMessage } from "./message.interface";
+import type { IMessage } from './message.interface';
 
 export class Message implements IMessage {
   public id: string;

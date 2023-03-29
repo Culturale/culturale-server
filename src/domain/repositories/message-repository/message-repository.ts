@@ -1,5 +1,5 @@
-import type { IMessage } from "~/domain/entities/message";
-import { MessageModel } from "~/domain/entities/message";
+import type { IMessage } from '~/domain/entities/message';
+import { MessageModel } from '~/domain/entities/message';
 
 export class MessageRepository {
   public static async create(message: IMessage): Promise<void> {

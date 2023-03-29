@@ -3,13 +3,13 @@ import { Schema, model } from "mongoose";
 import type { IUser } from "./user.interface";
 
 const UserSchema = new Schema({
-    username: { type: String, required: true },
-    name: { type: String, required: true },
-    password: { type: String, required: true },
-    email: { type: String, required: true },
-    profilePicture: { type: String, required: true },
-    phoneNumber: { type: String, required: true },
-    usertype: { type: String, required: true }
+    name: { required: true, type: String },
+    username: { required: true, type: String },
+    email: { required: true, type: String },
+    password: { required: true, type: String },
+    phoneNumber: { required: true, type: String },
+    profilePicture: { required: true, type: String },
+    usertype: { required: true, type: String }
 });
 
 const UserModel = model<IUser>("User", UserSchema);

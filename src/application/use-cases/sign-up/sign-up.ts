@@ -1,5 +1,7 @@
-import { UserController } from "../../controllers/user-controller/user-controller";
 import { Request, Response } from 'express';
+
+import { UserController } from "../../controllers/user-controller/user-controller";
+
 
 export async function signUp(req: Request, res: Response) {
     try {

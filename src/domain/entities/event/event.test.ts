@@ -1,32 +1,34 @@
-import type { IChat } from "~/domain/entities/chat/chat.interface";
+import { Types } from 'mongoose';
 
-import { Event } from "./event";
-import type { IEvent } from "./event.interface";
+import type { IChat } from '~/domain/entities/chat/chat.interface';
 
-describe("Event Entity", function () {
+import { Event } from './event';
+import type { IEvent } from './event.interface';
+
+describe('Event Entity', function () {
   let instance: IEvent;
 
-  const dateSpy = jest.spyOn(Date, "now").mockImplementation(() => 1234);
+  const dateSpy = jest.spyOn(Date, 'now').mockImplementation(() => 1234);
 
   beforeEach(function () {
     const time = Date.now();
     const date = new Date(time);
     const chat: IChat = null;
     instance = new Event(
-      "test-id",
+      new Types.ObjectId('642414c21f0577394a8a3099'),
       20211006023,
-      "test-denominacio",
-      "test-descripcio",
+      'test-denominacio',
+      'test-descripcio',
       date,
       date,
-      "test-horari",
-      "test-adress",
-      "test-url",
+      'test-horari',
+      'test-adress',
+      'test-url',
       chat
     );
   });
 
-  it("can be created", function () {
+  it('can be created', function () {
     expect(instance).toMatchSnapshot();
     dateSpy.mockReset();
   });

@@ -1,7 +1,7 @@
-import type { Request, Response } from "express";
+import type { Request, Response } from 'express';
 
-import type { IChat } from "~/domain/entities/chat";
-import { ChatRepository } from "~/domain/repositories/chat-repository/chat-repository";
+import type { IChat } from '~/domain/entities/chat';
+import { ChatRepository } from '~/domain/repositories/chat-repository/chat-repository';
 
 export class ChatController {
   public static async createEmptyChat(

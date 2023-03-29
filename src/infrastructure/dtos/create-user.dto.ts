@@ -1,6 +1,6 @@
-import { IsString, IsEmail, IsNotEmpty } from "class-validator";
-import { validate } from "class-validator";
-import type { NextFunction, Request, Response } from "express";
+import { IsString, IsEmail, IsNotEmpty } from 'class-validator';
+import { validate } from 'class-validator';
+import type { NextFunction, Request, Response } from 'express';
 
 class CreateUserDto {
   @IsEmail()
@@ -31,6 +31,5 @@ export async function createUserDto(
     res.status(400).json({ errors });
     return;
   }
-
   next();
 }

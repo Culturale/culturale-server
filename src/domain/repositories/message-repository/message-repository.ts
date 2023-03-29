@@ -3,7 +3,7 @@ import { Message } from '~/domain/entities/message';
 import { MessageModel } from '~/domain/entities/message';
 
 export class MessageRepository {
-  public static async addMessage(content: string, userId: Number, date: Date): Promise<IMessage> {
+  public static async addMessage(content: string, userId: string, date: Date): Promise<IMessage> {
     const document = await MessageModel.create({
       content: content,
       userId: userId,

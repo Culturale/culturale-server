@@ -23,16 +23,19 @@ export class ChatRepository {
     const updatedChat = await chat.save();
     return updatedChat;
   }
-  public static async getMessages(chatId: IChat): Promise<IMessage> {
+  public static async getMessages(chatId: IChat): Promise<IMessage[]> {
     const chat = await ChatModel.findById(chatId.toString()).populate(
       'messages'
     );
-    console.log(chat);
+    
     const messagesChat = chat.toObject().messages;
-    const messageValues = new Chat(chat.toObject()._id, messagesChat);
-    console.log(messageValues.messages[16].toString());
-    const content = await MessageRepository.getMessage(messageValues.messages[0].toString());
-    console.log(content);
-    return content;
+    const chatValues = new Chat(chat.toObject()._id, messagesChat);
+
+    const resultMessage: IMessage[] = [];
+    for(let i = 0; i < chatValues.messages.length; i++){
+      const content1 = await MessageRepository.getMessage(chatValues.messages[i].toString());
+      resultMessage.push(content1);
+    }
+    return resultMessage;
   }
 }

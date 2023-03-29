@@ -58,7 +58,7 @@ export class EventController {
       console.log("A");
       const chatEvent: IChat = await EventRepository.getChatEvent(codiEvent);
       console.log("A");
-      const newMessage: IMessage = await MessageRepository.addMessage(req.body.content, req.body.userId, req.body.date );
+      const newMessage: IMessage = await MessageRepository.addMessage(req.body.content, req.body.userId, req.body.data);
       console.log("A");
       const chat: Chat = await ChatRepository.addMessage(chatEvent, newMessage);
       console.log("A");
@@ -66,7 +66,7 @@ export class EventController {
       res.status(200);
       res.json({ 
         message: 'chat sent it',
-        chat: newMessage,
+        messages: newMessage,
       });
     } catch (e) {
       res.status(500);
@@ -83,7 +83,7 @@ export class EventController {
     try {
       const codiEvent = req.body.codi;
       const chatEvent: IChat = await EventRepository.getChatEvent(codiEvent);
-      const messages: IMessage = await ChatRepository.getMessages(chatEvent);
+      const messages: IMessage[] = await ChatRepository.getMessages(chatEvent);
       res.status(200);
       res.json({
         messages,

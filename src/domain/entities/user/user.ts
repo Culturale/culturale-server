@@ -1,4 +1,6 @@
-import type { IUser } from "./user.interface";
+import type { MongoId } from '~/types/types';
+
+import type { IUser } from './user.interface';
 
 export class User implements IUser {
     public username: string;

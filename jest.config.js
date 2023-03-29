@@ -2,10 +2,7 @@ module.exports = {
   preset: 'ts-jest',
   testPathIgnorePatterns: ['/node_modules/', '/dist/'],
   moduleNameMapper: {
-    '\\.(jpg|jpeg|png|svg)$': '<rootDir>/test/assetsTransformer.js',
-    '^~/test/(.*)$': '<rootDir>/test/$1',
-    '^~/storybook/(.*)$': '<rootDir>/storybook/$1',
-    '^~/(.*)$': '<rootDir>/app/$1',
+    '~/(.*)': '<rootDir>/src/$1',
   },
   testMatch: ['**/*.test.(ts|tsx)'],
   collectCoverageFrom: ['src/**/*.{js,ts}'],
@@ -13,4 +10,5 @@ module.exports = {
   globals: {
     __TEST__: true,
   },
+  setupFiles: ['<rootDir>/test/setup-tests.ts'],
 };

@@ -1,3 +1,5 @@
+import type { MongoId } from '~/types/types';
+
 export interface IUser {
     username: string;
     name: string;
@@ -6,4 +8,5 @@ export interface IUser {
     profilePicture: string;
     phoneNumber: string;
     usertype: string;
+
 }

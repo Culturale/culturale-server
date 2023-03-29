@@ -10,10 +10,11 @@ export class EventController {
     try {
       const event: IEvent = req.body;
       const chat: Chat = await ChatRepository.createEmptyChat();
-      await EventRepository.addEvent(event, chat);
+      const eventCreated = await EventRepository.addEvent(event, chat);
       res.status(200);
       res.json({
         message: 'event created',
+        event: eventCreated,
       });
     } catch (e) {
       res.status(500);

@@ -1,9 +1,11 @@
+import type { MongoId } from '~/types/types';
+
 import type { IChat } from '../chat';
 
 import type { IEvent } from './event.interface';
 
 export class Event implements IEvent {
-  public id: string;
+  public id: MongoId;
   public codi: number;
   public denominacio: string;
   public descripcio: string;
@@ -15,7 +17,7 @@ export class Event implements IEvent {
   public chat: IChat;
 
   constructor(
-    id: string,
+    id: MongoId,
     codi: number,
     denominacio: string,
     descripcio: string,

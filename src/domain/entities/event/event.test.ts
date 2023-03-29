@@ -1,3 +1,5 @@
+import { Types } from 'mongoose';
+
 import type { IChat } from '~/domain/entities/chat/chat.interface';
 
 import { Event } from './event';
@@ -13,7 +15,7 @@ describe('Event Entity', function () {
     const date = new Date(time);
     const chat: IChat = null;
     instance = new Event(
-      'test-id',
+      new Types.ObjectId('642414c21f0577394a8a3099'),
       20211006023,
       'test-denominacio',
       'test-descripcio',

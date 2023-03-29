@@ -1,6 +1,6 @@
-import type { IChat } from "../chat";
+import type { IChat } from '../chat';
 
-import type { IEvent } from "./event.interface";
+import type { IEvent } from './event.interface';
 
 export class Event implements IEvent {
   public id: string;

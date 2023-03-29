@@ -1,6 +1,6 @@
-import { Schema, model } from "mongoose";
+import { Schema, model } from 'mongoose';
 
-import type { IMessage } from "./message.interface";
+import type { IMessage } from './message.interface';
 
 const MessageSchema = new Schema({
   content: { required: false, type: String },
@@ -8,6 +8,6 @@ const MessageSchema = new Schema({
   userId: { required: true, type: String },
 });
 
-const MessageModel = model<IMessage>("Message", MessageSchema);
+const MessageModel = model<IMessage>('Message', MessageSchema);
 
 export { MessageModel };

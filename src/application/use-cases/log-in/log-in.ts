@@ -12,7 +12,7 @@ export async function logIn(req: Request, res: Response): Promise<void> {
     if (user) {
       const isPasswordCorrect = await bcrypt.compare(
         req.body.password,
-        user.password,
+        user.password
       );
       if (isPasswordCorrect) {
         const token = jwt.sign({ username: user.username }, process.env.SECRET);

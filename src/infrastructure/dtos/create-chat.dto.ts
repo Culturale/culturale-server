@@ -1,8 +1,8 @@
-import { IsEmpty } from "class-validator";
-import { validate } from "class-validator";
-import type { NextFunction, Request, Response } from "express";
+import { IsEmpty } from 'class-validator';
+import { validate } from 'class-validator';
+import type { NextFunction, Request, Response } from 'express';
 
-import type { IMessage } from "~/domain/entities/message/message.interface";
+import type { IMessage } from '~/domain/entities/message/message.interface';
 
 class CreateChatDto {
   @IsEmpty()

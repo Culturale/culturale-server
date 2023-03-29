@@ -1,4 +1,4 @@
-import type { IChat } from "~/domain/entities/chat/chat.interface";
+import type { IChat } from '~/domain/entities/chat/chat.interface';
 export interface IEvent {
   id: string;
   codi: number;

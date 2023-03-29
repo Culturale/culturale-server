@@ -1,4 +1,4 @@
-import type { IUser } from "./user.interface";
+import type { IUser } from './user.interface';
 
 export class User implements IUser {
   public id: string;

@@ -19,3 +19,5 @@ eventRouter.post("/events/create", createEventDto, EventController.createEvent);
 eventRouter.post("/events/newMessage", EventController.addMessageEvent);
 
 eventRouter.get("/events", EventController.getAllEvents);
+
+eventRouter.get("/events/messages", EventController.getAllMessages);

@@ -13,16 +13,9 @@ export class MessageRepository {
       userId: userId,
     });
     return newMessage;
-    //const messageObject = await newMessage.save();
-    //console.log("hola");
-
-    // const message = await MessageModel.create({ content, date, userId });
-    // console.log(message);
-    // const messageObject = message.toObject();
-    //return messageObject;
   }
 
-  public static async findMessage(): Promise<IMessage[]> {
-    return await MessageModel.find();
+  public static async getMessage(message: IMessage): Promise<IMessage[]> {
+    return await MessageModel.find(message);
   }
 }

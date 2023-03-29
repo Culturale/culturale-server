@@ -58,8 +58,26 @@ export class EventController {
       const chat: Chat = await ChatRepository.addMessage(chatEvent, message);
       await EventRepository.modifyChatEvent(codiEvent, chat);
       res.status(200);
+      res.json({ message: "chat was sent it" });
+    } catch (e) {
+      res.status(500);
       res.json({
-        message: "message was sent it",
+        error: e,
+      });
+    }
+  }
+
+  public static async getAllMessages(
+    req: Request,
+    res: Response
+  ): Promise<void> {
+    try {
+      const codiEvent = req.body.codi;
+      const chatEvent: IChat = await EventRepository.getChatEvent(codiEvent);
+      const messages: IMessage[] = await ChatRepository.getMessages(chatEvent);
+      res.status(200);
+      res.json({
+        messages,
       });
     } catch (e) {
       res.status(500);

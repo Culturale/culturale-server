@@ -52,7 +52,7 @@ export class UserController {
        // image: req.body.image || oldUser.image,
       };
       await UserRepository.editarUsuari(oldUser, newUser);
-       res.status(200).json({message: "Ususario editado correctamente"});  
+       res.status(200).json({message: 'Ususario editado correctamente'});  
       }
     catch (e) {
         res.status(500);

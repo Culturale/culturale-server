@@ -1,6 +1,6 @@
-import { IsString, IsNotEmpty, IsEmail } from "class-validator";
-import { validate } from "class-validator";
-import type { NextFunction, Request, Response } from "express";
+import { IsString, IsNotEmpty, IsEmail } from 'class-validator';
+import { validate } from 'class-validator';
+import type { NextFunction, Request, Response } from 'express';
 
 export class EditParamDTO {
     @IsString()

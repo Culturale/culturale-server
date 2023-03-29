@@ -46,7 +46,7 @@ public static async deleteEvent(_req: Request, res: Response): Promise<void> {
     await EventRepository.deleteEvent(codi);
     res.status(200);
     res.json({
-      message: "event deleted",
+      message: 'event deleted',
     });
   } catch (e) {
     res.status(500);

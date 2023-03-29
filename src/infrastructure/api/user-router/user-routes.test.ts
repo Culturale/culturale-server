@@ -20,7 +20,11 @@ describe('User Routes', function () {
       const res = await request(app).post('/users/create').send({
         email: 'email@example.com',
         password: 'test-password',
-        username: 'test-user',
+        username: 'test-username',
+        name: 'test-name',
+        profilePicture: 'test-imageurl',
+        phoneNumber: '000000000',
+        usertype: 'usuario',
       });
 
       expect(res.statusCode).toBe(200);
@@ -30,6 +34,11 @@ describe('User Routes', function () {
       const res = await request(app).post('/users/create').send({
         email: 'email@example.com',
         password: 'test-password',
+        username: 'test-username',
+        name: 'test-name',
+        profilePicture: 'test-imageurl',
+        phoneNumber: '000000000',
+        usertype: 'usuario',
       });
 
       expect(res.statusCode).toBe(400);
@@ -41,7 +50,11 @@ describe('User Routes', function () {
       await request(app).post('/users/create').send({
         email: 'email@example.com',
         password: 'test-password',
-        username: 'test-user',
+        username: 'test-username',
+        name: 'test-name',
+        profilePicture: 'test-imageurl',
+        phoneNumber: '000000000',
+        usertype: 'usuario',
       });
     });
 
@@ -65,7 +78,11 @@ describe('User Routes', function () {
       await request(app).post('/users/create').send({
         email: 'email@example.com',
         password: 'test-password',
-        username: 'test-user',
+        username: 'test-username',
+        name: 'test-name',
+        profilePicture: 'test-imageurl',
+        phoneNumber: '000000000',
+        usertype: 'usuario',
       });
 
       const res = await request(app).post('/users/login').send({

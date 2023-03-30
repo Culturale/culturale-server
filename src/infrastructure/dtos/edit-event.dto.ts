@@ -1,10 +1,11 @@
 import {
-    //IsString,
+    IsString,
     IsNotEmpty,
-    //IsDate,
+    IsDate,
     Max,
     IsNumber,
     Min,
+    IsOptional
   } from 'class-validator';
   import { validate } from 'class-validator';
   import type { NextFunction, Request, Response } from 'express';
@@ -16,25 +17,32 @@ export class EditParamDTO {
     @Max(99999999999)
     codi: number;
   
-    //@IsString()
+    @IsString()
+    @IsOptional()
     denominacio: string | null;
   
-    //@IsString()
+    @IsString() 
+    @IsOptional()
     descripcio: string | null;
   
-    //@IsDate()
+    @IsDate()
+    @IsOptional()
     dataIni: Date | null;
   
-    //@IsDate()
+    @IsDate()
+    @IsOptional()
     dataFi: Date | null;
   
-    //@IsString()
+    @IsString()
+    @IsOptional()
     horari: string | null;
   
-    //@IsString()
+    @IsString()
+    @IsOptional()
     adress: string | null;
   
-    //@IsString()
+    @IsString()
+    @IsOptional()
     url: string | null;
 }
 

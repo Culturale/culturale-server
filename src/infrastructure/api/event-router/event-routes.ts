@@ -10,4 +10,4 @@ eventRouter.post('/events/create', createEventDto, EventController.createEvent);
 
 eventRouter.get('/events', EventController.getAllEvents);
 
-eventRouter.post("/events/edit", editParamDTO, EventController.editEvent );
+eventRouter.post('/events/edit', editParamDTO, EventController.editEvent );

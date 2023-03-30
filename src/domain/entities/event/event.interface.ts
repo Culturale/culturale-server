@@ -16,8 +16,5 @@ export interface IEvent {
   telefon: number;
   aforament: number;
   Nasis: number;
-  horari?: string;
-  adress?: string;
-  url: string;
   chat: IChat;
 }

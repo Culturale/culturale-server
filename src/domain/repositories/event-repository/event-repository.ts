@@ -11,7 +11,7 @@ export class EventRepository {
     });
     const object = document.toObject();
     return new Event(
-      object._id,
+      object.id,
       object.codi,
       object.denominacio,
       object.descripcio,
@@ -20,7 +20,13 @@ export class EventRepository {
       object.horari,
       object.adress,
       object.url,
-      object.chat
+      object.latitud,
+      object.longitud,
+      object.categoria,
+      object.telefon,
+      object.aforament,
+      object.Nasis,
+      object.chat,
     );
   }
 

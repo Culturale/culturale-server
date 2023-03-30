@@ -24,6 +24,12 @@ describe('Event Entity', function () {
       'test-horari',
       'test-adress',
       'test-url',
+      23.45678,
+      34.567890,
+      'infantil',
+      456456456,
+      1000,
+      999,
       chat
     );
   });

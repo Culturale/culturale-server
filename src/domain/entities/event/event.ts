@@ -14,16 +14,13 @@ export class Event implements IEvent {
   public horari: string;
   public adress: string;
   public url: string;
-  public chat: IChat;
-  public horari: string;
-  public adress: string;
-  public url: string;
   public latitud: number;
   public longitud: number;
   public categoria: string;
   public telefon: number;
   public aforament: number;
   public Nasis: number;
+  public chat: IChat;
 
   constructor(
     id: MongoId,
@@ -35,32 +32,29 @@ export class Event implements IEvent {
     horari: string,
     adress: string,
     url: string,
-    chat: IChat
-    horari: string,
-    adress: string,
-    url: string,
     latitud: number,
     longitud: number,
     categoria: string,
     telefon: number,
     aforament: number,
     Nasis: number,
+    chat: IChat,
   ) {
     this.id = id;
     this.codi = codi;
     this.denominacio = denominacio;
-    this.descripcio = descripcio;
+    this.descripcio= descripcio;
     this.dataIni = dataIni;
     this.dataFi = dataFi;
     this.horari = horari;
     this.adress = adress;
     this.url = url;
-    this.chat = chat;
     this.latitud = latitud;
     this.longitud = longitud;
     this.categoria = categoria;
     this.telefon = telefon;
     this.aforament = aforament;
     this.Nasis = Nasis;
+    this.chat = chat;
   }
 }

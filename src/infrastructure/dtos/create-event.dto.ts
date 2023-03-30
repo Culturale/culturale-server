@@ -2,7 +2,7 @@
 import {
   IsString,
   IsNotEmpty,
-  IsDate, IsNumber,
+  IsDate,
   Max,
   IsNumber,
   Min,
@@ -45,10 +45,14 @@ class CreateEventDto {
 
   @IsNumber()
   @IsNotEmpty()
+  @Min(0)
+  @Max(180)
   longitud: Number;
 
   @IsNumber()
   @IsNotEmpty()
+  @Min(0)
+  @Max(90)
   latitud: Number;
 
   @IsString()
@@ -57,14 +61,18 @@ class CreateEventDto {
 
   @IsNumber()
   @IsNotEmpty()
+  @Min(600000000)
+  @Max(999999999)
   telefon: Number;
 
   @IsNumber()
   @IsNotEmpty()
+  @Min(1)
   aforament: Number;
 
   @IsNumber()
   @IsNotEmpty()
+  @Min(0)
   Nasis: Number;
 }
 

@@ -30,6 +30,12 @@ describe('User Controller', function () {
       horari: 'mati',
       adress: 'Passeig de gracia',
       url: 'test-url',
+      latitud: 45.678,
+      longitud: 45.678,
+      categoria: 'infantil',
+      telefon: 567567567,
+      aforament: 1000,
+      Nasis: 999,
     };
     const res = {} as unknown as Response;
     res.json = jest.fn();
@@ -53,6 +59,12 @@ describe('User Controller', function () {
           descripcio: 'test-descripcio',
           horari: 'mati',
           url: 'test-url',
+          latitud: 45.678,
+          longitud: 45.678,
+          categoria: 'infantil',
+          telefon: 567567567,
+          aforament: 1000,
+          Nasis: 999,
         }),
       });
     });
@@ -82,6 +94,12 @@ describe('User Controller', function () {
             descripcio: 'test-descripcio',
             horari: 'mati',
             url: 'test-url',
+            latitud: 45.678,
+            longitud: 45.678,
+            categoria: 'infantil',
+            telefon: 567567567,
+            aforament: 1000,
+            Nasis: 999,
           }),
         ],
       });

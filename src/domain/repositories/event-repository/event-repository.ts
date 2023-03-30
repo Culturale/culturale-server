@@ -1,4 +1,4 @@
-import type { IChat } from '~/domain/entities/chat';
+import type { Chat, IChat } from '~/domain/entities/chat';
 import type { IEvent } from '~/domain/entities/event';
 import { Event } from '~/domain/entities/event';
 import { EventModel } from '~/domain/entities/event';
@@ -37,4 +37,17 @@ export class EventRepository {
     await EventModel.replaceOne(oldEvent, newEvent);
   }
 
+
+  public static async getChatEvent(codi: number): Promise<IChat | null> {
+    const event = await EventModel.findOne({ codi: codi });
+    if (!event) return null;
+    return event.chat;
+  }
+
+  public static async modifyChatEvent(
+    event: IEvent,
+    chat: Chat
+  ): Promise<void> {
+    await EventModel.findOneAndUpdate(event, { chat: chat }, { new: true });
+  }
 }

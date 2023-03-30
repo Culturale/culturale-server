@@ -87,8 +87,7 @@
         "location": "anywhere"
       }
     ],
-    "quotes": 1,
+    "quotes": [2, "single", "avoid-escape"],
     "semi": [2, "always"],
-    "sort-keys": ["error", "asc", { "caseSensitive": true, "natural": true }]
   }
 }

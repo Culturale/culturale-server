@@ -1,8 +1,22 @@
-import { IsString, IsNotEmpty, IsDate } from "class-validator";
-import { validate } from "class-validator";
-import type { NextFunction, Request, Response } from "express";
+/* eslint-disable no-octal */
+import {
+  IsString,
+  IsNotEmpty,
+  IsDate,
+  Max,
+  IsNumber,
+  Min,
+} from 'class-validator';
+import { validate } from 'class-validator';
+import type { NextFunction, Request, Response } from 'express';
 
 class CreateEventDto {
+  @IsNotEmpty()
+  @IsNumber()
+  @Min(11111111111)
+  @Max(99999999999)
+  codi: number;
+
   @IsString()
   @IsNotEmpty()
   denominacio: string;
@@ -20,14 +34,14 @@ class CreateEventDto {
   dataFi: Date;
 
   @IsString()
-  horari: String;
+  horari: string;
 
   @IsString()
-  adress: String;
+  adress: string;
 
   @IsString()
   @IsNotEmpty()
-  url: String;
+  url: string;
 }
 
 export async function createEventDto(
@@ -36,6 +50,7 @@ export async function createEventDto(
   next: NextFunction
 ) {
   const DTO = new CreateEventDto();
+  DTO.codi = req.body.codi;
   DTO.denominacio = req.body.denominacio;
   DTO.descripcio = req.body.descripcio;
   DTO.dataIni = new Date(req.body.dataIni);

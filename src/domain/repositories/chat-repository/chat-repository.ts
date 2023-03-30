@@ -1,9 +1,7 @@
-/* eslint-disable no-console */
-//import { ObjectId } from "mongodb";
 import type { IChat } from '~/domain/entities/chat';
 import { Chat } from '~/domain/entities/chat';
 import { ChatModel } from '~/domain/entities/chat';
-import type { IMessage } from '~/domain/entities/message/message.interface';
+import type { IMessage } from '~/domain/entities/message';
 
 import { MessageRepository } from '../message-repository/message-repository';
 

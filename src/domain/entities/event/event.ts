@@ -1,11 +1,20 @@
-import type { IEvent } from "./event.interface";
+import type { MongoId } from '~/types/types';
+
+import type { IChat } from '../chat';
+
+import type { IEvent } from './event.interface';
 
 export class Event implements IEvent {
-  public id: string;
+  public id: MongoId;
+  public codi: number;
   public denominacio: string;
   public descripcio: string;
   public dataIni: Date;
   public dataFi: Date;
+  public horari: string;
+  public adress: string;
+  public url: string;
+  public chat: IChat;
   public horari: string;
   public adress: string;
   public url: string;
@@ -16,12 +25,17 @@ export class Event implements IEvent {
   public aforament: number;
   public Nasis: number;
 
-  constructor (
-    id: string,
+  constructor(
+    id: MongoId,
+    codi: number,
     denominacio: string,
     descripcio: string,
     dataIni: Date,
     dataFi: Date,
+    horari: string,
+    adress: string,
+    url: string,
+    chat: IChat
     horari: string,
     adress: string,
     url: string,
@@ -33,6 +47,7 @@ export class Event implements IEvent {
     Nasis: number,
   ) {
     this.id = id;
+    this.codi = codi;
     this.denominacio = denominacio;
     this.descripcio = descripcio;
     this.dataIni = dataIni;
@@ -40,6 +55,7 @@ export class Event implements IEvent {
     this.horari = horari;
     this.adress = adress;
     this.url = url;
+    this.chat = chat;
     this.latitud = latitud;
     this.longitud = longitud;
     this.categoria = categoria;

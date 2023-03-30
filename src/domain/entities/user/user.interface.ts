@@ -1,8 +1,10 @@
-import type { MongoId } from '~/types/types';
-
 export interface IUser {
-  id: MongoId;
-  email: string;
-  username: string;
-  password: string;
+    username: string;
+    name: string;
+    password: string;
+    email: string;
+    profilePicture: string;
+    phoneNumber: string;
+    usertype: string;
+
 }

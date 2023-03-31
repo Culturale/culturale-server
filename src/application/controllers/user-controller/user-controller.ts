@@ -43,16 +43,16 @@ export class UserController {
     try{
       const oldUser = await UserRepository.findUser(req.body.username);
       const newUser: IUser = {
-        email: req.body.email || oldUser.email,
-        id: oldUser.id,
-        password: req.body.password || oldUser.password,
         username: oldUser.username,
-        
-       // telefon: req.body.telefon || oldUser.telefon,
-       // image: req.body.image || oldUser.image,
+        name: req.body.name || oldUser.name,
+        email: req.body.email || oldUser.email,
+        password: req.body.password || oldUser.password,
+        phoneNumber: req.body.phoneNumber || oldUser.phoneNumber,
+        profilePicture: req.body.profilePicture || oldUser.profilePicture,
+        usertype : oldUser.usertype
       };
       await UserRepository.editarUsuari(oldUser, newUser);
-       res.status(200).json({message: 'Ususario editado correctamente'});  
+       res.status(200).json({message: 'Ususario editado correctamente', user : newUser});  
       }
     catch (e) {
         res.status(500);

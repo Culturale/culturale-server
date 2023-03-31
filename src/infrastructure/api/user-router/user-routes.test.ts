@@ -20,7 +20,11 @@ describe('User Routes', function () {
       const res = await request(app).post('/users/create').send({
         email: 'email@example.com',
         password: 'test-password',
-        username: 'test-user',
+        username: 'test-username',
+        name: 'test-name',
+        profilePicture: 'test-imageurl',
+        phoneNumber: '000000000',
+        usertype: 'usuario',
       });
 
       expect(res.statusCode).toBe(200);
@@ -30,6 +34,7 @@ describe('User Routes', function () {
       const res = await request(app).post('/users/create').send({
         email: 'email@example.com',
         password: 'test-password',
+        username: 'test-username',
       });
 
       expect(res.statusCode).toBe(400);
@@ -41,14 +46,18 @@ describe('User Routes', function () {
       await request(app).post('/users/create').send({
         email: 'email@example.com',
         password: 'test-password',
-        username: 'test-user',
+        username: 'test-username',
+        name: 'test-name',
+        profilePicture: 'test-imageurl',
+        phoneNumber: '000000000',
+        usertype: 'usuario',
       });
     });
 
     it('if the payload is correct and credentials too returns a token', async function () {
       const res = await request(app).post('/users/login').send({
         password: 'test-password',
-        username: 'test-user',
+        username: 'test-username',
       });
 
       expect(res.statusCode).toBe(200);
@@ -65,12 +74,16 @@ describe('User Routes', function () {
       await request(app).post('/users/create').send({
         email: 'email@example.com',
         password: 'test-password',
-        username: 'test-user',
+        username: 'test-username',
+        name: 'test-name',
+        profilePicture: 'test-imageurl',
+        phoneNumber: '000000000',
+        usertype: 'usuario',
       });
 
       const res = await request(app).post('/users/login').send({
         password: 'test-password',
-        username: 'test-user',
+        username: 'test-username',
       });
 
       authHeaders.Authorization = `Bearer ${res.body.token}`;

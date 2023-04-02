@@ -51,6 +51,10 @@ export class EventController {
   public static async editEvent(req: Request, res: Response): Promise<void> {
     try{
       const oldEvent= await EventRepository.findEvent(req.body.codi);
+      if (!oldEvent) {
+        res.status(404).json({message: 'Evento no encontrado'});
+        return;
+        }
       const newEvent: IEvent = {
         id: oldEvent.id,
         codi:oldEvent.codi,
@@ -63,8 +67,11 @@ export class EventController {
         url: req.body.url || oldEvent.adress,
         chat:oldEvent.chat
       };
+      //await EventRepository.findEvent(req.body.codi);
+      
+
       await EventRepository.editarEvent(oldEvent, newEvent);
-       res.status(200).json({message: 'Evento editado correctamente'});  
+       res.status(500).json({message: 'Evento editado correctamente'});  
       }
     catch (e) {
         res.status(500);

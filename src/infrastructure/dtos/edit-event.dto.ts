@@ -10,7 +10,7 @@ import {
   import { validate } from 'class-validator';
   import type { NextFunction, Request, Response } from 'express';
 
-export class EditParamDTO {
+export class EditEventDTO {
     @IsNotEmpty()
     @IsNumber()
     @Min(11111111111)
@@ -19,39 +19,39 @@ export class EditParamDTO {
   
     @IsString()
     @IsOptional()
-    denominacio: string | null;
+    denominacio: string;
   
     @IsString() 
     @IsOptional()
-    descripcio: string | null;
+    descripcio: string;
   
     @IsDate()
     @IsOptional()
-    dataIni: Date | null;
+    dataIni: Date;
   
     @IsDate()
     @IsOptional()
-    dataFi: Date | null;
+    dataFi: Date;
   
     @IsString()
     @IsOptional()
-    horari: string | null;
+    horari: string;
   
     @IsString()
     @IsOptional()
-    adress: string | null;
+    adress: string;
   
     @IsString()
     @IsOptional()
-    url: string | null;
+    url: string;
 }
 
-export async function editParamDTO(
+export async function editEventDTO(
   req: Request,
   res: Response,
   next: NextFunction,
 ) {
-  const DTO = new EditParamDTO();
+  const DTO = new EditEventDTO();
   
   DTO.codi = req.body.codi;
   DTO.denominacio = req.body.denominacio;

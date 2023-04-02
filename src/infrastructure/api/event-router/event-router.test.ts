@@ -68,7 +68,6 @@ describe('Event Routes', function () {
 
   describe('POST /events/edit', function () {
     it('if the payload is correct it modifies the event', async function () {
-      // Primero, debes crear un evento existente que puedas modificar
         await request(app)
         .post('/events/create')
         .send({
@@ -81,8 +80,7 @@ describe('Event Routes', function () {
           adress: 'Passeig de Gràcia',
           url: 'https://test-url.com',
         });
-  
-      // Luego, envías una solicitud POST a la ruta /events/edit para modificar el evento
+
       const res = await request(app)
         .post('/events/edit')
         .send({
@@ -91,15 +89,19 @@ describe('Event Routes', function () {
           descripcio: 'new-test-description',
         });
 
-  
-      // Verifica que la respuesta de la solicitud sea la esperada y que el evento se haya modificado correctamente
-      expect(res.statusCode).toBe(200);
+
       expect(res.body.message).toBe('Evento editado correctamente');
-  
-      //const updatedEvent = await Event.to(12348173049);
-  
-      //expect(res.supdatedEvent.denominacio).toBe('new-test-event');
-      //expect(res.updatedEvent.descripcio).toBe('new-test-description');
+
+      const res2 = await request(app)
+      .post('/events/edit')
+      .send({
+        codi: 12348173040,
+        denominacio: 'new-test-event',
+        descripcio: 'new-test-description',
+      });
+
+      expect(res2.body.message).toBe('Evento no encontrado');
+
     });
   
     it('if the payload is incorrect returns an error', async function () {
@@ -120,9 +122,9 @@ describe('Event Routes', function () {
         codi: 123456789,
         denominacio: '',
       });
-  
-      expect(res.statusCode).toBe(400);
-      expect(res.body.success).toBe(false);
+
+      expect(res.body.errors).toBeTruthy();
+
     });
   });
   

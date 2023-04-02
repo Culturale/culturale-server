@@ -42,9 +42,13 @@ describe('LogIn use case', function () {
 
   it('if the password for username is incorrect returns an error', async function () {
     await UserModel.create({
-      username: 'test-username',
-      email: 'test@email.com',
+      email: 'email@example.com',
       password: 'test-password',
+      username: 'test-username',
+      name: 'test-name',
+      profilePicture: 'test-imageurl',
+      phoneNumber: '000000000',
+      usertype: 'usuario',
     });
     const req: Request = expressRequest;
     req.body = {

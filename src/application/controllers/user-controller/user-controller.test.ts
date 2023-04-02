@@ -22,9 +22,13 @@ describe('User Controller', function () {
   describe('createUser', function () {
     const req: Request = expressRequest;
     req.body = {
-      username: 'test-username',
+      email: 'email@example.com',
       password: 'test-password',
-      email: 'test@email.com',
+      username: 'test-username',
+      name: 'test-name',
+      profilePicture: 'test-imageurl',
+      phoneNumber: '000000000',
+      usertype: 'usuario',
     };
     const res = {} as unknown as Response;
     res.json = jest.fn();
@@ -40,9 +44,13 @@ describe('User Controller', function () {
       expect(res.json).toBeCalledWith({
         message: 'user created',
         user: expect.objectContaining({
-          username: 'test-username',
+          email: 'email@example.com',
           password: 'test-password',
-          email: 'test@email.com',
+          username: 'test-username',
+          name: 'test-name',
+          profilePicture: 'test-imageurl',
+          phoneNumber: '000000000',
+          usertype: 'usuario',
         }),
       });
     });
@@ -64,9 +72,13 @@ describe('User Controller', function () {
       expect(res.json).toBeCalledWith({
         users: [
           expect.objectContaining({
-            username: 'test-username',
+            email: 'email@example.com',
             password: 'test-password',
-            email: 'test@email.com',
+            username: 'test-username',
+            name: 'test-name',
+            profilePicture: 'test-imageurl',
+            phoneNumber: '000000000',
+            usertype: 'usuario',
           }),
         ],
       });

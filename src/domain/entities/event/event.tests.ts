@@ -1,13 +1,23 @@
+import { Types } from 'mongoose';
+
+import type { IChat } from '~/domain/entities/chat/chat.interface';
+
+import type { User } from '../user';
+
 import { Event } from './event';
 import type { IEvent } from './event.interface';
+
 
 describe('Event Entity', function () {
   let instance: IEvent;
 
   beforeEach(function () {
     const date: Date = new Date();
+    const chat: IChat = null;
+    const assistents: Array<User> = null;
     instance = new Event(
-      'test-id',
+      new Types.ObjectId('642414c21f0577394a8a3099'),
+      20211006023,
       'test-denominacio',
       'test-descripcio',
       date,
@@ -15,12 +25,13 @@ describe('Event Entity', function () {
       'test-horari',
       'test-adress',
       'test-url',
-      41.3850639,
-      2.2471186,
-      'test-categoria',
-      123456789,
-      999999,
-      999999,
+      23.45678,
+      34.567890,
+      'infantil',
+      456456456,
+      1000,
+      chat,
+      assistents,
     );
   });
 

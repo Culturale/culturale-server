@@ -30,10 +30,11 @@ describe('User Routes', function () {
           url: 'https://test-url.com',
           latitud: 23.45678,
           longitud: 34.5678,
-          Nasis: 999,
           telefon: 567876567,
           categoria: 'infantil',
           aforament: 10000,
+          chat: null,
+          assistents: null,
         });
 
       expect(res.statusCode).toBe(200);
@@ -63,10 +64,11 @@ describe('User Routes', function () {
           url: 'https://test-url.com',
           latitud: 23.45678,
           longitud: 34.5678,
-          Nasis: 999,
           telefon: 567876567,
           categoria: 'infantil',
           aforament: 10000,
+          chat: null,
+          assistents: null,
         });
     });
 

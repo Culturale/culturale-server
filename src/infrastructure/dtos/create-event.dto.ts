@@ -69,11 +69,6 @@ class CreateEventDto {
   @IsNotEmpty()
   @Min(1)
   aforament: Number;
-
-  @IsNumber()
-  @IsNotEmpty()
-  @Min(0)
-  Nasis: Number;
 }
 
 export async function createEventDto(
@@ -95,7 +90,6 @@ export async function createEventDto(
   DTO.categoria = req.body.categoria;
   DTO.telefon = Number(req.body.telefon);
   DTO.aforament = Number(req.body.aforament);
-  DTO.Nasis = Number(req.body.Nasis);
 
   const errors = await validate(DTO);
   if (errors.length) {

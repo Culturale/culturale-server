@@ -1,6 +1,7 @@
 import type { MongoId } from '~/types/types';
 
 import type { IChat } from '../chat';
+import type { User } from '../user';
 
 import type { IEvent } from './event.interface';
 
@@ -19,8 +20,8 @@ export class Event implements IEvent {
   public categoria: string;
   public telefon: number;
   public aforament: number;
-  public Nasis: number;
   public chat: IChat;
+  public assistents: Array<User>;
 
   constructor(
     id: MongoId,
@@ -37,8 +38,8 @@ export class Event implements IEvent {
     categoria: string,
     telefon: number,
     aforament: number,
-    Nasis: number,
     chat: IChat,
+    assistents: Array<User>,
   ) {
     this.id = id;
     this.codi = codi;
@@ -54,7 +55,7 @@ export class Event implements IEvent {
     this.categoria = categoria;
     this.telefon = telefon;
     this.aforament = aforament;
-    this.Nasis = Nasis;
     this.chat = chat;
+    this.assistents = assistents;
   }
 }

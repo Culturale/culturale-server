@@ -6,6 +6,7 @@ import mongoose from 'mongoose';
 
 import { EventController } from './event-controller';
 
+
 dotenv.config();
 
 describe('User Controller', function () {
@@ -35,7 +36,8 @@ describe('User Controller', function () {
       categoria: 'infantil',
       telefon: 567567567,
       aforament: 1000,
-      Nasis: 999,
+      chat: null,
+      assistents: null
     };
     const res = {} as unknown as Response;
     res.json = jest.fn();
@@ -64,7 +66,8 @@ describe('User Controller', function () {
           categoria: 'infantil',
           telefon: 567567567,
           aforament: 1000,
-          Nasis: 999,
+          chat: null,
+          assistents: null,
         }),
       });
     });
@@ -99,7 +102,8 @@ describe('User Controller', function () {
             categoria: 'infantil',
             telefon: 567567567,
             aforament: 1000,
-            Nasis: 999,
+            chat: null,
+            assistents: null,
           }),
         ],
       });

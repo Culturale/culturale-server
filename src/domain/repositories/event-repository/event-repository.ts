@@ -25,8 +25,8 @@ export class EventRepository {
       object.categoria,
       object.telefon,
       object.aforament,
-      object.Nasis,
       object.chat,
+      object.assistents,
     );
   }
 
@@ -45,17 +45,5 @@ export class EventRepository {
     chat: Chat
   ): Promise<void> {
     await EventModel.findOneAndUpdate(event, { chat: chat }, { new: true });
-  }
-
-  public static async getEventbydenominacio(name: String): Promise<IEvent[]> {
-    return await EventModel.find({denominacio: name});
-  }
-
-  public static async getEventbydataIni(data: Date): Promise<IEvent[]> {
-    return await EventModel.find({dataIni: data});
-  }
-
-  public static async getEventbydataFi(data: Date): Promise<IEvent[]> {
-    return await EventModel.find({dataFi: data});
   }
 }

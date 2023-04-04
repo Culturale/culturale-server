@@ -7,7 +7,6 @@ import { UserRepository } from '~/domain/repositories/user-repository/user-repos
 export class UserController {
   public static async createUser(req: Request, res: Response): Promise<void> {
     try {
-      console.log("creant " + req.body.email + req.body.phoneNumber );
       const user: IUser = req.body;
       user.password = await bcrypt.hash(req.body.password, 10);
       const userCreated = await UserRepository.addUser(user);
@@ -42,13 +41,13 @@ export class UserController {
    
   public static async editUser(req: Request, res: Response): Promise<void> {
     try{
-      let oldUser: IUser = await UserRepository.findUser(req.body.username);
+      const oldUser: IUser = await UserRepository.findUser(req.body.username);
       if(oldUser == null){
         res.status(400).json({message: 'El usuario indicado no existe'});
       }
       else{
         
-      var newUser = {
+      const newUser = {
         username: oldUser.username,
         name: req.body.name || oldUser.name,
         password: req.body.password || oldUser.password,

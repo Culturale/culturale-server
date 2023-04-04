@@ -6,6 +6,7 @@ import mongoose from 'mongoose';
 
 import { UserController } from './user-controller';
 
+
 dotenv.config();
 
 describe('User Controller', function () {
@@ -88,68 +89,161 @@ describe('User Controller', function () {
 
 
 
+//------------------------------------------------------------------------------------------------------------
+/*
+
+// Marta code
+
+describe('POST /users/create', function () {
+  it('if the payload is correct it creates the user', async function () {
+      await request(app)
+      .post('/users/create')
+      .send({
+        email: 'email@example.com',
+        password: 'test-password',
+        username: 'test-username',
+        name: 'test-name',
+        profilePicture: 'test-imageurl',
+        phoneNumber: '000000000',
+        usertype: 'usuario',
+      });
+
+    const res = await request(app)
+      .post('/users/edit')
+      .send({
+        username: 'test-username',
+        email: 'Nouemail@example.com',
+        phoneNumber: '111111111',
+      });
+
+
+    expect(res.body.message).toBeCalledWith({
+      message: 'Usuario editado correctmente',
+      user: expect.objectContaining({
+        email: 'email@example.com',
+        password: 'test-password',
+        username: 'test-username',
+        name: 'test-name',
+        profilePicture: 'test-imageurl',
+        phoneNumber: '000000000',
+        usertype: 'usuario',
+      }),
+    });
+  );
+
+    const res2 = await request(app)
+    .post('/users/edit')
+    .send({
+      username: 'Joel',
+      email: 'Nouemail@example.com',
+      phoneNumber: '222222222',
+    });
+
+    expect(res2.body.message).toBe('El usuario indicado no existe');
+
+  });
+
+  it('if the payload is incorrect returns an error', async function () {
+    await request(app)
+      .post('/users/create')
+      .send({
+        email: 'email@example.com',
+        password: 'test-password',
+        username: 'test-username',
+        name: 'test-name',
+        profilePicture: 'test-imageurl',
+        phoneNumber: '000000000',
+        usertype: 'usuario',
+      });
+
+    const res = await request(app).post('/users/edit').send({
+      username: 'test-username',
+      phoneNumber: 'Hola',
+    });
+
+    expect(res.body.errors).toBeTruthy();
+
+  });
 
 
 
 
+*/
 
+//------------------------------------------------------------------------------------------------------------
+  
 
+describe('EditPerfil', function () {
+  const createReq: Request = expressRequest;
+  createReq.body = {
+    email: 'email@example.com',
+    password: 'test-password',
+    username: 'test-username',
+    name: 'test-name',
+    profilePicture: 'test-imageurl',
+    phoneNumber: '000000000',
+    usertype: 'usuario',
+  };
+  const createRes = {} as unknown as Response;
+  createRes.json = jest.fn();
+  createRes.status = jest.fn(() => createRes);
+  createRes.setHeader = jest.fn();
 
+  beforeEach(async function () {
+    await UserController.createUser(createReq, createRes);
+  });
 
-
-
-
-  describe('EditPerfil', function () {
-    const req: Request = expressRequest;
-    req.body = {
+  it('Edits the atributes of an user', async function () {
+    const editReq: Request = expressRequest;
+    editReq.body = {
       password: 'test-password1',
       username: 'test-username',
       name: 'test-name1',
       email: 'email1@example.com',
     };
-    const res = {} as unknown as Response;
-    res.json = jest.fn();
-    res.status = jest.fn(() => res);
-    res.setHeader = jest.fn();
+    const editRes = {} as unknown as Response;
+    editRes.json = jest.fn();
+    editRes.status = jest.fn(() => editRes);
+    editRes.setHeader = jest.fn();
 
-    const req2: Request = expressRequest;
-    req2.body = {
-      email: 'email@example.com',
-      password: 'test-password',
-      username: 'test-username',
-      name: 'test-name',
-      profilePicture: 'test-imageurl',
-      phoneNumber: '000000000',
-      usertype: 'usuario',
-    };
-    const res2 = {} as unknown as Response;
-    res2.json = jest.fn();
-    res2.status = jest.fn(() => res);
-    res2.setHeader = jest.fn();
-
-    beforeEach(async function () {
-      await UserController.createUser(req2, res2);
-      await UserController.editUser(req, res);
+     await UserController.editUser(editReq, editRes);
+  
+    expect(editRes.status).toBeCalledWith(200);
+    expect(editRes.json).toBeCalledWith({
+      message:'Ususario editado correctamente',
+      user:{
+          __v: 0,
+          email: 'email1@example.com',
+          password: 'test-password1',
+          username: 'test-username',
+          name: 'test-name1',
+          profilePicture: 'test-imageurl',
+          phoneNumber: '000000000',
+          usertype: 'usuario',
+        },
     });
+  });
 
-    it('Edits the atributes of an user', function () {
-     
-      expect(res.status).toBeCalledWith(200);
-      expect(res.json).toBeCalledWith({
-        message:'Ususario editado correctamente',
-        users: [
-          expect.objectContaining({
-            __v: 0,
-            email: 'email1@example.com',
-            password: 'test-password1',
-            username: 'test-username',
-            name: 'test-name1',
-            profilePicture: 'test-imageurl',
-            phoneNumber: '000000000',
-            usertype: 'usuario',
-          }),
-        ],
-      });
+  it('Returns error when no username exists', async function () {
+    const editReq: Request = expressRequest;
+    editReq.body = {
+      password: 'test-password1',
+      username: 'non-existing-username',
+      name: 'test-name1',
+      email: 'email1@example.com',
+    };
+    const editRes = {} as unknown as Response;
+    editRes.json = jest.fn();
+    editRes.status = jest.fn(() => editRes);
+    editRes.setHeader = jest.fn();
+
+     await UserController.editUser(editReq, editRes);
+  
+    expect(editRes.status).toBeCalledWith(400);
+    expect(editRes.json).toBeCalledWith({
+      message:'El usuario indicado no existe',
     });
   });
 });
+});
+

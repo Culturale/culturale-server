@@ -4,7 +4,7 @@ import request from 'supertest';
 
 import { app } from '~/server';
 
-describe('User Routes', function () {
+describe('Event Routes', function () {
   beforeAll(async function () {
     const mongod = await MongoMemoryServer.create();
     const dbUrl = mongod.getUri();
@@ -29,7 +29,6 @@ describe('User Routes', function () {
           adress: 'Passeig de Gràcia',
           url: 'https://test-url.com',
         });
-
       expect(res.statusCode).toBe(200);
     });
 
@@ -37,7 +36,6 @@ describe('User Routes', function () {
       const res = await request(app).post('/events/create').send({
         codi: 123456789,
       });
-
       expect(res.statusCode).toBe(400);
     });
   });
@@ -63,6 +61,27 @@ describe('User Routes', function () {
 
       expect(res.statusCode).toBe(200);
       expect(res.body.events).toHaveLength(2);
+    });
+  });
+
+  describe('POST events/newMessage', function () {
+    it('it sends a new message', async function () {
+      const res = await request(app).post('/events/newMessage').send({
+        codi: 12348173049,
+        userId: 'user1',
+        content: 'hola',
+        date: new Date(2),
+      });
+      expect(res.body.message).toBe('chat sent it');
+      expect(res.statusCode).toBe(200);
+    });
+    it('if the payload is incorrect returns an error', async function () {
+      const res = await request(app).post('/events/newMessage').send({
+        codi: 12348173049,
+        content: 'hola',
+        date: new Date(2),
+      });
+      expect(res.statusCode).toBe(500);
     });
   });
 });

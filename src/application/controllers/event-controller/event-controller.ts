@@ -1,7 +1,3 @@
-/* eslint-disable quotes */
-/* eslint-disable no-console */
-import { emitWarning } from 'process';
-
 import type { Request, Response } from 'express';
 
 import type { Chat, IChat } from '~/domain/entities/chat';
@@ -52,16 +48,11 @@ export class EventController {
     req: Request,
     res: Response
   ): Promise<void> {
-    emitWarning("a");
     try {
       const codiEvent = req.body.codi;
-      console.log("A");
       const chatEvent: IChat = await EventRepository.getChatEvent(codiEvent);
-      console.log("A");
-      const newMessage: IMessage = await MessageRepository.addMessage(req.body.content, req.body.userId, req.body.data);
-      console.log("A");
+      const newMessage: IMessage = await MessageRepository.addMessage(req.body.content, req.body.userId, req.body.date);
       const chat: Chat = await ChatRepository.addMessage(chatEvent, newMessage);
-      console.log("A");
       await EventRepository.modifyChatEvent(codiEvent, chat);
       res.status(200);
       res.json({ 

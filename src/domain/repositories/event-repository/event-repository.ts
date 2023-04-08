@@ -28,6 +28,16 @@ export class EventRepository {
     return await EventModel.find();
   }
 
+  public static async findEvent(codiEvent: string): Promise<IEvent> {
+    const event: IEvent = await EventModel.findOne({codi: codiEvent});
+    return event;
+  }
+
+  public static async editarEvent(oldEvent: IEvent, newEvent: IEvent): Promise<void> {
+    await EventModel.replaceOne(oldEvent, newEvent);
+  }
+
+
   public static async getChatEvent(codi: number): Promise<IChat | null> {
     const event = await EventModel.findOne({ codi: codi });
     if (!event) return null;

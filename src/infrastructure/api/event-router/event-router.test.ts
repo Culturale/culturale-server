@@ -84,4 +84,68 @@ describe('Event Routes', function () {
       expect(res.statusCode).toBe(500);
     });
   });
+  describe('POST /events/edit', function () {
+    it('if the payload is correct it modifies the event', async function () {
+        await request(app)
+        .post('/events/create')
+        .send({
+          codi: 12348173049,
+          denominacio: 'test-event',
+          descripcio: 'test-description',
+          dataIni: new Date(1),
+          dataFi: new Date(2),
+          horari: '2h',
+          adress: 'Passeig de Gràcia',
+          url: 'https://test-url.com',
+        });
+
+      const res = await request(app)
+        .post('/events/edit')
+        .send({
+          codi: 12348173049,
+          denominacio: 'new-test-event',
+          descripcio: 'new-test-description',
+        });
+
+
+      expect(res.body.message).toBe('Evento editado correctamente');
+
+      const res2 = await request(app)
+      .post('/events/edit')
+      .send({
+        codi: 12348173040,
+        denominacio: 'new-test-event',
+        descripcio: 'new-test-description',
+      });
+
+      expect(res2.body.message).toBe('Evento no encontrado');
+
+    });
+  
+    it('if the payload is incorrect returns an error', async function () {
+      await request(app)
+        .post('/events/create')
+        .send({
+        codi: 123456789,
+        denominacio: 'test-event',
+        descripcio: 'test-description',
+        dataIni: new Date(1),
+        dataFi: new Date(2),
+        horari: '2h',
+        adress: 'Passeig de Gràcia',
+        url: 'https://test-url.com',
+      });
+  
+      const res = await request(app).post('/events/edit').send({
+        codi: 123456789,
+        denominacio: '',
+      });
+
+      expect(res.body.errors).toBeTruthy();
+
+    });
+  });
+  
+
+
 });

@@ -1,0 +1,16 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Event Entity can be created 1`] = `
+Event {
+  "adress": "test-adress",
+  "chat": null,
+  "codi": 20211006023,
+  "dataFi": 1970-01-01T00:00:01.234Z,
+  "dataIni": 1970-01-01T00:00:01.234Z,
+  "denominacio": "test-denominacio",
+  "descripcio": "test-descripcio",
+  "horari": "test-horari",
+  "id": "642414c21f0577394a8a3099",
+  "url": "test-url",
+}
+`;

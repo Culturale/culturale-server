@@ -3,8 +3,11 @@
 exports[`User Entity can be created 1`] = `
 User {
   "email": "test-email",
-  "id": "642412cfb50197eba72cac1d",
+  "name": "test-name",
   "password": "test-password",
+  "phoneNumber": "test-phone",
+  "profilePicture": "test-profilePicture",
   "username": "test-username",
+  "usertype": "test-type",
 }
 `;

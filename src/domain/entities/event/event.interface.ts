@@ -1,5 +1,8 @@
 import type { IChat } from '~/domain/entities/chat/chat.interface';
 import type { MongoId } from '~/types/types';
+
+import type { IUser } from '../user';
+
 export interface IEvent {
   id: MongoId;
   codi: number;
@@ -11,4 +14,5 @@ export interface IEvent {
   adress?: string;
   url: string;
   chat: IChat;
+  participants: IUser[];
 }

@@ -12,6 +12,9 @@ const EventSchema = new Schema({
   descripcio: { required: true, type: String },
   horari: { required: false, type: String },
   url: { required: true, type: String },
+  participants: [
+    { required: true, type: Schema.Types.ObjectId, model: 'User' },
+  ],
 });
 
 const EventModel = model<IEvent>('Event', EventSchema);

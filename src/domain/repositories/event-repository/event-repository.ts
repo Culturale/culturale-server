@@ -1,6 +1,7 @@
 import type { Chat, IChat } from '~/domain/entities/chat';
 import type { IEvent } from '~/domain/entities/event';
 import { EventModel } from '~/domain/entities/event';
+import type { IUser } from '~/domain/entities/user';
 
 export class EventRepository {
   public static async addEvent(event: IEvent): Promise<IEvent> {
@@ -37,4 +38,18 @@ export class EventRepository {
   ): Promise<void> {
     await EventModel.findOneAndUpdate(event, { chat: chat }, { new: true });
   }
+
+  public static async addParticipant(
+    event: IEvent,
+    user: IUser
+  ): Promise<IUser[]> {
+    event.participants.push(user);
+    const updatedEvent: IEvent = await EventModel.findOneAndUpdate(
+      { _id: event.id },
+      { $push: { participants: user } }, 
+      { new: true } 
+    ).populate('participants'); 
+    return updatedEvent.participants;
+  }
+
 }

@@ -12,4 +12,10 @@ export class UserRepository {
   public static async getAllUsers(): Promise<IUser[]> {
     return await UserModel.find();
   }
+
+  public static async findUserByUserId(username: String): Promise<IUser> {
+    const user: IUser = await UserModel.findOne({ username: username });
+    if (!user) return null;
+    return user;
+  } 
 }

@@ -4,6 +4,8 @@ import type { Chat, IChat } from '~/domain/entities/chat';
 import type { IEvent} from '~/domain/entities/event';
 import { Event } from '~/domain/entities/event';
 import type { IMessage } from '~/domain/entities/message';
+import type { IUser } from '~/domain/entities/user';
+import { UserRepository } from '~/domain/repositories';
 import { ChatRepository } from '~/domain/repositories/chat-repository/chat-repository';
 import { EventRepository } from '~/domain/repositories/event-repository/event-repository';
 import { MessageRepository } from '~/domain/repositories/message-repository/message-repository';
@@ -14,7 +16,7 @@ export class EventController {
     try {
       const eventDTO: CreateEventDto = req.body;
       const chat: Chat = await ChatRepository.createEmptyChat();
-      const event: IEvent = new Event({...eventDTO, chat});
+      const event: IEvent = new Event({...eventDTO, chat, participants:[]});
       await EventRepository.addEvent(event);
       res.status(200);
       res.json({
@@ -64,7 +66,8 @@ export class EventController {
         horari: req.body.horari || oldEvent.horari,
         adress: req.body.adress || oldEvent.adress,
         url: req.body.url || oldEvent.adress,
-        chat:oldEvent.chat
+        chat:oldEvent.chat,
+        participants:oldEvent.participants,
       };
       //await EventRepository.findEvent(req.body.codi);
       
@@ -119,6 +122,34 @@ export class EventController {
       res.status(200);
       res.json({
         messages,
+      });
+    } catch (e) {
+      res.status(500);
+      res.json({
+        error: e,
+      });
+    }
+  }
+  public static async addParticipant(
+    req: Request,
+    res: Response
+  ): Promise<void> {
+    try {
+      const codiEvent = req.body.codi;
+      const username = req.body.username;
+      const event: IEvent = await EventRepository.findEvent(codiEvent);
+      const newParticipant: IUser = await UserRepository.findUserByUserId(username);
+      if(!event || !newParticipant){
+        res.status(404);
+        res.json({
+          message: 'user or event not found'
+        });
+      }
+      const participants: IUser[] = await EventRepository.addParticipant(event, newParticipant);
+      
+      res.status(200);
+      res.json({
+        participants,
       });
     } catch (e) {
       res.status(500);

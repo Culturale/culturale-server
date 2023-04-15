@@ -1,6 +1,7 @@
 import type { MongoId } from '~/types/types';
 
 import type { IChat } from '../chat';
+import { IUser } from '../user';
 
 import type { IEvent } from './event.interface';
 
@@ -15,6 +16,7 @@ export type EventProps = {
   adress: string;
   url: string;
   chat?: IChat;
+  participants?: IUser[];
 }
 
 export class Event implements IEvent {
@@ -28,6 +30,7 @@ export class Event implements IEvent {
   public adress: string;
   public url: string;
   public chat: IChat;
+  public participants: IUser[];
 
   constructor(props: EventProps) {
     const {id, codi, denominacio, descripcio, dataIni, dataFi, horari, adress, url, chat} = props;

@@ -8,7 +8,7 @@ import { EventController } from './event-controller';
 
 dotenv.config();
 
-describe('User Controller', function () {
+describe('Event Controller', function () {
   beforeAll(async function () {
     const mongod = await MongoMemoryServer.create();
     const dbUrl = mongod.getUri();
@@ -19,7 +19,7 @@ describe('User Controller', function () {
     await mongoose.connection.close();
   });
 
-  describe('createUser', function () {
+  describe('createEvent', function () {
     const req: Request = expressRequest;
     req.body = {
       codi: 12345678901,
@@ -58,7 +58,7 @@ describe('User Controller', function () {
     });
   });
 
-  describe('getAllUsers', function () {
+  describe('getAllEvents', function () {
     const req: Request = expressRequest;
     const res = {} as unknown as Response;
     res.json = jest.fn();
@@ -69,7 +69,7 @@ describe('User Controller', function () {
       await EventController.getAllEvents(req, res);
     });
 
-    it('returns all users', function () {
+    it('returns all events', function () {
       expect(res.status).toBeCalledWith(200);
       expect(res.json).toBeCalledWith({
         events: [

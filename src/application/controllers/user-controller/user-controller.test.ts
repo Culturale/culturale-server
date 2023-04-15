@@ -20,7 +20,7 @@ describe('User Controller', function () {
     await mongoose.connection.close();
   });
 
-  
+
   describe('createUser', function () {
     const req: Request = expressRequest;
     req.body = {
@@ -118,6 +118,8 @@ describe('EditPerfil', function () {
       username: 'test-username',
       name: 'test-name1',
       email: 'email1@example.com',
+      profilePicture: 'test-imageurl1',
+      phoneNumber: '111111111',
     };
     const editRes = {} as unknown as Response;
     editRes.json = jest.fn();
@@ -135,8 +137,8 @@ describe('EditPerfil', function () {
           password: 'test-password1',
           username: 'test-username',
           name: 'test-name1',
-          profilePicture: 'test-imageurl',
-          phoneNumber: '000000000',
+          profilePicture: 'test-imageurl1',
+          phoneNumber: '111111111',
           usertype: 'usuario',
         },
     });

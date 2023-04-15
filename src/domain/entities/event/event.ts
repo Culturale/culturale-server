@@ -4,6 +4,19 @@ import type { IChat } from '../chat';
 
 import type { IEvent } from './event.interface';
 
+export type EventProps = {
+  id?: MongoId;
+  codi: number;
+  denominacio: string;
+  descripcio: string;
+  dataIni: Date;
+  dataFi: Date;
+  horari: string;
+  adress: string;
+  url: string;
+  chat?: IChat;
+}
+
 export class Event implements IEvent {
   public id: MongoId;
   public codi: number;
@@ -16,18 +29,8 @@ export class Event implements IEvent {
   public url: string;
   public chat: IChat;
 
-  constructor(
-    id: MongoId,
-    codi: number,
-    denominacio: string,
-    descripcio: string,
-    dataIni: Date,
-    dataFi: Date,
-    horari: string,
-    adress: string,
-    url: string,
-    chat: IChat
-  ) {
+  constructor(props: EventProps) {
+    const {id, codi, denominacio, descripcio, dataIni, dataFi, horari, adress, url, chat} = props;
     this.id = id;
     this.codi = codi;
     this.denominacio = denominacio;

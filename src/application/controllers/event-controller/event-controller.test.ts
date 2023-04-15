@@ -22,14 +22,14 @@ describe('Event Controller', function () {
   describe('createEvent', function () {
     const req: Request = expressRequest;
     req.body = {
-      codi: 12345678901,
-      denominacio: 'test-denominacio',
-      descripcio: 'test-descripcio',
-      dataIni: new Date(1),
-      dataFi: new Date(2),
-      horari: 'mati',
-      adress: 'Passeig de gracia',
-      url: 'test-url',
+        codi: 12348173050,
+        denominacio: 'test-event',
+        descripcio: 'test-description',
+        dataIni: new Date(1),
+        dataFi: new Date(2),
+        horari: '2h',
+        adress: 'Passeig de Gràcia',
+        url: 'https://test-url.com',
     };
     const res = {} as unknown as Response;
     res.json = jest.fn();
@@ -45,20 +45,21 @@ describe('Event Controller', function () {
       expect(res.json).toBeCalledWith({
         message: 'event created',
         event: expect.objectContaining({
-          adress: 'Passeig de gracia',
-          codi: 12345678901,
-          dataFi: new Date(2),
+          codi: 12348173050,
+          denominacio: 'test-event',
+          descripcio: 'test-description',
           dataIni: new Date(1),
-          denominacio: 'test-denominacio',
-          descripcio: 'test-descripcio',
-          horari: 'mati',
-          url: 'test-url',
+          dataFi: new Date(2),
+          horari: '2h',
+          adress: 'Passeig de Gràcia',
+          url: 'https://test-url.com',
         }),
       });
     });
   });
 
   describe('getAllEvents', function () {
+    
     const req: Request = expressRequest;
     const res = {} as unknown as Response;
     res.json = jest.fn();
@@ -74,17 +75,47 @@ describe('Event Controller', function () {
       expect(res.json).toBeCalledWith({
         events: [
           expect.objectContaining({
-            adress: 'Passeig de gracia',
-            codi: 12345678901,
-            dataFi: new Date(2),
+            codi: 12348173050,
+            denominacio: 'test-event',
+            descripcio: 'test-description',
             dataIni: new Date(1),
-            denominacio: 'test-denominacio',
-            descripcio: 'test-descripcio',
-            horari: 'mati',
-            url: 'test-url',
+            dataFi: new Date(2),
+            horari: '2h',
+            adress: 'Passeig de Gràcia',
+            url: 'https://test-url.com',
           }),
         ],
       });
     });
+  });
+  describe('add message event', function () { 
+    const expressRequest: Request = {} as Request;
+    const reqMessage: Request = JSON.parse(JSON.stringify(expressRequest));
+    reqMessage.body = {
+        codi: 12348173050,
+        userId: 'user1',
+        content: 'hola',
+        date: new Date(2),
+    };
+    const resMessage = {} as unknown as Response;
+    resMessage.json = jest.fn();
+    resMessage.status = jest.fn(() => resMessage);
+    resMessage.setHeader = jest.fn();
+    
+    beforeEach(async function () {
+        await EventController.addMessageEvent(reqMessage, resMessage);
+    });
+
+    it('returns the message sent it', function () {
+      expect(resMessage.status).toBeCalledWith(200);
+      expect(resMessage.json).toBeCalledWith(expect.objectContaining({
+        message: 'chat sent it',
+        messages: expect.objectContaining({
+          userId: 'user1',
+          content: 'hola',
+          date: new Date(2),
+        }),
+      }));
+    }); 
   });
 });

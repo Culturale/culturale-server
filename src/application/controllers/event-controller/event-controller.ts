@@ -1,22 +1,26 @@
 import type { Request, Response } from 'express';
 
 import type { Chat, IChat } from '~/domain/entities/chat';
-import type { IEvent } from '~/domain/entities/event';
+import type { IEvent} from '~/domain/entities/event';
+import { Event } from '~/domain/entities/event';
 import type { IMessage } from '~/domain/entities/message';
 import { ChatRepository } from '~/domain/repositories/chat-repository/chat-repository';
 import { EventRepository } from '~/domain/repositories/event-repository/event-repository';
 import { MessageRepository } from '~/domain/repositories/message-repository/message-repository';
+import { CreateEventDto } from '~/infrastructure';
 
 export class EventController {
   public static async createEvent(req: Request, res: Response): Promise<void> {
     try {
-      const event: IEvent = req.body;
+      console.log(req.body);
+      const eventDTO: CreateEventDto = req.body;
       const chat: Chat = await ChatRepository.createEmptyChat();
-      const eventCreated = await EventRepository.addEvent(event, chat);
+      const event: IEvent = new Event({...eventDTO, chat});
+      await EventRepository.addEvent(event);
       res.status(200);
       res.json({
         message: 'event created',
-        event: eventCreated,
+        event: eventDTO,
       });
     } catch (e) {
       res.status(500);
@@ -32,6 +36,7 @@ export class EventController {
   ): Promise<void> {
     try {
       const events: IEvent[] = await EventRepository.getAllEvents();
+      console.log(events);
       res.status(200);
       res.json({
         events,
@@ -84,6 +89,12 @@ export class EventController {
     try {
       const codiEvent = req.body.codi;
       const chatEvent: IChat = await EventRepository.getChatEvent(codiEvent);
+      if(!chatEvent){
+        res.status(404);
+        res.json({message:'event not found'});
+        return;
+      }
+      console.log(req.body);
       const newMessage: IMessage = await MessageRepository.addMessage(req.body.content, req.body.userId, req.body.date);
       const chat: Chat = await ChatRepository.addMessage(chatEvent, newMessage);
       await EventRepository.modifyChatEvent(codiEvent, chat);

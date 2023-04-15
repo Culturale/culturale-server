@@ -4,6 +4,8 @@ import { request as expressRequest } from 'express';
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import mongoose from 'mongoose';
 
+import { UserController } from '../user-controller';
+
 import { EventController } from './event-controller';
 
 dotenv.config();
@@ -118,4 +120,45 @@ describe('Event Controller', function () {
       }));
     }); 
   });
+
+  describe('add participant event', function () { 
+    const expressRequest: Request = {} as Request;
+    const reqUser: Request = JSON.parse(JSON.stringify(expressRequest));
+    reqUser.body = {
+      email: 'email@example.com',
+      password: 'test-password',
+      username: 'test-username',
+      name: 'test-name',
+      profilePicture: 'test-imageurl',
+      phoneNumber: '000000000',
+      usertype: 'usuario',
+    };
+    const resUser = {} as unknown as Response;
+    resUser.json = jest.fn();
+    resUser.status = jest.fn(() => resUser);
+    resUser.setHeader = jest.fn();
+
+    const reqAddPar: Request = JSON.parse(JSON.stringify(expressRequest));
+    reqAddPar.body = {
+        codi: 12348173050,
+        username: 'test-username',
+    };
+    const resAddPar = {} as unknown as Response;
+    resAddPar.json = jest.fn();
+    resAddPar.status = jest.fn(() => resAddPar);
+    resAddPar.setHeader = jest.fn();
+    
+    beforeEach(async function () {
+      await UserController.createUser(reqUser, resUser);
+      await EventController.addParticipant(reqAddPar, resAddPar);
+    });
+
+    it('returns the participants', function () {
+      expect(resAddPar.status).toBeCalledWith(200);
+      expect(resAddPar.json).toBeCalledWith(expect.objectContaining({
+        message: 'Participante añadido correctamente',
+      }));
+    }); 
+  });
+
 });

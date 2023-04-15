@@ -7,7 +7,7 @@ import type { IMessage } from '~/domain/entities/message';
 import { ChatRepository } from '~/domain/repositories/chat-repository/chat-repository';
 import { EventRepository } from '~/domain/repositories/event-repository/event-repository';
 import { MessageRepository } from '~/domain/repositories/message-repository/message-repository';
-import { CreateEventDto } from '~/infrastructure';
+import type { CreateEventDto } from '~/infrastructure';
 
 export class EventController {
   public static async createEvent(req: Request, res: Response): Promise<void> {

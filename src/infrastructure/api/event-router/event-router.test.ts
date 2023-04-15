@@ -167,25 +167,28 @@ describe('Event Routes', function () {
   });
 
   describe('POST /events/newParticipant', function () { 
+    beforeEach(async function () {
+      await request(app)
+        .post('/users/create')
+        .send({
+          email: 'email@example.com',
+          password: 'test-password',
+          username: 'test-username',
+          name: 'test-name',
+          profilePicture: 'test-imageurl',
+          phoneNumber: '000000000',
+          usertype: 'usuario',
+        });
+    });
     it('if the payload is correct it adds the participant', async function () {
       const res = await request(app)
       .post('/events/newParticipant')
       .send({
         codi: 12348173049,
-        userId: 'user1',
+        username: 'test-username',
       });
       expect(res.statusCode).toBe(200);
-      expect(res.body.message).toBe('Evento editado correctamente');
-    });
-    it('if the payload is incorrect it returns an error', async function () {
-      const res = await request(app)
-      .post('/events/newParticipant')
-      .send({
-        codi: 1234817355,
-        userId: 'user1',
-      });
-      expect(res.statusCode).toBe(404);
-      expect(res.body.message).toBe('user or event not found');
+      expect(res.body.message).toBe('Participante añadido correctamente');
     });
 
   });

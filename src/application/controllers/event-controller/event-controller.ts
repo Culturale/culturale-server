@@ -149,7 +149,8 @@ export class EventController {
       
       res.status(200);
       res.json({
-        participants,
+        message: 'Participante añadido correctamente',
+        participants: participants,
       });
     } catch (e) {
       res.status(500);

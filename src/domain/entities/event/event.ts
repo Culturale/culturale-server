@@ -3,6 +3,7 @@ import type { MongoId } from '~/types/types';
 import type { IChat } from '../chat';
 
 import type { IEvent } from './event.interface';
+import { IReview } from '../review';
 
 export class Event implements IEvent {
   public id: MongoId;
@@ -15,6 +16,7 @@ export class Event implements IEvent {
   public adress: string;
   public url: string;
   public chat: IChat;
+  public valoracions?: IReview[];
 
   constructor(
     id: MongoId,
@@ -26,7 +28,8 @@ export class Event implements IEvent {
     horari: string,
     adress: string,
     url: string,
-    chat: IChat
+    chat: IChat,
+    valoracions?: IReview[]
   ) {
     this.id = id;
     this.codi = codi;
@@ -38,5 +41,6 @@ export class Event implements IEvent {
     this.adress = adress;
     this.url = url;
     this.chat = chat;
+    this.valoracions = valoracions || [];
   }
 }

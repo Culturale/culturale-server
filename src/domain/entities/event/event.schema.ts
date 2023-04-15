@@ -12,6 +12,7 @@ const EventSchema = new Schema({
   descripcio: { required: true, type: String },
   horari: { required: false, type: String },
   url: { required: true, type: String },
+  valoracions: { required: false, type: [Schema.Types.ObjectId], ref: 'Review' }
 });
 
 const EventModel = model<IEvent>('Event', EventSchema);

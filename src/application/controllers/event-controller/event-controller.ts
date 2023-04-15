@@ -12,7 +12,6 @@ import { CreateEventDto } from '~/infrastructure';
 export class EventController {
   public static async createEvent(req: Request, res: Response): Promise<void> {
     try {
-      console.log(req.body);
       const eventDTO: CreateEventDto = req.body;
       const chat: Chat = await ChatRepository.createEmptyChat();
       const event: IEvent = new Event({...eventDTO, chat});
@@ -36,7 +35,6 @@ export class EventController {
   ): Promise<void> {
     try {
       const events: IEvent[] = await EventRepository.getAllEvents();
-      console.log(events);
       res.status(200);
       res.json({
         events,
@@ -94,7 +92,6 @@ export class EventController {
         res.json({message:'event not found'});
         return;
       }
-      console.log(req.body);
       const newMessage: IMessage = await MessageRepository.addMessage(req.body.content, req.body.userId, req.body.date);
       const chat: Chat = await ChatRepository.addMessage(chatEvent, newMessage);
       await EventRepository.modifyChatEvent(codiEvent, chat);

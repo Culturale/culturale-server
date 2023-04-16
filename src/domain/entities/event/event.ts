@@ -5,6 +5,20 @@ import type { IChat } from '../chat';
 import type { IEvent } from './event.interface';
 import { IReview } from '../review';
 
+export type EventProps = {
+  id?: MongoId;
+  codi: number;
+  denominacio: string;
+  descripcio: string;
+  dataIni: Date;
+  dataFi: Date;
+  horari: string;
+  adress: string;
+  url: string;
+  chat?: IChat;
+  valoracions?: IReview[];
+}
+
 export class Event implements IEvent {
   public id: MongoId;
   public codi: number;
@@ -18,19 +32,9 @@ export class Event implements IEvent {
   public chat: IChat;
   public valoracions?: IReview[];
 
-  constructor(
-    id: MongoId,
-    codi: number,
-    denominacio: string,
-    descripcio: string,
-    dataIni: Date,
-    dataFi: Date,
-    horari: string,
-    adress: string,
-    url: string,
-    chat: IChat,
-    valoracions?: IReview[]
-  ) {
+  constructor(props: EventProps) {
+    const {id, codi, denominacio, descripcio, dataIni, dataFi, horari, adress, url, chat, valoracions} = props;  
+    {
     this.id = id;
     this.codi = codi;
     this.denominacio = denominacio;
@@ -43,6 +47,7 @@ export class Event implements IEvent {
     this.chat = chat;
     this.valoracions = valoracions || [];
   }
+}
   
   public updateValoracions(valoracions: IReview[]) {
     this.valoracions = valoracions;

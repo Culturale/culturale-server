@@ -45,14 +45,14 @@ export class EventController {
   public static async editEvent(req: Request, res: Response): Promise<void> {
     try{
       const editEventDTO: EditEventDTO = req.body;
-      const oldEvent= await EventRepository.findEvent(req.body.codi);
+      const oldEvent = await EventRepository.findEvent(req.body.codi);
       if (!oldEvent) {
         res.status(404).json({message: 'Evento no encontrado'});
         return;
         }
-      const newEvent: IEvent = {
-        id: oldEvent.id,
-        codi:oldEvent.codi,
+      const newEvent = new Event({
+        id: oldEvent.id
+        codi: oldEvent.codi,
         denominacio: req.body.denominacio || oldEvent.denominacio,
         descripcio: req.body.descripcio || oldEvent.descripcio,
         dataIni: req.body.dataIni || oldEvent.dataIni,
@@ -61,7 +61,7 @@ export class EventController {
         adress: req.body.adress || oldEvent.adress,
         url: req.body.url || oldEvent.adress,
         chat:oldEvent.chat
-      };
+      });
 
       await EventRepository.editarEvent(newEvent);
        res.status(500).json({message: 'Evento editado correctamente'});  

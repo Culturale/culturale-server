@@ -1,52 +1,33 @@
-import { normalize } from 'path';
 import type { Chat, IChat } from '~/domain/entities/chat';
 import type { IEvent } from '~/domain/entities/event';
-import { Event } from '~/domain/entities/event';
 import { EventModel } from '~/domain/entities/event';
+import type { IUser } from '~/domain/entities/user';
 
 export class EventRepository {
-  public static async addEvent(event: IEvent, chat: IChat): Promise<IEvent> {
-    const document = await EventModel.create({
-      chat: chat.id,
+  public static async addEvent(event: IEvent): Promise<IEvent> {
+    await EventModel.create({
       ...event,
+      chat: event.chat?.id,
     });
-    const object = document.toObject();
-    return new Event(
-      object._id,
-      object.codi,
-      object.denominacio,
-      object.descripcio,
-      object.dataIni,
-      object.dataFi,
-      object.horari,
-      object.adress,
-      object.url,
-      object.chat
-    );
+    return event;
   }
 
   public static async getAllEvents(): Promise<IEvent[]> {
     return await EventModel.find();
   }
-  public static async deleteEvent(codi: string): Promise<void> {
-    await EventModel.deleteOne({id: codi });
-  }
 
   public static async findEvent(codiEvent: string): Promise<IEvent> {
-    return await EventModel.findOne({codi: codiEvent})
-    .populate({path: 'valoracions', model: 'Review'});
-     
+    const event: IEvent = await EventModel.findOne({codi: codiEvent});
+    return event;
   }
 
-  public static async editarEvent(newEvent: IEvent): Promise<IEvent> {
+  public static async editarEvent(newEvent: IEvent): Promise<void> {
     const chat = newEvent.chat;
     const valoracions = newEvent.valoracions;
-    await EventModel.findByIdAndUpdate(newEvent.id,{
-      ...newEvent,
+    await EventModel.findByIdAndUpdate(newEvent.id, 
+      {...newEvent,
       chat,
-      valoracions,
-    });
-    return newEvent;
+      valoracions});
   }
 
 
@@ -62,4 +43,5 @@ export class EventRepository {
   ): Promise<void> {
     await EventModel.findOneAndUpdate(event, { chat: chat }, { new: true });
   }
+
 }

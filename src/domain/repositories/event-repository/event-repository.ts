@@ -1,3 +1,4 @@
+import { normalize } from 'path';
 import type { Chat, IChat } from '~/domain/entities/chat';
 import type { IEvent } from '~/domain/entities/event';
 import { Event } from '~/domain/entities/event';
@@ -32,12 +33,20 @@ export class EventRepository {
   }
 
   public static async findEvent(codiEvent: string): Promise<IEvent> {
-    const event: IEvent = await EventModel.findOne({codi: codiEvent});
-    return event;
+    return await EventModel.findOne({codi: codiEvent})
+    .populate({path: 'valoracions', model: 'Review'});
+     
   }
 
-  public static async editarEvent(oldEvent: IEvent, newEvent: IEvent): Promise<void> {
-    await EventModel.replaceOne(oldEvent, newEvent);
+  public static async editarEvent(newEvent: IEvent): Promise<IEvent> {
+    const chat = newEvent.chat;
+    const valoracions = newEvent.valoracions;
+    await EventModel.findByIdAndUpdate(newEvent.id,{
+      ...newEvent,
+      chat,
+      valoracions,
+    });
+    return newEvent;
   }
 
 

@@ -60,10 +60,8 @@ export class EventController {
         url: req.body.url || oldEvent.adress,
         chat:oldEvent.chat
       };
-      //await EventRepository.findEvent(req.body.codi);
-      
 
-      await EventRepository.editarEvent(oldEvent, newEvent);
+      await EventRepository.editarEvent(newEvent);
        res.status(500).json({message: 'Evento editado correctamente'});  
       }
     catch (e) {

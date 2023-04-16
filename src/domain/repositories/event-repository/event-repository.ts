@@ -1,10 +1,14 @@
 import type { Chat, IChat } from '~/domain/entities/chat';
 import type { IEvent } from '~/domain/entities/event';
 import { EventModel } from '~/domain/entities/event';
-import type { IUser } from '~/domain/entities/user';
 
 export class EventRepository {
-  public static async addEvent(event: IEvent): Promise<IEvent> {
+
+  public static async deleteEvent(codi: string): Promise<void> {
+    await EventModel.findByIdAndDelete(codi);
+    
+  }
+  public static async addEvent(event: IEvent, chat: IChat): Promise<IEvent> {
     await EventModel.create({
       ...event,
       chat: event.chat?.id,

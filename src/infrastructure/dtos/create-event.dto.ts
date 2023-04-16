@@ -1,4 +1,3 @@
-/* eslint-disable no-octal */
 import {
   IsString,
   IsNotEmpty,
@@ -10,7 +9,7 @@ import {
 import { validate } from 'class-validator';
 import type { NextFunction, Request, Response } from 'express';
 
-class CreateEventDto {
+export class CreateEventDto {
   @IsNotEmpty()
   @IsNumber()
   @Min(11111111111)

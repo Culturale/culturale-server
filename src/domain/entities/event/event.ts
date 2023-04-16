@@ -17,7 +17,7 @@ export type EventProps = {
   url: string;
   chat?: IChat;
   valoracions?: IReview[];
-}
+};
 
 export class Event implements IEvent {
   public id: MongoId;
@@ -33,8 +33,7 @@ export class Event implements IEvent {
   public valoracions?: IReview[];
 
   constructor(props: EventProps) {
-    const {id, codi, denominacio, descripcio, dataIni, dataFi, horari, adress, url, chat, valoracions} = props;  
-    {
+    const {id, codi, denominacio, descripcio, dataIni, dataFi, horari, adress, url, chat, valoracions} = props;   
     this.id = id;
     this.codi = codi;
     this.denominacio = denominacio;
@@ -47,7 +46,8 @@ export class Event implements IEvent {
     this.chat = chat;
     this.valoracions = valoracions || [];
   }
-}
+  
+
   
   public updateValoracions(valoracions: IReview[]) {
     this.valoracions = valoracions;

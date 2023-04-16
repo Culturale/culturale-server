@@ -2,6 +2,7 @@ import type { Request, Response } from 'express';
 
 import type { Chat, IChat } from '~/domain/entities/chat';
 import type { IEvent } from '~/domain/entities/event';
+import { Event } from '~/domain/entities/event';
 import type { IMessage } from '~/domain/entities/message';
 import { ChatRepository } from '~/domain/repositories/chat-repository/chat-repository';
 import { EventRepository } from '~/domain/repositories/event-repository/event-repository';
@@ -50,18 +51,18 @@ export class EventController {
         res.status(404).json({message: 'Evento no encontrado'});
         return;
         }
-      const newEvent = new Event({
-        id: oldEvent.id
-        codi: oldEvent.codi,
-        denominacio: req.body.denominacio || oldEvent.denominacio,
-        descripcio: req.body.descripcio || oldEvent.descripcio,
-        dataIni: req.body.dataIni || oldEvent.dataIni,
-        dataFi: req.body.dataFi || oldEvent.dataFi,
-        horari: req.body.horari || oldEvent.horari,
-        adress: req.body.adress || oldEvent.adress,
-        url: req.body.url || oldEvent.adress,
-        chat:oldEvent.chat
-      });
+        const newEvent = new Event({
+          id: oldEvent.id, 
+          codi: oldEvent.codi,
+          denominacio: editEventDTO.denominacio || oldEvent.denominacio,
+          descripcio: editEventDTO.descripcio || oldEvent.descripcio,
+          dataIni: editEventDTO.dataIni || oldEvent.dataIni,
+          dataFi: editEventDTO.dataFi || oldEvent.dataFi,
+          horari: editEventDTO.horari || oldEvent.horari,
+          adress: editEventDTO.adress || oldEvent.adress,
+          url: editEventDTO.url || oldEvent.adress,
+          chat: oldEvent.chat
+        });
 
       await EventRepository.editarEvent(newEvent);
        res.status(500).json({message: 'Evento editado correctamente'});  

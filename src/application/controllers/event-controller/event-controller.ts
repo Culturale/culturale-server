@@ -6,6 +6,7 @@ import type { IMessage } from '~/domain/entities/message';
 import { ChatRepository } from '~/domain/repositories/chat-repository/chat-repository';
 import { EventRepository } from '~/domain/repositories/event-repository/event-repository';
 import { MessageRepository } from '~/domain/repositories/message-repository/message-repository';
+import { EditEventDTO } from '~/infrastructure';
 
 export class EventController {
   public static async createEvent(req: Request, res: Response): Promise<void> {
@@ -43,6 +44,7 @@ export class EventController {
 
   public static async editEvent(req: Request, res: Response): Promise<void> {
     try{
+      const editEventDTO: EditEventDTO = req.body;
       const oldEvent= await EventRepository.findEvent(req.body.codi);
       if (!oldEvent) {
         res.status(404).json({message: 'Evento no encontrado'});

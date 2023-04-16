@@ -43,6 +43,7 @@ export class Event implements IEvent {
     this.chat = chat;
     this.valoracions = valoracions || [];
   }
+  
   public updateValoracions(valoracions: IReview[]) {
     this.valoracions = valoracions;
   }

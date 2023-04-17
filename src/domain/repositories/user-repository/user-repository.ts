@@ -13,10 +13,12 @@ export class UserRepository {
     return await UserModel.find();
   }
 
-  public static async findUser(usernameUsuari: string): Promise<IUser> {
-    const usuari: IUser = await UserModel.findOne({username: usernameUsuari});
-    return usuari;
-  }
+  public static async findUserByUserId(username: String): Promise<IUser> {
+    const user: IUser = await UserModel.findOne({ username: username });
+    if (!user) return null;
+    return user;
+  } 
+
 
   public static async editarUsuari(oldUser: IUser, newUser: IUser): Promise<void> {
     await UserModel.replaceOne(oldUser, newUser);

@@ -41,7 +41,7 @@ export class UserController {
    
   public static async editUser(req: Request, res: Response): Promise<void> {
     try{
-      const oldUser: IUser = await UserRepository.findUser(req.body.username);
+      const oldUser: IUser = await UserRepository.findUserByUserId(req.body.username);
       if(oldUser == null){
         res.status(400).json({message: 'El usuario indicado no existe'});
       }

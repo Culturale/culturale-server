@@ -4,11 +4,13 @@ import { request as expressRequest } from 'express';
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import mongoose from 'mongoose';
 
+import { UserController } from '../user-controller';
+
 import { EventController } from './event-controller';
 
 dotenv.config();
 
-describe('User Controller', function () {
+describe('Event Controller', function () {
   beforeAll(async function () {
     const mongod = await MongoMemoryServer.create();
     const dbUrl = mongod.getUri();
@@ -19,17 +21,17 @@ describe('User Controller', function () {
     await mongoose.connection.close();
   });
 
-  describe('createUser', function () {
+  describe('createEvent', function () {
     const req: Request = expressRequest;
     req.body = {
-      codi: 12345678901,
-      denominacio: 'test-denominacio',
-      descripcio: 'test-descripcio',
-      dataIni: new Date(1),
-      dataFi: new Date(2),
-      horari: 'mati',
-      adress: 'Passeig de gracia',
-      url: 'test-url',
+        codi: 12348173050,
+        denominacio: 'test-event',
+        descripcio: 'test-description',
+        dataIni: new Date(1),
+        dataFi: new Date(2),
+        horari: '2h',
+        adress: 'Passeig de Gràcia',
+        url: 'https://test-url.com',
     };
     const res = {} as unknown as Response;
     res.json = jest.fn();
@@ -45,20 +47,21 @@ describe('User Controller', function () {
       expect(res.json).toBeCalledWith({
         message: 'event created',
         event: expect.objectContaining({
-          adress: 'Passeig de gracia',
-          codi: 12345678901,
-          dataFi: new Date(2),
+          codi: 12348173050,
+          denominacio: 'test-event',
+          descripcio: 'test-description',
           dataIni: new Date(1),
-          denominacio: 'test-denominacio',
-          descripcio: 'test-descripcio',
-          horari: 'mati',
-          url: 'test-url',
+          dataFi: new Date(2),
+          horari: '2h',
+          adress: 'Passeig de Gràcia',
+          url: 'https://test-url.com',
         }),
       });
     });
   });
 
-  describe('getAllUsers', function () {
+  describe('getAllEvents', function () {
+    
     const req: Request = expressRequest;
     const res = {} as unknown as Response;
     res.json = jest.fn();
@@ -69,22 +72,93 @@ describe('User Controller', function () {
       await EventController.getAllEvents(req, res);
     });
 
-    it('returns all users', function () {
+    it('returns all events', function () {
       expect(res.status).toBeCalledWith(200);
       expect(res.json).toBeCalledWith({
         events: [
           expect.objectContaining({
-            adress: 'Passeig de gracia',
-            codi: 12345678901,
-            dataFi: new Date(2),
+            codi: 12348173050,
+            denominacio: 'test-event',
+            descripcio: 'test-description',
             dataIni: new Date(1),
-            denominacio: 'test-denominacio',
-            descripcio: 'test-descripcio',
-            horari: 'mati',
-            url: 'test-url',
+            dataFi: new Date(2),
+            horari: '2h',
+            adress: 'Passeig de Gràcia',
+            url: 'https://test-url.com',
           }),
         ],
       });
     });
   });
+  describe('add message event', function () { 
+    const expressRequest: Request = {} as Request;
+    const reqMessage: Request = JSON.parse(JSON.stringify(expressRequest));
+    reqMessage.body = {
+        codi: 12348173050,
+        userId: 'user1',
+        content: 'hola',
+        date: new Date(2),
+    };
+    const resMessage = {} as unknown as Response;
+    resMessage.json = jest.fn();
+    resMessage.status = jest.fn(() => resMessage);
+    resMessage.setHeader = jest.fn();
+    
+    beforeEach(async function () {
+        await EventController.addMessageEvent(reqMessage, resMessage);
+    });
+
+    it('returns the message sent it', function () {
+      expect(resMessage.status).toBeCalledWith(200);
+      expect(resMessage.json).toBeCalledWith(expect.objectContaining({
+        message: 'chat sent it',
+        messages: expect.objectContaining({
+          userId: 'user1',
+          content: 'hola',
+          date: new Date(2),
+        }),
+      }));
+    }); 
+  });
+
+  describe('add participant event', function () { 
+    const expressRequest: Request = {} as Request;
+    const reqUser: Request = JSON.parse(JSON.stringify(expressRequest));
+    reqUser.body = {
+      email: 'email@example.com',
+      password: 'test-password',
+      username: 'test-username',
+      name: 'test-name',
+      profilePicture: 'test-imageurl',
+      phoneNumber: '000000000',
+      usertype: 'usuario',
+    };
+    const resUser = {} as unknown as Response;
+    resUser.json = jest.fn();
+    resUser.status = jest.fn(() => resUser);
+    resUser.setHeader = jest.fn();
+
+    const reqAddPar: Request = JSON.parse(JSON.stringify(expressRequest));
+    reqAddPar.body = {
+        codi: 12348173050,
+        username: 'test-username',
+    };
+    const resAddPar = {} as unknown as Response;
+    resAddPar.json = jest.fn();
+    resAddPar.status = jest.fn(() => resAddPar);
+    resAddPar.setHeader = jest.fn();
+    
+    beforeEach(async function () {
+      await UserController.createUser(reqUser, resUser);
+      await EventController.addParticipant(reqAddPar, resAddPar);
+    });
+
+    it('returns the participants', function () {
+      expect(resAddPar.status).toBeCalledWith(200);
+      expect(resAddPar.json).toBeCalledWith(expect.objectContaining({
+        message: 'Participante añadido correctamente',
+      }));
+    }); 
+  });
+
 });

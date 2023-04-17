@@ -15,7 +15,6 @@ export class EventController {
   public static async createEvent(req: Request, res: Response): Promise<void> {
     try {
       const eventDTO: CreateEventDto = req.body;
-      console.log(eventDTO);
       const chat: Chat = await ChatRepository.createEmptyChat();
       await EventRepository.addEvent(eventDTO,chat.id);
       res.status(200);

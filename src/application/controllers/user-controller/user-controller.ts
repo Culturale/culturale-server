@@ -45,13 +45,13 @@ export class UserController {
 
       res.status(200);
       res.json({
-        message: "User deleted",
+        message: 'User deleted',
         username: user.username,
       });
     } catch (e) {
       res.status(500);
       res.json({
-        error: "Cannot find user with that id"
+        error: 'Cannot find user with that id'
       });
     }
   }

@@ -17,6 +17,4 @@ export interface IEvent {
   participants: IUser[];
 
   updateParticipant: (newParticipant: IUser) => void;
-
-
 }

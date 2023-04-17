@@ -21,6 +21,9 @@ export class EventRepository {
   public static async getAllEvents(): Promise<IEvent[]> {
     return await EventModel.find();
   }
+  public static async deleteEvent(codi: string): Promise<void> {
+    await EventModel.deleteOne({id: codi });
+  }
 
   public static async findEvent(codiEvent: string): Promise<IEvent> {
     const eventDocument = await EventModel.findOne({codi: codiEvent})

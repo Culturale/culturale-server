@@ -17,6 +17,7 @@ const EventSchema = new Schema({
   ],
 });
 
+
 const EventModel = model<IEvent>('Event', EventSchema);
 
 export { EventModel };

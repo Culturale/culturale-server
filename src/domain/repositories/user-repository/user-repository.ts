@@ -18,4 +18,13 @@ export class UserRepository {
     if (!user) return null;
     return user;
   } 
+
+
+  public static async editarUsuari(oldUser: IUser, newUser: IUser): Promise<void> {
+    await UserModel.replaceOne(oldUser, newUser);
+  }
+
+  
+
 }
+ 

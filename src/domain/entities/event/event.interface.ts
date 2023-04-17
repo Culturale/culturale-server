@@ -15,4 +15,8 @@ export interface IEvent {
   url: string;
   chat: IChat;
   participants: IUser[];
+
+  updateParticipant: (newParticipant: IUser) => void;
+
+
 }

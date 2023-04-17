@@ -1,8 +1,7 @@
 import type { Request, Response } from 'express';
 
 import type { Chat, IChat } from '~/domain/entities/chat';
-import type { IEvent} from '~/domain/entities/event';
-import { Event } from '~/domain/entities/event';
+import { Event, EventProps, IEvent} from '~/domain/entities/event';
 import type { IMessage } from '~/domain/entities/message';
 import type { IUser } from '~/domain/entities/user';
 import { UserRepository } from '~/domain/repositories';
@@ -16,8 +15,7 @@ export class EventController {
     try {
       const eventDTO: CreateEventDto = req.body;
       const chat: Chat = await ChatRepository.createEmptyChat();
-      const event: IEvent = new Event({...eventDTO, chat, participants:[]});
-      await EventRepository.addEvent(event);
+      await EventRepository.addEvent(eventDTO,chat.id);
       res.status(200);
       res.json({
         message: 'event created',
@@ -51,14 +49,13 @@ export class EventController {
 
   public static async editEvent(req: Request, res: Response): Promise<void> {
     try{
-      const oldEvent= await EventRepository.findEvent(req.body.codi);
+      const oldEvent = await EventRepository.findEvent(req.body.codi);
       if (!oldEvent) {
         res.status(404).json({message: 'Evento no encontrado'});
         return;
-        }
+      }
       const newEvent: IEvent = {
-        id: oldEvent.id,
-        codi:oldEvent.codi,
+        ... oldEvent,
         denominacio: req.body.denominacio || oldEvent.denominacio,
         descripcio: req.body.descripcio || oldEvent.descripcio,
         dataIni: req.body.dataIni || oldEvent.dataIni,
@@ -66,13 +63,10 @@ export class EventController {
         horari: req.body.horari || oldEvent.horari,
         adress: req.body.adress || oldEvent.adress,
         url: req.body.url || oldEvent.adress,
-        chat:oldEvent.chat,
-        participants:oldEvent.participants,
+        chat: oldEvent.chat,
+        participants: oldEvent.participants,
       };
-      //await EventRepository.findEvent(req.body.codi);
-      
-
-      await EventRepository.editarEvent(oldEvent, newEvent);
+      await EventRepository.editarEvent(newEvent);
        res.status(500).json({message: 'Evento editado correctamente'});  
       }
     catch (e) {
@@ -137,20 +131,23 @@ export class EventController {
     try {
       const codiEvent = req.body.codi;
       const username = req.body.username;
-      const event: IEvent = await EventRepository.findEvent(codiEvent);
+      const newEvent: IEvent = await EventRepository.findEvent(codiEvent);
       const newParticipant: IUser = await UserRepository.findUserByUserId(username);
-      if(!event || !newParticipant){
+      if(!newEvent || !newParticipant){
         res.status(404);
         res.json({
           message: 'user or event not found'
         });
       }
-      const participants: IUser[] = await EventRepository.addParticipant(event, newParticipant);
+      const castedEvent = new Event(newEvent as EventProps);
+      castedEvent.updateParticipant(newParticipant);
+
+      await EventRepository.editarEvent(castedEvent);
       
       res.status(200);
       res.json({
         message: 'Participante añadido correctamente',
-        participants: participants,
+        participants: newEvent.participants,
       });
     } catch (e) {
       res.status(500);

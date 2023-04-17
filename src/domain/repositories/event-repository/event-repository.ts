@@ -1,28 +1,42 @@
+
 import type { Chat, IChat } from '~/domain/entities/chat';
 import type { IEvent } from '~/domain/entities/event';
 import { EventModel } from '~/domain/entities/event';
-import type { IUser } from '~/domain/entities/user';
+// import type { IUser } from '~/domain/entities/user';
+import type { CreateEventDto } from '~/infrastructure';
+import type { MongoId } from '~/types/types';
 
 export class EventRepository {
-  public static async addEvent(event: IEvent): Promise<IEvent> {
-    await EventModel.create({
+  public static async addEvent(event: CreateEventDto, chatId: MongoId): Promise<IEvent> {
+    const newEvent = await EventModel.create({
       ...event,
-      chat: event.chat?.id,
+      chat: chatId,
+      participants: [],
     });
-    return event;
+
+    return newEvent;
   }
+
 
   public static async getAllEvents(): Promise<IEvent[]> {
     return await EventModel.find();
   }
 
   public static async findEvent(codiEvent: string): Promise<IEvent> {
-    const event: IEvent = await EventModel.findOne({codi: codiEvent});
-    return event;
+    const eventDocument = await EventModel.findOne({codi: codiEvent})
+    .populate({
+      path: 'participants',
+      model: 'User',
+    });
+    return eventDocument;
   }
 
-  public static async editarEvent(oldEvent: IEvent, newEvent: IEvent): Promise<void> {
-    await EventModel.replaceOne(oldEvent, newEvent);
+  public static async editarEvent(newEvent: IEvent): Promise<void> {
+    const participants = newEvent.participants;
+    await EventModel.findByIdAndUpdate(newEvent.id, {
+      ...newEvent,
+      participants,
+    });
   }
 
 
@@ -39,17 +53,18 @@ export class EventRepository {
     await EventModel.findOneAndUpdate(event, { chat: chat }, { new: true });
   }
 
-  public static async addParticipant(
-    event: IEvent,
-    user: IUser
-  ): Promise<IUser[]> {
-    event.participants.push(user);
-    const updatedEvent: IEvent = await EventModel.findOneAndUpdate(
-      { _id: event.id },
-      { $push: { participants: user } }, 
-      { new: true } 
-    ).populate('participants'); 
-    return updatedEvent.participants;
-  }
+  // public static async addParticipant(
+  //   event: IEvent,
+  //   user: IUser
+  // ): Promise<IUser[]> {
+  //   event.participants.push(user);
+  //   const updatedEvent: IEvent = await EventModel.findOneAndUpdate(
+  //     { _id: event.id },
+  //     { $push: { participants: user } }, 
+  //     { new: true } 
+  //   ).populate('participants'); 
+  //   return updatedEvent.participants;
+  // }
+
 
 }

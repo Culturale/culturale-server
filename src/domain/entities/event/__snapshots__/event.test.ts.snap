@@ -11,7 +11,7 @@ Event {
   "descripcio": "test-descripcio",
   "horari": "2h",
   "id": undefined,
-  "participants": undefined,
+  "participants": [],
   "url": "test-adress",
 }
 `;

@@ -16,6 +16,7 @@ export class EventController {
       const eventDTO: CreateEventDto = req.body;
       const chat: Chat = await ChatRepository.createEmptyChat();
       await EventRepository.addEvent(eventDTO,chat.id);
+      console.log(eventDTO);
       res.status(200);
       res.json({
         message: 'event created',
@@ -135,6 +136,7 @@ export class EventController {
         res.json({
           message: 'user or event not found'
         });
+        return;
       }
       const castedEvent = new Event(newEvent as EventProps);
       castedEvent.updateParticipant(newParticipant);

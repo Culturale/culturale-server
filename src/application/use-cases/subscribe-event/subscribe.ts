@@ -5,10 +5,10 @@ import { EventController } from '~/application/controllers';
 
 export async function subscribe(req: Request, res: Response) {
     try {
-        // subscribe new user
+        // subscribe user
         await EventController.addParticipant(req, res);
 
-        res.status(201).json({
+        res.status(200).json({
             message: 'User subscribed successfully',
         });
     } catch (e) {

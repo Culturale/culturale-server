@@ -2,7 +2,7 @@ import express from 'express';
 
 import { UserController } from '~/application/controllers';
 import { logIn } from '~/application/use-cases';
-import { createUserDto, loginDto, deleteUserDto } from '~/infrastructure/dtos';
+import { createUserDto, editUserDTO, loginDto, deleteUserDto } from '~/infrastructure/dtos';
 import { authMiddleware } from '~/infrastructure/middlewares';
 
 export const userRouter = express.Router();
@@ -14,3 +14,5 @@ userRouter.get('/users', authMiddleware, UserController.getAllUsers);
 userRouter.post('/users/login', loginDto, logIn);
 
 userRouter.delete('/users/delete/:id', deleteUserDto, UserController.deleteUser);
+
+userRouter.post('/users/edit', editUserDTO, UserController.editUser);

@@ -1,9 +1,11 @@
-import { Types } from 'mongoose';
+// import { Types } from 'mongoose';
 
-import type { IChat } from '~/domain/entities/chat/chat.interface';
+// import type { IChat } from '~/domain/entities/chat/chat.interface';
+import type { CreateEventDto } from '~/infrastructure';
 
 import { Event } from './event';
 import type { IEvent } from './event.interface';
+
 
 describe('Event Entity', function () {
   let instance: IEvent;
@@ -13,18 +15,9 @@ describe('Event Entity', function () {
   beforeEach(function () {
     const time = Date.now();
     const date = new Date(time);
-    const chat: IChat = null;
+    const eventProps: CreateEventDto  = {codi: 20211006023, denominacio: 'test-denominacio' , descripcio: 'test-descripcio', dataIni: date, dataFi: date, horari: '2h', adress: 'test-adress', url: 'test-adress'};
     instance = new Event(
-      new Types.ObjectId('642414c21f0577394a8a3099'),
-      20211006023,
-      'test-denominacio',
-      'test-descripcio',
-      date,
-      date,
-      'test-horari',
-      'test-adress',
-      'test-url',
-      chat
+      eventProps,
     );
   });
 

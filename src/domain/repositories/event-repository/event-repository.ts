@@ -1,40 +1,45 @@
+
 import type { Chat, IChat } from '~/domain/entities/chat';
 import type { IEvent } from '~/domain/entities/event';
-import { Event } from '~/domain/entities/event';
 import { EventModel } from '~/domain/entities/event';
+// import type { IUser } from '~/domain/entities/user';
+import type { CreateEventDto } from '~/infrastructure';
+import type { MongoId } from '~/types/types';
 
 export class EventRepository {
-  public static async addEvent(event: IEvent, chat: IChat): Promise<IEvent> {
-    const document = await EventModel.create({
-      chat: chat.id,
+  public static async addEvent(event: CreateEventDto, chatId: MongoId): Promise<IEvent> {
+    const newEvent = await EventModel.create({
       ...event,
+      chat: chatId,
+      participants: [],
     });
-    const object = document.toObject();
-    return new Event(
-      object._id,
-      object.codi,
-      object.denominacio,
-      object.descripcio,
-      object.dataIni,
-      object.dataFi,
-      object.horari,
-      object.adress,
-      object.url,
-      object.chat
-    );
+
+    return newEvent;
   }
+
 
   public static async getAllEvents(): Promise<IEvent[]> {
     return await EventModel.find();
   }
-
-  public static async findEvent(codiEvent: string): Promise<IEvent> {
-    const event: IEvent = await EventModel.findOne({codi: codiEvent});
-    return event;
+  public static async deleteEvent(codi: string): Promise<void> {
+    await EventModel.deleteOne({id: codi });
   }
 
-  public static async editarEvent(oldEvent: IEvent, newEvent: IEvent): Promise<void> {
-    await EventModel.replaceOne(oldEvent, newEvent);
+  public static async findEvent(codiEvent: string): Promise<IEvent> {
+    const eventDocument = await EventModel.findOne({codi: codiEvent})
+    .populate({
+      path: 'participants',
+      model: 'User',
+    });
+    return eventDocument;
+  }
+
+  public static async editarEvent(newEvent: IEvent): Promise<void> {
+    const participants = newEvent.participants;
+    await EventModel.findByIdAndUpdate(newEvent.id, {
+      ...newEvent,
+      participants,
+    });
   }
 
 
@@ -50,4 +55,19 @@ export class EventRepository {
   ): Promise<void> {
     await EventModel.findOneAndUpdate(event, { chat: chat }, { new: true });
   }
+
+  // public static async addParticipant(
+  //   event: IEvent,
+  //   user: IUser
+  // ): Promise<IUser[]> {
+  //   event.participants.push(user);
+  //   const updatedEvent: IEvent = await EventModel.findOneAndUpdate(
+  //     { _id: event.id },
+  //     { $push: { participants: user } }, 
+  //     { new: true } 
+  //   ).populate('participants'); 
+  //   return updatedEvent.participants;
+  // }
+
+
 }

@@ -16,4 +16,19 @@ export class UserRepository {
   public static async deleteUser(id: String): Promise<IUser> {
     return await UserModel.findOneAndDelete({_id: id});
   }
+
+  public static async findUserByUserId(username: String): Promise<IUser> {
+    const user: IUser = await UserModel.findOne({ username: username });
+    if (!user) return null;
+    return user;
+  } 
+
+
+  public static async editarUsuari(oldUser: IUser, newUser: IUser): Promise<void> {
+    await UserModel.replaceOne(oldUser, newUser);
+  }
+
+  
+
 }
+ 

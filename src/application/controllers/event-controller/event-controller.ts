@@ -1,26 +1,25 @@
-/* eslint-disable quotes */
-/* eslint-disable no-console */
-import { emitWarning } from 'process';
-
 import type { Request, Response } from 'express';
 
 import type { Chat, IChat } from '~/domain/entities/chat';
-import type { IEvent } from '~/domain/entities/event';
+import { Event, EventProps, IEvent} from '~/domain/entities/event';
 import type { IMessage } from '~/domain/entities/message';
+import type { IUser } from '~/domain/entities/user';
+import { UserRepository } from '~/domain/repositories';
 import { ChatRepository } from '~/domain/repositories/chat-repository/chat-repository';
 import { EventRepository } from '~/domain/repositories/event-repository/event-repository';
 import { MessageRepository } from '~/domain/repositories/message-repository/message-repository';
+import type { CreateEventDto } from '~/infrastructure';
 
 export class EventController {
   public static async createEvent(req: Request, res: Response): Promise<void> {
     try {
-      const event: IEvent = req.body;
+      const eventDTO: CreateEventDto = req.body;
       const chat: Chat = await ChatRepository.createEmptyChat();
-      const eventCreated = await EventRepository.addEvent(event, chat);
+      await EventRepository.addEvent(eventDTO,chat.id);
       res.status(200);
       res.json({
         message: 'event created',
-        event: eventCreated,
+        event: eventDTO,
       });
     } catch (e) {
       res.status(500);
@@ -30,10 +29,7 @@ export class EventController {
     }
   }
 
-  public static async getAllEvents(
-    _req: Request,
-    res: Response
-  ): Promise<void> {
+  public static async getAllEvents( _req: Request, res: Response): Promise<void> {
     try {
       const events: IEvent[] = await EventRepository.getAllEvents();
       res.status(200);
@@ -50,14 +46,13 @@ export class EventController {
 
   public static async editEvent(req: Request, res: Response): Promise<void> {
     try{
-      const oldEvent= await EventRepository.findEvent(req.body.codi);
+      const oldEvent = await EventRepository.findEvent(req.body.codi);
       if (!oldEvent) {
         res.status(404).json({message: 'Evento no encontrado'});
         return;
-        }
+      }
       const newEvent: IEvent = {
-        id: oldEvent.id,
-        codi:oldEvent.codi,
+        ... oldEvent,
         denominacio: req.body.denominacio || oldEvent.denominacio,
         descripcio: req.body.descripcio || oldEvent.descripcio,
         dataIni: req.body.dataIni || oldEvent.dataIni,
@@ -65,12 +60,10 @@ export class EventController {
         horari: req.body.horari || oldEvent.horari,
         adress: req.body.adress || oldEvent.adress,
         url: req.body.url || oldEvent.adress,
-        chat:oldEvent.chat
+        chat: oldEvent.chat,
+        participants: oldEvent.participants,
       };
-      //await EventRepository.findEvent(req.body.codi);
-      
-
-      await EventRepository.editarEvent(oldEvent, newEvent);
+      await EventRepository.editarEvent(newEvent);
        res.status(500).json({message: 'Evento editado correctamente'});  
       }
     catch (e) {
@@ -85,16 +78,16 @@ export class EventController {
     req: Request,
     res: Response
   ): Promise<void> {
-    emitWarning("a");
     try {
       const codiEvent = req.body.codi;
-      console.log("A");
       const chatEvent: IChat = await EventRepository.getChatEvent(codiEvent);
-      console.log("A");
-      const newMessage: IMessage = await MessageRepository.addMessage(req.body.content, req.body.userId, req.body.data);
-      console.log("A");
+      if(!chatEvent){
+        res.status(404);
+        res.json({message:'event not found'});
+        return;
+      }
+      const newMessage: IMessage = await MessageRepository.addMessage(req.body.content, req.body.userId, req.body.date);
       const chat: Chat = await ChatRepository.addMessage(chatEvent, newMessage);
-      console.log("A");
       await EventRepository.modifyChatEvent(codiEvent, chat);
       res.status(200);
       res.json({ 
@@ -128,4 +121,54 @@ export class EventController {
       });
     }
   }
+  public static async addParticipant(
+    req: Request,
+    res: Response
+  ): Promise<void> {
+    try {
+      const codiEvent = req.body.codi;
+      const username = req.body.username;
+      const newEvent: IEvent = await EventRepository.findEvent(codiEvent);
+      const newParticipant: IUser = await UserRepository.findUserByUserId(username);
+      if(!newEvent || !newParticipant){
+        res.status(404);
+        res.json({
+          message: 'user or event not found'
+        });
+      }
+      const castedEvent = new Event(newEvent as EventProps);
+      castedEvent.updateParticipant(newParticipant);
+
+      await EventRepository.editarEvent(castedEvent);
+      
+      res.status(200);
+      res.json({
+        message: 'Participante añadido correctamente',
+        participants: newEvent.participants,
+      });
+    } catch (e) {
+      res.status(500);
+      res.json({
+        error: e,
+      });
+    }
+  }
+
+public static async deleteEvent(_req: Request, res: Response): Promise<void> {
+
+  try {
+    const codi: string = _req.body.id;
+    await EventRepository.deleteEvent(codi);
+    res.status(200);
+    res.json({
+      message: 'event deleted',
+    });
+  } catch (e) {
+    res.status(500);
+    res.json({
+      error: e,
+    });
+  }
+
+}
 }

@@ -29,7 +29,6 @@ describe('Event Routes', function () {
           adress: 'Passeig de Gràcia',
           url: 'https://test-url.com',
         });
-
       expect(res.statusCode).toBe(200);
     });
 
@@ -37,7 +36,6 @@ describe('Event Routes', function () {
       const res = await request(app).post('/events/create').send({
         codi: 123456789,
       });
-
       expect(res.statusCode).toBe(400);
     });
   });
@@ -63,6 +61,27 @@ describe('Event Routes', function () {
 
       expect(res.statusCode).toBe(200);
       expect(res.body.events).toHaveLength(2);
+    });
+  });
+
+  describe('POST events/newMessage', function () {
+    it('it sends a new message', async function () {
+      const res = await request(app).post('/events/newMessage').send({
+        codi: 12348173049,
+        userId: 'user1',
+        content: 'hola',
+        date: new Date(2),
+      });
+      expect(res.body.message).toBe('chat sent it');
+      expect(res.statusCode).toBe(200);
+    });
+    it('if the payload is incorrect returns an error', async function () {
+      const res = await request(app).post('/events/newMessage').send({
+        codi: 12348173049,
+        content: 'hola',
+        date: new Date(2),
+      });
+      expect(res.statusCode).toBe(500);
     });
   });
 
@@ -127,7 +146,52 @@ describe('Event Routes', function () {
 
     });
   });
-  
+
+
+  describe('GET /events/messages', function () { 
+    beforeEach(async function () {
+    await request(app)
+      .post('/events/newMessage')
+      .send({
+        codi: 12348173049,
+        userId: 'user1',
+        content: 'hola',
+        date: new Date(2),
+      });
+    });
+    it('returns the list of messages', async function () {
+      const res = await request(app).get('/events/messages').send({ codi: 12348173049});
+      expect(res.statusCode).toBe(200);
+      expect(res.body.messages).toHaveLength(2);
+    });
+  });
+
+  describe('POST /events/newParticipant', function () { 
+    beforeEach(async function () {
+      await request(app)
+        .post('/users/create')
+        .send({
+          email: 'email@example.com',
+          password: 'test-password',
+          username: 'test-username',
+          name: 'test-name',
+          profilePicture: 'test-imageurl',
+          phoneNumber: '000000000',
+          usertype: 'usuario',
+        });
+    });
+    it('if the payload is correct it adds the participant', async function () {
+      const res = await request(app)
+      .post('/events/newParticipant')
+      .send({
+        codi: 12348173049,
+        username: 'test-username',
+      });
+      expect(res.statusCode).toBe(200);
+      expect(res.body.message).toBe('Participante añadido correctamente');
+    });
+
+  });
 
 
 });

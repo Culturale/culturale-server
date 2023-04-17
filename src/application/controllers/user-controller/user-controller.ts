@@ -66,25 +66,26 @@ export class UserController {
    
   public static async editUser(req: Request, res: Response): Promise<void> {
     try{
-      const oldUser: IUser = await UserRepository.findUserByUserId(req.body.username);
+      const username: String = req.body.username;
+      const oldUser: IUser = await UserRepository.findUserByUserId(username);
       if(oldUser == null){
         res.status(400).json({message: 'El usuario indicado no existe'});
       }
-      else{
-        
-      const newUser = {
-        username: oldUser.username,
-        name: req.body.name || oldUser.name,
-        password: req.body.password || oldUser.password,
-        email: req.body.email || oldUser.email,
-        profilePicture: req.body.profilePicture || oldUser.profilePicture,
-        phoneNumber: req.body.phoneNumber || oldUser.phoneNumber,
-        usertype : oldUser.usertype
-      };
+      else {
+        const newUser = {
+          username: oldUser.username,
+          name: req.body.name || oldUser.name,
+          password: req.body.password || oldUser.password,
+          email: req.body.email || oldUser.email,
+          profilePicture: req.body.profilePicture || oldUser.profilePicture,
+          phoneNumber: req.body.phoneNumber || oldUser.phoneNumber,
+          usertype : oldUser.usertype
+        };
 
-      await UserRepository.editarUsuari(oldUser, newUser);
-       res.status(200).json({message: 'Ususario editado correctamente', user : newUser});  
-      }}
+        await UserRepository.editarUsuari(oldUser, newUser);
+        res.status(200).json({message: 'Ususario editado correctamente', user : newUser});  
+      }
+    }
     catch (e) {
         res.status(500);
         res.json({
@@ -92,9 +93,4 @@ export class UserController {
         });
       }
    }
-}
- 
-
-
-
-   
+}   

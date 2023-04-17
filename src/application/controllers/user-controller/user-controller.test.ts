@@ -20,7 +20,6 @@ describe('User Controller', function () {
     await mongoose.connection.close();
   });
 
-
   describe('createUser', function () {
     const req: Request = expressRequest;
     req.body = {
@@ -86,10 +85,6 @@ describe('User Controller', function () {
       });
     });
   });
-
-
-
-
 
 describe('EditPerfil', function () {
   const createReq: Request = expressRequest;
@@ -165,5 +160,25 @@ describe('EditPerfil', function () {
     });
   });
 });
+
+describe('getUserForUsername', function () {
+  const req: Request = expressRequest;
+  const res = {} as unknown as Response;
+  res.json = jest.fn();
+  res.status = jest.fn(() => res);
+  res.setHeader = jest.fn();
+
+  beforeEach(async function () {
+    await UserController.getUserForUsername(req, res);
+  });
+
+  it('returns 404 when username does not exists', function () {
+    expect(res.status).toBeCalledWith(404);
+    expect(res.json).toBeCalledWith({
+      message: 'Usuario no encontrado'
+    });
+  });
+});
+
 });
 

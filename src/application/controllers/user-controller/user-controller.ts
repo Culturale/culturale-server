@@ -54,7 +54,8 @@ export class UserController {
         email: req.body.email || oldUser.email,
         profilePicture: req.body.profilePicture || oldUser.profilePicture,
         phoneNumber: req.body.phoneNumber || oldUser.phoneNumber,
-        usertype : oldUser.usertype
+        usertype : oldUser.usertype,
+        followers : oldUser.followers
       };
 
       await UserRepository.editarUsuari(oldUser, newUser);

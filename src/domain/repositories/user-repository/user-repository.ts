@@ -6,7 +6,7 @@ export class UserRepository {
   public static async addUser(user: IUser): Promise<IUser> {
     const res = await UserModel.create(user);
     const object = res.toObject();
-    return new User(object.username, object.name, object.password, object.email, object.profilePicture, object.phoneNumber, object.usertype);
+    return new User(object.username, object.name, object.password, object.email, object.profilePicture, object.phoneNumber, object.usertype, object.followers);
   }
 
   public static async getAllUsers(): Promise<IUser[]> {

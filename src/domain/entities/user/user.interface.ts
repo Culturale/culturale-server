@@ -6,5 +6,5 @@ export interface IUser {
     profilePicture: string;
     phoneNumber: string;
     usertype: string;
-
+    followers?: IUser[];
 }

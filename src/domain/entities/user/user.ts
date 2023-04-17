@@ -8,8 +8,9 @@ export class User implements IUser {
     public profilePicture: string;
     public phoneNumber: string;
     public usertype: string;
+    public followers?: IUser[];
 
-    constructor(username: string, name: string, password: string, email: string, profilePicture: string, phoneNumber: string, usertype: string) {
+    constructor(username: string, name: string, password: string, email: string, profilePicture: string, phoneNumber: string, usertype: string, followers: IUser[]) {
         this.username = username;
         this.name = name;
         this.password = password;
@@ -17,5 +18,6 @@ export class User implements IUser {
         this.profilePicture = profilePicture;
         this.phoneNumber = phoneNumber;
         this.usertype = usertype;
+        this.followers = followers;
     }
 }

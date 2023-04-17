@@ -18,6 +18,11 @@ export class User implements IUser {
         this.profilePicture = profilePicture;
         this.phoneNumber = phoneNumber;
         this.usertype = usertype;
-        this.followers = followers;
+        this.followers = followers || [];
+    }
+    
+    public updateFollowers(newFollower: IUser): void {
+        const newFollowers = [...this.followers, newFollower];
+        this.followers = newFollowers;
     }
 }

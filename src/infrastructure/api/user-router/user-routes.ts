@@ -13,4 +13,4 @@ userRouter.get('/users', authMiddleware, UserController.getAllUsers);
 
 userRouter.post('/users/login', loginDto, logIn);
 
-userRouter.post("/users/delete/:id", deleteUserDto, UserController.deleteUser);
+userRouter.delete('/users/delete/:id', deleteUserDto, UserController.deleteUser);

@@ -14,3 +14,5 @@ userRouter.get('/users', authMiddleware, UserController.getAllUsers);
 userRouter.post('/users/login', loginDto, logIn);
 
 userRouter.post('/users/edit', editUserDTO, UserController.editUser);
+
+userRouter.get('/users/username', UserController.getUserForUsername);

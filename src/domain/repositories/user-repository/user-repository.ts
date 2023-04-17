@@ -23,8 +23,5 @@ export class UserRepository {
   public static async editarUsuari(oldUser: IUser, newUser: IUser): Promise<void> {
     await UserModel.replaceOne(oldUser, newUser);
   }
-
-  
-
 }
  

@@ -1,7 +1,8 @@
 import type { Request, Response } from 'express';
 
 import type { Chat, IChat } from '~/domain/entities/chat';
-import { Event, EventProps, IEvent} from '~/domain/entities/event';
+import type { EventProps, IEvent} from '~/domain/entities/event';
+import { Event} from '~/domain/entities/event';
 import type { IMessage } from '~/domain/entities/message';
 import type { IUser } from '~/domain/entities/user';
 import { UserRepository } from '~/domain/repositories';
@@ -16,7 +17,6 @@ export class EventController {
       const eventDTO: CreateEventDto = req.body;
       const chat: Chat = await ChatRepository.createEmptyChat();
       await EventRepository.addEvent(eventDTO,chat.id);
-      console.log(eventDTO);
       res.status(200);
       res.json({
         message: 'event created',

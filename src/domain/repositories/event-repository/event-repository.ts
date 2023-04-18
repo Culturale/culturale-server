@@ -1,6 +1,10 @@
+
 import type { Chat, IChat } from '~/domain/entities/chat';
 import type { IEvent } from '~/domain/entities/event';
 import { EventModel } from '~/domain/entities/event';
+import { IUser } from '~/domain/entities/user';
+import type { CreateEventDto } from '~/infrastructure';
+
 
 export class EventRepository {
 
@@ -8,30 +12,41 @@ export class EventRepository {
     await EventModel.findByIdAndDelete(codi);
     
   }
-  public static async addEvent(event: IEvent, chat: IChat): Promise<IEvent> {
-    await EventModel.create({
+  
+  public static async addEvent(event: CreateEventDto, chatId: IChat): Promise<IEvent> {
+    const newEvent = await EventModel.create({
       ...event,
-      chat: event.chat?.id,
+      chat: chatId,
+      participants: [],
     });
-    return event;
+
+    return newEvent;
   }
+
 
   public static async getAllEvents(): Promise<IEvent[]> {
     return await EventModel.find();
   }
 
   public static async findEvent(codiEvent: string): Promise<IEvent> {
-    const event: IEvent = await EventModel.findOne({codi: codiEvent});
-    return event;
+    const eventDocument = await EventModel.findOne({codi: codiEvent})
+    .populate({
+      path: 'participants',
+      model: 'User',
+    });
+    return eventDocument;
   }
 
   public static async editarEvent(newEvent: IEvent): Promise<void> {
     const chat = newEvent.chat;
     const valoracions = newEvent.valoracions;
+    const participants = newEvent.participants;
     await EventModel.findByIdAndUpdate(newEvent.id, 
       {...newEvent,
       chat,
+      participants,
       valoracions});
+      
   }
 
 
@@ -47,5 +62,19 @@ export class EventRepository {
   ): Promise<void> {
     await EventModel.findOneAndUpdate(event, { chat: chat }, { new: true });
   }
+
+   public static async addParticipant(
+     event: IEvent,
+     user: IUser
+   ): Promise<IUser[]> {
+     event.participants.push(user);
+     const updatedEvent: IEvent = await EventModel.findOneAndUpdate(
+       { _id: event.id },
+       { $push: { participants: user } }, 
+       { new: true } 
+     ).populate('participants'); 
+     return updatedEvent.participants;
+   }
+
 
 }

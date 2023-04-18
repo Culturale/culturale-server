@@ -1,0 +1,10 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Chat Entity can be created 1`] = `
+Message {
+  "_id": "6423f909d626b03e800a9858",
+  "content": "test-content",
+  "date": 1970-01-01T00:00:00.002Z,
+  "userId": "test-userId",
+}
+`;

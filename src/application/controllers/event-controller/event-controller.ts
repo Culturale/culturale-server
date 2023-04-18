@@ -1,9 +1,11 @@
 import type { Request, Response } from 'express';
 
 import type { Chat, IChat } from '~/domain/entities/chat';
-import type { IEvent } from '~/domain/entities/event';
+import type { EventProps, IEvent } from '~/domain/entities/event';
 import { Event } from '~/domain/entities/event';
 import type { IMessage } from '~/domain/entities/message';
+import { IUser } from '~/domain/entities/user';
+import { UserRepository } from '~/domain/repositories';
 import { ChatRepository } from '~/domain/repositories/chat-repository/chat-repository';
 import { EventRepository } from '~/domain/repositories/event-repository/event-repository';
 import { MessageRepository } from '~/domain/repositories/message-repository/message-repository';
@@ -12,7 +14,7 @@ import { EditEventDTO } from '~/infrastructure';
 export class EventController {
   public static async createEvent(req: Request, res: Response): Promise<void> {
     try {
-      const event: IEvent = req.body;
+      const event: Event = req.body;
       const chat: Chat = await ChatRepository.createEmptyChat();
       const eventCreated = await EventRepository.addEvent(event, chat);
       res.status(200);
@@ -117,7 +119,38 @@ export class EventController {
       });
     }
   }
+  public static async addParticipant(
+    req: Request,
+    res: Response
+  ): Promise<void> {
+    try {
+      const codiEvent = req.body.codi;
+      const username = req.body.username;
+      const newEvent: IEvent = await EventRepository.findEvent(codiEvent);
+      const newParticipant: IUser = await UserRepository.findUserByUserId(username);
+      if(!newEvent || !newParticipant){
+        res.status(404);
+        res.json({
+          message: 'user or event not found'
+        });
+      }
+      const castedEvent = new Event(newEvent as EventProps);
+      castedEvent.updateParticipant(newParticipant);
 
+      await EventRepository.editarEvent(castedEvent);
+      
+      res.status(200);
+      res.json({
+        message: 'Participante añadido correctamente',
+        participants: newEvent.participants,
+      });
+    } catch (e) {
+      res.status(500);
+      res.json({
+        error: e,
+      });
+    }
+  }
 public static async deleteEvent(_req: Request, res: Response): Promise<void> {
 
   try {

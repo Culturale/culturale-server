@@ -6,11 +6,16 @@ import { EventRepository } from '~/domain/repositories';
 export async function makeReview(req: Request, res: Response): Promise<void> {
   res.setHeader('Content-Type', 'application/json');
     try {
-
+      console.log("MAKEREVIEW");
       const newValoracio: IReview = req.body;
+      console.log("a");
       const event: IEvent = await EventRepository.findEvent(newValoracio.eventCode);
-      const oldValoracions: IReview[] =  event.valoracions;
-      const newValoracions: IReview[] = [];
+      console.log(event);
+      console.log("b");
+      const oldValoracions =  event.valoracions;
+      console.log("c");
+      var newValoracions: IReview[] = [];
+      console.log("d");
       if (event) {
         for (const val of oldValoracions) {
           if (val.author === newValoracio.author) {

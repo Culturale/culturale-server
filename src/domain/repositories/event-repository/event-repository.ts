@@ -17,9 +17,8 @@ export class EventRepository {
     const newEvent = await EventModel.create({
       ...event,
       chat: chatId,
-      participants: [],
     });
-
+    console.log(newEvent);
     return newEvent;
   }
 

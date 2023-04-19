@@ -15,8 +15,11 @@ export class EventController {
   public static async createEvent(req: Request, res: Response): Promise<void> {
     try {
       const event: Event = req.body;
+      console.log(event);
       const chat: Chat = await ChatRepository.createEmptyChat();
+      console.log(chat);
       const eventCreated = await EventRepository.addEvent(event, chat);
+      console.log(eventCreated);
       res.status(200);
       res.json({
         message: 'event created',

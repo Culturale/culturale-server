@@ -1,8 +1,10 @@
+//import { useContainer } from 'class-validator';
 import * as dotenv from 'dotenv';
 import type { Request, Response } from 'express';
 import { request as expressRequest } from 'express';
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import mongoose from 'mongoose';
+//import { UserModel } from '~/domain/entities/user';
 
 import { UserController } from './user-controller';
 
@@ -165,5 +167,49 @@ describe('EditPerfil', function () {
     });
   });
 });
+
+
+describe('add follower user', function () { 
+  const expressRequest: Request = {} as Request;
+  const reqUser: Request = JSON.parse(JSON.stringify(expressRequest));
+  reqUser.body = {
+    email: 'email@example.com',
+    password: 'test-password',
+    username: 'test-username',
+    name: 'test-name',
+    profilePicture: 'test-imageurl',
+    phoneNumber: '000000000',
+    usertype: 'usuario',
+  };
+  const resUser = {} as unknown as Response;
+  resUser.json = jest.fn();
+  resUser.status = jest.fn(() => resUser);
+  resUser.setHeader = jest.fn();
+
+  const reqAddFoll: Request = JSON.parse(JSON.stringify(expressRequest));
+    reqAddFoll.body = {
+      username: 'test-username-followed', //usuaio al cual se le añade un nuevo follower
+      follower: reqUser, //usuario el cual ha de ser añadido a la lista de followers
+    };
+    const resAddFoll = {} as unknown as Response;
+    resAddFoll.json = jest.fn();
+    resAddFoll.status = jest.fn(() => resAddFoll);
+    resAddFoll.setHeader = jest.fn();
+  
+  
+  beforeEach(async function () {
+    await UserController.createUser(reqUser, resUser);
+    await UserController.addFollower(reqAddFoll, resAddFoll);
+  });
+
+  it('returns the followers', function () {
+    expect(resAddFoll.status).toBeCalledWith(200);
+    expect(resAddFoll.json).toBeCalledWith(expect.objectContaining({
+      message: 'Follower añadido correctamente',
+    }));
+  }); 
+});
+
+
 });
 

@@ -1,7 +1,7 @@
 import bcrypt from 'bcrypt';
 import type { Request, Response } from 'express';
 
-import type { IUser, User, UserProps, } from '~/domain/entities/user';
+import { IUser, User, UserProps, } from '~/domain/entities/user';
 import { UserRepository } from '~/domain/repositories/user-repository/user-repository';
 
 export class UserController {
@@ -47,7 +47,8 @@ export class UserController {
       }
       else{
         
-      const newUser = {
+      const newUser : IUser = {
+        ...oldUser,
         username: oldUser.username,
         name: req.body.name || oldUser.name,
         password: req.body.password || oldUser.password,
@@ -58,7 +59,7 @@ export class UserController {
         followers : oldUser.followers
       };
 
-      await UserRepository.editarUsuari(oldUser, newUser);
+      await UserRepository.editarUsuari(newUser);
        res.status(200).json({message: 'Ususario editado correctamente', user : newUser});  
       }}
     catch (e) {
@@ -76,7 +77,7 @@ export class UserController {
     try {
       const username = req.body.username;
       const newUserFollowed: IUser = await UserRepository.findUserByUserId(username);
-      const newFollower: IUser = await UserRepository.findUserByUserId(username);
+      const newFollower = req.body.follower;
       if(!newFollower || !newUserFollowed){
         res.status(404);
         res.json({
@@ -86,7 +87,7 @@ export class UserController {
       const castedUser = new User(newUserFollowed as UserProps);
       castedUser.updateFollowers(newFollower);
 
-      await UserRepository.editarUsuari(newUserFollowed, castedUser);
+      await UserRepository.editarUsuari(castedUser);
       
       res.status(200);
       res.json({

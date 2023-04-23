@@ -20,7 +20,7 @@ export class User implements IUser {
     public profilePicture: string;
     public phoneNumber: string;
     public usertype: string;
-    public followers?: IUser[];
+    public followers: IUser[];
 
     constructor(props: UserProps) {
         const {username, name, password, email, profilePicture, phoneNumber, usertype, followers} = props;

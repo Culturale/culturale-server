@@ -1,7 +1,7 @@
 import bcrypt from 'bcrypt';
 import type { Request, Response } from 'express';
 
-import type { IUser } from '~/domain/entities/user';
+import type { IUser, User, UserProps, } from '~/domain/entities/user';
 import { UserRepository } from '~/domain/repositories/user-repository/user-repository';
 
 export class UserController {
@@ -68,6 +68,38 @@ export class UserController {
         });
       }
    }
+
+   public static async addFollower(
+    req: Request,
+    res: Response
+  ): Promise<void> {
+    try {
+      const username = req.body.username;
+      const newUserFollowed: IUser = await UserRepository.findUserByUserId(username);
+      const newFollower: IUser = await UserRepository.findUserByUserId(username);
+      if(!newFollower || !newUserFollowed){
+        res.status(404);
+        res.json({
+          message: 'user followed or new follow not found'
+        });
+      }
+      const castedUser = new User(newUserFollowed as UserProps);
+      castedUser.updateFollowers(newFollower);
+
+      await UserRepository.editarUsuari(newUserFollowed, castedUser);
+      
+      res.status(200);
+      res.json({
+        message: 'Follower añadido correctamente',
+        participants: newFollower.followers,
+      });
+    } catch (e) {
+      res.status(500);
+      res.json({
+        error: e,
+      });
+    }
+  }
 }
  
 

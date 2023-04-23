@@ -1,5 +1,17 @@
 import type { IUser } from './user.interface';
 
+export type UserProps = {
+    username: string;
+    name: string;
+    password: string;
+    email: string;
+    profilePicture: string;
+    phoneNumber: string;
+    usertype: string;
+    followers?: IUser[];
+};
+
+  
 export class User implements IUser {
     public username: string;
     public name: string;
@@ -10,7 +22,8 @@ export class User implements IUser {
     public usertype: string;
     public followers?: IUser[];
 
-    constructor(username: string, name: string, password: string, email: string, profilePicture: string, phoneNumber: string, usertype: string, followers: IUser[]) {
+    constructor(props: UserProps) {
+        const {username, name, password, email, profilePicture, phoneNumber, usertype, followers} = props;
         this.username = username;
         this.name = name;
         this.password = password;
@@ -24,5 +37,9 @@ export class User implements IUser {
     public updateFollowers(newFollower: IUser): void {
         const newFollowers = [...this.followers, newFollower];
         this.followers = newFollowers;
+    }
+    public get followersUsernames(): string[] {
+        const ids = this.followers.map((follower) => follower.username);
+        return ids;
     }
 }

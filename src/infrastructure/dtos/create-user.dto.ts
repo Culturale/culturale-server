@@ -4,7 +4,7 @@ import type { NextFunction, Request, Response } from 'express';
 
 const usertypes = ['usuario', 'empresa'] as const;
 
-class CreateUserDto {
+export class CreateUserDto {
     @IsString()
     @IsNotEmpty()
     username: string;

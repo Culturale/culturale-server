@@ -6,9 +6,9 @@ export interface IUser {
     profilePicture: string;
     phoneNumber: string;
     usertype: string;
-    followers: IUser[];
+    followers?: IUser[];
 
-    updateFollower: (newFollower: IUser) => void;
+    updateFollowers: (newFollower: IUser) => void;
 }
 
 

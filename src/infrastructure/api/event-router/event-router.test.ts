@@ -84,6 +84,7 @@ describe('Event Routes', function () {
       expect(res.statusCode).toBe(500);
     });
   });
+
   describe('POST /events/edit', function () {
     it('if the payload is correct it modifies the event', async function () {
         await request(app)
@@ -145,7 +146,52 @@ describe('Event Routes', function () {
 
     });
   });
-  
+
+
+  describe('GET /events/messages', function () { 
+    beforeEach(async function () {
+    await request(app)
+      .post('/events/newMessage')
+      .send({
+        codi: 12348173049,
+        userId: 'user1',
+        content: 'hola',
+        date: new Date(2),
+      });
+    });
+    it('returns the list of messages', async function () {
+      const res = await request(app).get('/events/messages').send({ codi: 12348173049});
+      expect(res.statusCode).toBe(200);
+      expect(res.body.messages).toHaveLength(2);
+    });
+  });
+
+  describe('POST /events/newParticipant', function () { 
+    beforeEach(async function () {
+      await request(app)
+        .post('/users/create')
+        .send({
+          email: 'email@example.com',
+          password: 'test-password',
+          username: 'test-username',
+          name: 'test-name',
+          profilePicture: 'test-imageurl',
+          phoneNumber: '000000000',
+          usertype: 'usuario',
+        });
+    });
+    it('if the payload is correct it adds the participant', async function () {
+      const res = await request(app)
+      .post('/events/newParticipant')
+      .send({
+        codi: 12348173049,
+        username: 'test-username',
+      });
+      expect(res.statusCode).toBe(200);
+      expect(res.body.message).toBe('Participante añadido correctamente');
+    });
+
+  });
 
 
 });

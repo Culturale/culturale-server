@@ -1,6 +1,9 @@
 import type { IChat } from '~/domain/entities/chat/chat.interface';
 import type { MongoId } from '~/types/types';
 import { IReview } from '../review';
+
+import type { IUser } from '../user';
+
 export interface IEvent {
  
   id: MongoId;
@@ -16,4 +19,7 @@ export interface IEvent {
   valoracions?: IReview[];
   
   updateValoracions: (valoracions: IReview[]) => void;
+  participants?: IUser[];
+
+  updateParticipant: (newParticipant: IUser) => void;
 }

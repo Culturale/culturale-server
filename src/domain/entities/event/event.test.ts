@@ -1,10 +1,13 @@
+// import { Types } from 'mongoose';
+
+// import type { IChat } from '~/domain/entities/chat/chat.interface';
 import type { CreateEventDto } from '~/infrastructure';
 
 import { Event } from './event';
-import type { IEvent } from './event.interface';
+
 
 describe('Event Entity', function () {
-  let instance: IEvent;
+  let instance: Event;
 
   const dateSpy = jest.spyOn(Date, 'now').mockImplementation(() => 1234);
 

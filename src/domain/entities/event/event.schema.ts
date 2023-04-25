@@ -12,8 +12,10 @@ const EventSchema = new Schema({
   descripcio: { required: true, type: String },
   horari: { required: false, type: String },
   url: { required: true, type: String },
-  valoracions: { required: false, type: [Schema.Types.ObjectId], ref: 'Review' }
+  valoracions: { required: false, type: [Schema.Types.ObjectId], model: 'Review' },
+  participants: { required: false, type: [Schema.Types.ObjectId], model: 'User' },
 });
+
 
 const EventModel = model<IEvent>('Event', EventSchema);
 

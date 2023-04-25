@@ -1,19 +1,26 @@
+
 import type { Chat, IChat } from '~/domain/entities/chat';
 import type { IEvent } from '~/domain/entities/event';
 import { EventModel } from '~/domain/entities/event';
+// import type { IUser } from '~/domain/entities/user';
+import type { CreateEventDto } from '~/infrastructure';
+import type { MongoId } from '~/types/types';
 
 export class EventRepository {
+  public static async addEvent(event: CreateEventDto, chatId: MongoId): Promise<IEvent> {
+    const newEvent = await EventModel.create({
+      ...event,
+      chat: chatId,
+      participants: [],
+      valoracions: [],
+    });
+    console.log(newEvent);
+    return newEvent;
+  }
 
   public static async deleteEvent(codi: string): Promise<void> {
     await EventModel.findByIdAndDelete(codi);
     
-  }
-  public static async addEvent(event: IEvent, chat: IChat): Promise<IEvent> {
-    await EventModel.create({
-      ...event,
-      chat: event.chat?.id,
-    });
-    return event;
   }
 
   public static async getAllEvents(): Promise<IEvent[]> {
@@ -21,17 +28,23 @@ export class EventRepository {
   }
 
   public static async findEvent(codiEvent: string): Promise<IEvent> {
-    const event: IEvent = await EventModel.findOne({codi: codiEvent});
-    return event;
+    const eventDocument = await EventModel.findOne({codi: codiEvent})
+    .populate({
+      path: 'participants',
+      model: 'User',
+    });
+    return eventDocument;
   }
 
   public static async editarEvent(newEvent: IEvent): Promise<void> {
-    const chat = newEvent.chat;
+    const participants = newEvent.participants;
     const valoracions = newEvent.valoracions;
-    await EventModel.findByIdAndUpdate(newEvent.id, 
-      {...newEvent,
-      chat,
-      valoracions});
+    console.log(newEvent.id)
+    await EventModel.findByIdAndUpdate(newEvent.id, {
+      ...newEvent,
+      participants,
+      valoracions,
+    });
   }
 
 
@@ -47,5 +60,19 @@ export class EventRepository {
   ): Promise<void> {
     await EventModel.findOneAndUpdate(event, { chat: chat }, { new: true });
   }
+
+  // public static async addParticipant(
+  //   event: IEvent,
+  //   user: IUser
+  // ): Promise<IUser[]> {
+  //   event.participants.push(user);
+  //   const updatedEvent: IEvent = await EventModel.findOneAndUpdate(
+  //     { _id: event.id },
+  //     { $push: { participants: user } }, 
+  //     { new: true } 
+  //   ).populate('participants'); 
+  //   return updatedEvent.participants;
+  // }
+
 
 }

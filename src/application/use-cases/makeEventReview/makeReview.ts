@@ -1,5 +1,5 @@
 import type { Request, Response } from 'express';
-import { IEvent } from '~/domain/entities/event';
+import { Event, EventProps, IEvent } from '~/domain/entities/event';
 import { IReview } from '~/domain/entities/review';
 import { EventRepository } from '~/domain/repositories';
 
@@ -9,7 +9,8 @@ export async function makeReview(req: Request, res: Response): Promise<void> {
 
       const newValoracio: IReview = req.body;
       const event: IEvent = await EventRepository.findEvent(newValoracio.eventCode);
-      const oldValoracions: IReview[] =  event.valoracions;
+      const castedEvent = new Event(event as EventProps);
+      const oldValoracions: IReview[] =  event.valoracions || [];
       const newValoracions: IReview[] = [];
       if (event) {
         for (const val of oldValoracions) {
@@ -21,9 +22,13 @@ export async function makeReview(req: Request, res: Response): Promise<void> {
             }
           }
       newValoracions.push(newValoracio);
-      event.updateValoracions([...oldValoracions, ...newValoracions]);
-      await EventRepository.editarEvent(event);
-        res.status(200).json({
+      console.log([...oldValoracions, ...newValoracions])
+      castedEvent.updateValoracions([...oldValoracions, ...newValoracions]);
+      console.log("E")
+      console.log(castedEvent)
+      await EventRepository.editarEvent(castedEvent);
+      console.log("F")
+      res.status(200).json({
           message: 'Valoracion añadida correctamente',
           newValoracio,
         });

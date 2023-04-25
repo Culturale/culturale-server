@@ -37,13 +37,13 @@ export class EventRepository {
   }
 
   public static async editarEvent(newEvent: IEvent): Promise<void> {
-    const participants = newEvent.participants;
+    /*const participants = newEvent.participants;
     const valoracions = newEvent.valoracions;
-    console.log(newEvent.id)
+    console.log(newEvent.id)*/
     await EventModel.findByIdAndUpdate(newEvent.id, {
       ...newEvent,
-      participants,
-      valoracions,
+     /* participants,
+      valoracions,*/
     });
   }
 

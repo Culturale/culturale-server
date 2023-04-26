@@ -2,6 +2,7 @@
 import type { Chat, IChat } from '~/domain/entities/chat';
 import type { IEvent } from '~/domain/entities/event';
 import { EventModel } from '~/domain/entities/event';
+import { IReview } from '~/domain/entities/review';
 // import type { IUser } from '~/domain/entities/user';
 import type { CreateEventDto } from '~/infrastructure';
 import type { MongoId } from '~/types/types';
@@ -14,7 +15,6 @@ export class EventRepository {
       participants: [],
       valoracions: [],
     });
-    console.log(newEvent);
     return newEvent;
   }
 
@@ -37,17 +37,24 @@ export class EventRepository {
   }
 
   public static async editarEvent(newEvent: IEvent): Promise<void> {
-    /*const participants = newEvent.participants;
+    const participants = newEvent.participants;
     const valoracions = newEvent.valoracions;
-    console.log(newEvent.id)*/
     await EventModel.findByIdAndUpdate(newEvent.id, {
       ...newEvent,
-     /* participants,
-      valoracions,*/
+     participants,
+      valoracions,
     });
   }
 
-
+  public static async modifyValoracions(
+    event: IEvent,
+    newValoracions: IReview[],
+  ): Promise<void> {
+    console.log("update")
+    console.log(newValoracions)
+   console.log( await EventModel.findByIdAndUpdate( event.id ,
+     { valoracions: newValoracions }, {new:true}));
+  }
   public static async getChatEvent(codi: number): Promise<IChat | null> {
     const event = await EventModel.findOne({ codi: codi });
     if (!event) return null;

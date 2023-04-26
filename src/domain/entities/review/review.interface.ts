@@ -5,5 +5,5 @@ export interface IReview {
   author: string;
   eventCode: string; 
   puntuation: number;
-  comment?: string[];     
+  comment?: string;     
 }

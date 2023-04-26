@@ -6,9 +6,9 @@ const ReviewSchema = new Schema({
   author: { required: true, type: String },
   eventCode: { required: true, type: String }, 
   puntuation: { required: true, type: Number},
-  comment: { required: false, type:  [String]}
+  comment: { required: false, type:  String}
 });
 
-const MessageModel = model<IReview>('Review', ReviewSchema);
+const ReviewModel = model<IReview>('Review', ReviewSchema);
 
-export { MessageModel };
+export { ReviewModel };

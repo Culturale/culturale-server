@@ -82,7 +82,7 @@ describe('Make Review use case', function () {
       expect(resMessage.status).toBeCalledWith(200);
       expect(resMessage.json).toBeCalledWith(expect.objectContaining({
         message: 'Valoracion añadida correctamente',
-        newValoracio: {
+        newValoracioDTO: {
           author: "user1",
           eventCode: 12348173050,
           puntuation: 5,
@@ -92,5 +92,32 @@ describe('Make Review use case', function () {
     }); 
   });
 
+  describe('Make Review', function () { 
+    const expressRequest: Request = {} as Request;
+    const reqMessage: Request = JSON.parse(JSON.stringify(expressRequest));
+    reqMessage.body = {
+      author: "user1",
+      eventCode: 12348173050,
+      puntuation: 1,
+      comment: "0/ 10,no recomanable"
+    };
+    
+    const resMessage = {} as unknown as Response;
+    resMessage.json = jest.fn();
+    resMessage.status = jest.fn(() => resMessage);
+    resMessage.setHeader = jest.fn();
+    
+    beforeEach(async function () {
+    await  makeReview(reqMessage, resMessage);
+    });
+    
+
+    it('returns error as the user already valorated the event', function () {
+      expect(resMessage.status).toBeCalledWith(404);
+      expect(resMessage.json).toBeCalledWith(expect.objectContaining({
+        message: 'Usuario user1 ya ha valorado este evento',
+      }));
+    }); 
+  });
 
 });

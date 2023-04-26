@@ -3,7 +3,9 @@ import type { Request, Response } from 'express';
 import { request as expressRequest } from 'express';
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import mongoose from 'mongoose';
+
 import { EventController } from '~/application/controllers/event-controller';
+
 import { makeReview } from './makeReview';
 
 
@@ -62,10 +64,10 @@ describe('Make Review use case', function () {
     const expressRequest: Request = {} as Request;
     const reqMessage: Request = JSON.parse(JSON.stringify(expressRequest));
     reqMessage.body = {
-      author: "user1",
+      author: 'user1',
       eventCode: 12348173050,
       puntuation: 5,
-      comment: "10/ 10, recomanable"
+      comment: '10/ 10, recomanable'
     };
     
     const resMessage = {} as unknown as Response;
@@ -83,10 +85,10 @@ describe('Make Review use case', function () {
       expect(resMessage.json).toBeCalledWith(expect.objectContaining({
         message: 'Valoracion añadida correctamente',
         newValoracioDTO: {
-          author: "user1",
+          author: 'user1',
           eventCode: 12348173050,
           puntuation: 5,
-          comment: "10/ 10, recomanable",
+          comment: '10/ 10, recomanable',
         }
       }));
     }); 
@@ -96,10 +98,10 @@ describe('Make Review use case', function () {
     const expressRequest: Request = {} as Request;
     const reqMessage: Request = JSON.parse(JSON.stringify(expressRequest));
     reqMessage.body = {
-      author: "user1",
+      author: 'user1',
       eventCode: 12348173050,
       puntuation: 1,
-      comment: "0/ 10,no recomanable"
+      comment: '0/ 10,no recomanable'
     };
     
     const resMessage = {} as unknown as Response;

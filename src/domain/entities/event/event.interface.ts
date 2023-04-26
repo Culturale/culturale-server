@@ -1,7 +1,7 @@
 import type { IChat } from '~/domain/entities/chat/chat.interface';
 import type { MongoId } from '~/types/types';
-import { IReview } from '../review';
 
+import type { IReview } from '../review';
 import type { IUser } from '../user';
 
 export interface IEvent {

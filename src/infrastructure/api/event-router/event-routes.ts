@@ -1,8 +1,8 @@
 import express from 'express';
 
 import { EventController } from '~/application';
-import { createEventDto, editEventDTO } from '~/infrastructure/dtos';
 import { makeReview } from '~/application/use-cases/makeEventReview';
+import { createEventDto, editEventDTO } from '~/infrastructure/dtos';
 import { makeReviewDTO } from '~/infrastructure/dtos/make-review.dto';
 
 export const eventRouter = express.Router();

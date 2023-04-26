@@ -1,10 +1,10 @@
 import type { MongoId } from '~/types/types';
 
 import type { IChat } from '../chat';
+import type { IReview } from '../review';
 import type { IUser } from '../user';
 
 import type { IEvent } from './event.interface';
-import { IReview } from '../review';
 
 export type EventProps = {
   id?: MongoId;

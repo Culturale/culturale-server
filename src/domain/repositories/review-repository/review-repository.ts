@@ -1,5 +1,6 @@
-import { ObjectId } from 'mongodb';
-import { IReview } from '~/domain/entities/review';
+import type { ObjectId } from 'mongodb';
+
+import type { IReview } from '~/domain/entities/review';
 import { ReviewModel } from '~/domain/entities/review';
 
 export class ReviewRepository {
@@ -11,7 +12,7 @@ export class ReviewRepository {
       eventCode: eventCode,
       comment: comment || null,
     });
-    console.log(review)
+
     return review;
   }
   public static async findValoracioById(id: ObjectId): Promise<IReview> {

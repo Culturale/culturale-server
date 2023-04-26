@@ -1,9 +1,10 @@
 import type { Request, Response } from 'express';
-import {  IEvent } from '~/domain/entities/event';
-import { IReview } from '~/domain/entities/review';
+
+import type {  IEvent } from '~/domain/entities/event';
+import type { IReview } from '~/domain/entities/review';
 import { EventRepository } from '~/domain/repositories';
 import { ReviewRepository } from '~/domain/repositories/review-repository';
-import { MakeReviewDTO } from '~/infrastructure/dtos/make-review.dto';
+import type { MakeReviewDTO } from '~/infrastructure/dtos/make-review.dto';
 
 export async function makeReview(req: Request, res: Response): Promise<void> {
   res.setHeader('Content-Type', 'application/json');
@@ -15,7 +16,6 @@ export async function makeReview(req: Request, res: Response): Promise<void> {
       const event: IEvent = await EventRepository.findEvent(newIReview.eventCode);
       const oldValoracions: IReview[] =  event.valoracions || [];
       const newValoracions: IReview[] = [];
-      console.log(event)
       if (event) {
         for (const val of oldValoracions) {
           const valo = await ReviewRepository.findValoracioById(val._id);
@@ -40,7 +40,7 @@ export async function makeReview(req: Request, res: Response): Promise<void> {
         });
       } else {
         res.status(404).json({
-          message: `Event not found`,
+          message: 'Event not found',
         });
       }
     } catch (e) {

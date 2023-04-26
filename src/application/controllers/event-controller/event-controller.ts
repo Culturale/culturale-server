@@ -1,7 +1,8 @@
 import type { Request, Response } from 'express';
 
 import type { Chat, IChat } from '~/domain/entities/chat';
-import { Event, EventProps, IEvent} from '~/domain/entities/event';
+import type { EventProps, IEvent} from '~/domain/entities/event';
+import { Event} from '~/domain/entities/event';
 import type { IMessage } from '~/domain/entities/message';
 import type { IUser } from '~/domain/entities/user';
 import { UserRepository } from '~/domain/repositories';

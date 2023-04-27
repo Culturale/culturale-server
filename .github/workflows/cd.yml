@@ -2,14 +2,21 @@ name: CD
 
 on:
   push:
-    branches:
-      - 'main'
-      - 'setup/CD'
+    tags:
+      - 'v*.*.*'
 
 jobs:
-  docker:
+  push-docker-image:
     runs-on: ubuntu-latest
     steps:
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set Release version
+        run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
+      - name: Test
+        run: |
+          echo $RELEASE_VERSION
+          echo ${{ env.RELEASE_VERSION }}
       -
         name: Set up QEMU
         uses: docker/setup-qemu-action@v2
@@ -27,4 +34,4 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           push: true
-          tags: culturale/culturale-api:latest
+          tags: culturale/culturale-api:${{env.RELEASE_VERSION}}

@@ -129,12 +129,10 @@ describe('EditPerfil', function () {
     editRes.setHeader = jest.fn();
 
      await UserController.editUser(editReq, editRes);
-  
     expect(editRes.status).toBeCalledWith(200);
     expect(editRes.json).toBeCalledWith({
       message:'Ususario editado correctamente',
       user:{
-          __v: 0,
           email: 'email1@example.com',
           password: 'test-password1',
           username: 'test-username',
@@ -142,6 +140,8 @@ describe('EditPerfil', function () {
           profilePicture: 'test-imageurl1',
           phoneNumber: '111111111',
           usertype: 'usuario',
+          followers: [],
+
         },
     });
   });

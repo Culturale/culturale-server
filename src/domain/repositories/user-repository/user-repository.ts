@@ -1,4 +1,4 @@
-import type { IUser } from '~/domain/entities/user';
+import { IUser, User, UserProps } from '~/domain/entities/user';
 //import { User } from '~/domain/entities/user';
 import { UserModel } from '~/domain/entities/user';
 import type { CreateUserDto } from '~/infrastructure';
@@ -17,15 +17,16 @@ export class UserRepository {
   }
 
   public static async findUserByUserId(username: String): Promise<IUser> {
-    const user: IUser = await UserModel.findOne({ username: username });
-    if (!user) return null;
+    const userDoc = await UserModel.findOne({ username: username });
+    const user = new User(userDoc as UserProps);
+    if (!userDoc) return null;
     return user;
   } 
 
 
   public static async editarUsuari(newUser: IUser): Promise<void> {
     const followers = newUser.followers;
-    await UserModel.findByIdAndUpdate(newUser.username, {
+    await UserModel.findOneAndUpdate({username: newUser.username}, {
       ...newUser,
       followers,
     });

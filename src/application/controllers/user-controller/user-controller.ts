@@ -42,8 +42,10 @@ export class UserController {
   public static async editUser(req: Request, res: Response): Promise<void> {
     try{
       const oldUser: IUser = await UserRepository.findUserByUserId(req.body.username);
-      if(oldUser == null){
+      console.log(oldUser)
+      if(oldUser === null){
         res.status(400).json({message: 'El usuario indicado no existe'});
+        return;
       }
       else{
         
@@ -58,8 +60,11 @@ export class UserController {
         usertype : oldUser.usertype,
         followers : oldUser.followers
       };
-
+      
+      console.log("new", newUser)
       await UserRepository.editarUsuari(newUser);
+      console.log("A")
+      console.log("new2", newUser)
        res.status(200).json({message: 'Ususario editado correctamente', user : newUser});  
       }}
     catch (e) {

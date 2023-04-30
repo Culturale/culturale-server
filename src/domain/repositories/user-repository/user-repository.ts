@@ -29,9 +29,12 @@ export class UserRepository {
 
   public static async editarUsuari(newUser: IUser): Promise<void> {
     const followers = newUser.followers;
+    const followeds = newUser.followeds;
+    
     await UserModel.findByIdAndUpdate(newUser.id, {
       ...newUser,
       followers,
+      followeds,
     });
   }
 

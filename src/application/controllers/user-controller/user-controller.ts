@@ -98,7 +98,8 @@ export class UserController {
       
 
       await UserRepository.editarUsuari(castedUser);
-      
+      await UserRepository.editarUsuari(castedUser2);
+
       res.status(200);
       res.json({
         message: 'Follower i followed añadido correctamente',

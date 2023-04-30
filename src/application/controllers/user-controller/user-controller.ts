@@ -99,7 +99,7 @@ export class UserController {
       res.status(200);
       res.json({
         message: 'Follower añadido correctamente',
-        participants: newFollower.followers,
+        followers: newUser.followers,
       });
     } catch (e) {
       res.status(500);

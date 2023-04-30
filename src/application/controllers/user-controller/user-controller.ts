@@ -1,7 +1,8 @@
 import bcrypt from 'bcrypt';
 import type { Request, Response } from 'express';
 
-import { IUser, User, UserProps } from '~/domain/entities/user';
+import type { IUser, UserProps } from '~/domain/entities/user';
+import { User } from '~/domain/entities/user';
 import { UserRepository } from '~/domain/repositories/user-repository/user-repository';
 
 export class UserController {
@@ -60,12 +61,10 @@ export class UserController {
       };
 
       await UserRepository.editarUsuari(newUser);
-      const { id, ...userProps } = newUser; // Excluye el campo 'id' del objeto 'newUser'
+      const { ...userProps } = newUser; // Excluye el campo 'id' del objeto 'newUser'
       const castedUser = new User(userProps as UserProps);
       res.status(200).json({message: 'Usuario editado correctamente', user: castedUser});
 
-      //const castedUser = new User(newUser as UserProps);
-       //res.status(200).json({message: 'Ususario editado correctamente', user : castedUser});  
       }}
       catch (e) {
         res.status(500);

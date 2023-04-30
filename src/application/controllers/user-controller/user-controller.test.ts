@@ -129,7 +129,6 @@ describe('EditPerfil', function () {
     editRes.setHeader = jest.fn();
 
      await UserController.editUser(editReq, editRes);
-  
     expect(editRes.status).toBeCalledWith(200);
     expect(editRes.json).toBeCalledWith({
       message:'Ususario editado correctamente',

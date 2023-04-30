@@ -1,7 +1,7 @@
 import bcrypt from 'bcrypt';
 import type { Request, Response } from 'express';
 
-import { IUser, User, UserProps, } from '~/domain/entities/user';
+import { IUser, User, UserProps } from '~/domain/entities/user';
 import { UserRepository } from '~/domain/repositories/user-repository/user-repository';
 
 export class UserController {
@@ -46,7 +46,6 @@ export class UserController {
         res.status(400).json({message: 'El usuario indicado no existe'});
       }
       else{
-        
       const newUser : IUser = {
         ...oldUser,
         username: oldUser.username,
@@ -56,11 +55,12 @@ export class UserController {
         profilePicture: req.body.profilePicture || oldUser.profilePicture,
         phoneNumber: req.body.phoneNumber || oldUser.phoneNumber,
         usertype : oldUser.usertype,
-        followers : oldUser.followers
+        followers : oldUser.followers,
       };
 
       await UserRepository.editarUsuari(newUser);
-       res.status(200).json({message: 'Ususario editado correctamente', user : newUser});  
+      const castedUser = new User(newUser as UserProps);
+       res.status(200).json({message: 'Ususario editado correctamente', user : castedUser});  
       }}
     catch (e) {
         res.status(500);
@@ -76,15 +76,17 @@ export class UserController {
   ): Promise<void> {
     try {
       const username = req.body.username;
-      const newUserFollowed: IUser = await UserRepository.findUserByUserId(username);
-      const newFollower = req.body.follower;
-      if(!newFollower || !newUserFollowed){
+      const follower = req.body.follower;
+      const newFollower: IUser = await UserRepository.findUserByUserId(follower);
+      const newUser: IUser = await UserRepository.findUserByUserId(username);
+      
+      if(!newUser || !newFollower){
         res.status(404);
         res.json({
           message: 'user followed or new follow not found'
         });
       }
-      const castedUser = new User(newUserFollowed as UserProps);
+      const castedUser = new User(newUser as UserProps);
       castedUser.updateFollowers(newFollower);
 
       await UserRepository.editarUsuari(castedUser);

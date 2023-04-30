@@ -25,7 +25,7 @@ export class UserRepository {
 
   public static async editarUsuari(newUser: IUser): Promise<void> {
     const followers = newUser.followers;
-    await UserModel.findByIdAndUpdate(newUser.username, {
+    await UserModel.findByIdAndUpdate(newUser.id, {
       ...newUser,
       followers,
     });

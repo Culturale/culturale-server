@@ -134,7 +134,6 @@ describe('EditPerfil', function () {
     expect(editRes.json).toBeCalledWith({
       message:'Ususario editado correctamente',
       user:{
-          __v: 0,
           email: 'email1@example.com',
           password: 'test-password1',
           username: 'test-username',
@@ -142,6 +141,7 @@ describe('EditPerfil', function () {
           profilePicture: 'test-imageurl1',
           phoneNumber: '111111111',
           usertype: 'usuario',
+          followers: [],
         },
     });
   });
@@ -172,10 +172,10 @@ describe('EditPerfil', function () {
 describe('add follower user', function () { 
   const expressRequest: Request = {} as Request;
   const reqUser: Request = JSON.parse(JSON.stringify(expressRequest));
-  reqUser.body = {
+  reqUser.body = { //usaurio añadido en la lista
     email: 'email@example.com',
     password: 'test-password',
-    username: 'test-username',
+    username: 'test-username-follower',
     name: 'test-name',
     profilePicture: 'test-imageurl',
     phoneNumber: '000000000',
@@ -188,8 +188,8 @@ describe('add follower user', function () {
 
   const reqAddFoll: Request = JSON.parse(JSON.stringify(expressRequest));
     reqAddFoll.body = {
-      username: 'test-username-followed', //usuaio al cual se le añade un nuevo follower
-      follower: reqUser, //usuario el cual ha de ser añadido a la lista de followers
+      username: 'test-username', //usuaio al cual se le añade un nuevo follower
+      follower: 'test-username-follower', //nuevo segidor añadido a ls lista
     };
     const resAddFoll = {} as unknown as Response;
     resAddFoll.json = jest.fn();

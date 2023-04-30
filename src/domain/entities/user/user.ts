@@ -1,6 +1,10 @@
+import type { MongoId } from '~/types/types';
+
+
 import type { IUser } from './user.interface';
 
 export type UserProps = {
+    id?: MongoId;
     username: string;
     name: string;
     password: string;
@@ -13,6 +17,7 @@ export type UserProps = {
 
   
 export class User implements IUser {
+    public id: MongoId;
     public username: string;
     public name: string;
     public password: string;
@@ -23,7 +28,8 @@ export class User implements IUser {
     public followers: IUser[];
 
     constructor(props: UserProps) {
-        const {username, name, password, email, profilePicture, phoneNumber, usertype, followers} = props;
+        const {id, username, name, password, email, profilePicture, phoneNumber, usertype, followers} = props;
+        this.id = id;
         this.username = username;
         this.name = name;
         this.password = password;

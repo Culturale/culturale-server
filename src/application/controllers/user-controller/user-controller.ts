@@ -42,7 +42,6 @@ export class UserController {
   public static async editUser(req: Request, res: Response): Promise<void> {
     try{
       const oldUser: IUser = await UserRepository.findUserByUserId(req.body.username);
-      console.log(oldUser)
       if(oldUser === null){
         res.status(400).json({message: 'El usuario indicado no existe'});
         return;
@@ -59,13 +58,16 @@ export class UserController {
         usertype : oldUser.usertype,
         followers : oldUser.followers,
       };
-      
-      console.log("new", newUser)
+
       await UserRepository.editarUsuari(newUser);
-      const castedUser = new User(newUser as UserProps);
-       res.status(200).json({message: 'Ususario editado correctamente', user : castedUser});  
+      const { id, ...userProps } = newUser; // Excluye el campo 'id' del objeto 'newUser'
+      const castedUser = new User(userProps as UserProps);
+      res.status(200).json({message: 'Usuario editado correctamente', user: castedUser});
+
+      //const castedUser = new User(newUser as UserProps);
+       //res.status(200).json({message: 'Ususario editado correctamente', user : castedUser});  
       }}
-    catch (e) {
+      catch (e) {
         res.status(500);
         res.json({
           error: e,

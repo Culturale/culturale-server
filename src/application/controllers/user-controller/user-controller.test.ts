@@ -131,7 +131,7 @@ describe('EditPerfil', function () {
      await UserController.editUser(editReq, editRes);
     expect(editRes.status).toBeCalledWith(200);
     expect(editRes.json).toBeCalledWith({
-      message:'Ususario editado correctamente',
+      message:'Usuario editado correctamente',
       user:{
           email: 'email1@example.com',
           password: 'test-password1',
@@ -141,6 +141,7 @@ describe('EditPerfil', function () {
           phoneNumber: '111111111',
           usertype: 'usuario',
           followers: [],
+          id: undefined,
         },
     });
   });

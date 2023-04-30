@@ -161,7 +161,7 @@ describe('EditPerfil', function () {
 
      await UserController.editUser(editReq, editRes);
   
-    expect(editRes.status).toBeCalledWith(400);
+    expect(editRes.status).toBeCalledWith(404);
     expect(editRes.json).toBeCalledWith({
       message:'El usuario indicado no existe',
     });

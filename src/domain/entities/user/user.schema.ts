@@ -13,6 +13,9 @@ const UserSchema = new Schema({
     followers: [
         { required: true, type: Schema.Types.ObjectId, model: 'User' },
       ],
+    followeds: [
+        { required: true, type: Schema.Types.ObjectId, model: 'User' },
+      ],
 });
 
 const UserModel = model<IUser>('User', UserSchema);

@@ -92,13 +92,16 @@ export class UserController {
         });
       }
       const castedUser = new User(newUser as UserProps);
-      castedUser.updateFollowers(newFollower);
+      castedUser.updateFollowers(newFollower); //los que te siguen a ti -> se añade newFollower como seguidor en el perfil de newUser
+      const castedUser2 = new User(newFollower as UserProps);
+      castedUser2.updateFolloweds(newUser); //los que tu sigues -> se añade newUser como nueva persona seguida en el perfil de newFollower
+      
 
       await UserRepository.editarUsuari(castedUser);
       
       res.status(200);
       res.json({
-        message: 'Follower añadido correctamente',
+        message: 'Follower i followed añadido correctamente',
         followers: newUser.followers,
       });
     } catch (e) {

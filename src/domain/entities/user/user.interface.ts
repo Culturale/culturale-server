@@ -9,9 +9,11 @@ export interface IUser {
     profilePicture: string;
     phoneNumber: string;
     usertype: string;
-    followers: IUser[];
+    followers: IUser[]; //gente q me sigue
+    followeds: IUser[]; //gente a la que sigo
 
     updateFollowers: (newFollower: IUser) => void;
+    updateFolloweds: (newFollowed:IUser) => void;
 }
 
 

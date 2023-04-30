@@ -141,6 +141,7 @@ describe('EditPerfil', function () {
           phoneNumber: '111111111',
           usertype: 'usuario',
           followers: [],
+          followeds:[],
           id: undefined,
         },
     });
@@ -205,7 +206,7 @@ describe('add follower user', function () {
   it('returns the followers', function () {
     expect(resAddFoll.status).toBeCalledWith(200);
     expect(resAddFoll.json).toBeCalledWith(expect.objectContaining({
-      message: 'Follower añadido correctamente',
+      message: 'Follower i followed añadido correctamente',
     }));
   }); 
 });

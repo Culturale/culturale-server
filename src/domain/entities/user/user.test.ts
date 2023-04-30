@@ -17,22 +17,4 @@ describe('User Entity', function () {
   it('can be created', function () {
     expect(instance).toMatchSnapshot();
   });
-  /*
-
-  it('can be created', function () {
-    expect(instance).toMatchObject({
-        user: {
-          email: 'test-email',
-          password: 'test-password',
-          username: 'test-username',
-          name: 'test-name',
-          profilePicture: 'test-profilePicture',
-          phoneNumber: 'test-phone',
-          usertype: 'test-type',
-          followers: [],
-          id: undefined,
-        },
-    });
-  });
-  */
 });

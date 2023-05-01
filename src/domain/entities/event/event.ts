@@ -58,7 +58,10 @@ export class Event implements IEvent {
     const ids = this.participants.map((participant) => participant.username);
     return ids;
   }
-  public updateValoracions(newValoracions: IReview[]): void{
+  public updateValoracions(newValoracio: IReview): void{
+     console.log("a")
+    const newValoracions = [...this.valoracions, newValoracio];
+    console.log(newValoracions);
     this.valoracions = newValoracions;
   } 
 }

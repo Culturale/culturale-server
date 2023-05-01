@@ -1,6 +1,6 @@
 
 import type { Chat, IChat } from '~/domain/entities/chat';
-import type { IEvent } from '~/domain/entities/event';
+import { EventProps, IEvent, Event } from '~/domain/entities/event';
 import { EventModel } from '~/domain/entities/event';
 import type { IReview } from '~/domain/entities/review';
 // import type { IUser } from '~/domain/entities/user';
@@ -32,8 +32,14 @@ export class EventRepository {
     .populate({
       path: 'participants',
       model: 'User',
-    });
-    return eventDocument;
+    })
+    .populate({
+      path: 'valoracions',
+      model: 'Review',
+      });
+      
+    const eventBuscat:IEvent = new Event(eventDocument as EventProps)
+    return eventBuscat;
   }
 
   public static async editarEvent(newEvent: IEvent): Promise<void> {

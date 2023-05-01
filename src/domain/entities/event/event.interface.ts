@@ -18,7 +18,7 @@ export interface IEvent {
   chat: IChat;
   valoracions?: IReview[];
   
-  updateValoracions: (valoracions: IReview[]) => void;
+  updateValoracions: (newValoracio: IReview) => void;
   participants?: IUser[];
 
   updateParticipant: (newParticipant: IUser) => void;

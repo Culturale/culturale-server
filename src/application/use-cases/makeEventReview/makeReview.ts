@@ -1,5 +1,4 @@
 import type { Request, Response } from 'express';
-
 import type {  IEvent } from '~/domain/entities/event';
 import type { IReview } from '~/domain/entities/review';
 import { EventRepository } from '~/domain/repositories';
@@ -12,10 +11,8 @@ export async function makeReview(req: Request, res: Response): Promise<void> {
 
       const newValoracioDTO: MakeReviewDTO = req.body;
       const newIReview: IReview = await ReviewRepository.addReview(newValoracioDTO.eventCode, newValoracioDTO.author, newValoracioDTO.puntuation, newValoracioDTO.comment);
-
       const event: IEvent = await EventRepository.findEvent(newIReview.eventCode);
-      const oldValoracions: IReview[] =  event.valoracions || [];
-      const newValoracions: IReview[] = [];
+      const oldValoracions: IReview[] =  event.valoracions;
       if (event) {
         for (const val of oldValoracions) {
           const valo = await ReviewRepository.findValoracioById(val._id);
@@ -26,9 +23,9 @@ export async function makeReview(req: Request, res: Response): Promise<void> {
             return;
             }
           }
-      newValoracions.push(newIReview);
+     event.updateValoracions(newIReview);
       try{
-      await EventRepository.modifyValoracions(event,[...oldValoracions, ...newValoracions] );
+      await EventRepository.editarEvent(event);
       }
       catch (e){
         res.status(119);
@@ -38,6 +35,7 @@ export async function makeReview(req: Request, res: Response): Promise<void> {
           message: 'Valoracion añadida correctamente',
           newValoracioDTO,
         });
+       return ;
       } else {
         res.status(404).json({
           message: 'Event not found',

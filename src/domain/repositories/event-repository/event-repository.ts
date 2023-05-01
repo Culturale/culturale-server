@@ -52,14 +52,7 @@ export class EventRepository {
     });
   }
 
-  public static async modifyValoracions(
-    event: IEvent,
-    newValoracions: IReview[],
-  ): Promise<void> {
-    
-     await EventModel.findByIdAndUpdate( event.id ,
-     { valoracions: newValoracions }, {new:true});
-  }
+ 
   public static async getChatEvent(codi: number): Promise<IChat | null> {
     const event = await EventModel.findOne({ codi: codi });
     if (!event) return null;

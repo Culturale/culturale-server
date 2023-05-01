@@ -139,7 +139,6 @@ export class EventController {
       }
       const castedEvent = new Event(newEvent as EventProps);
       castedEvent.updateParticipant(newParticipant);
-
       await EventRepository.editarEvent(castedEvent);
       
       res.status(200);

@@ -59,9 +59,7 @@ export class Event implements IEvent {
     return ids;
   }
   public updateValoracions(newValoracio: IReview): void{
-     console.log("a")
     const newValoracions = [...this.valoracions, newValoracio];
-    console.log(newValoracions);
     this.valoracions = newValoracions;
   } 
 }

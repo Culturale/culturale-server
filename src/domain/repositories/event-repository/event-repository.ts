@@ -1,6 +1,7 @@
 
 import type { Chat, IChat } from '~/domain/entities/chat';
-import { EventProps, IEvent, Event } from '~/domain/entities/event';
+import type { EventProps, IEvent} from '~/domain/entities/event';
+import { Event } from '~/domain/entities/event';
 import { EventModel } from '~/domain/entities/event';
 // import type { IUser } from '~/domain/entities/user';
 import type { CreateEventDto } from '~/infrastructure';
@@ -32,13 +33,13 @@ export class EventRepository {
       path: 'participants',
       model: 'User',
     })
-    .populate({
-      path: 'valoracions',
-      model: 'Review',
-      });
-      
-    const eventBuscat:IEvent = new Event(eventDocument as EventProps)
+    ;
+
+    if(eventDocument){
+    const eventBuscat:IEvent = new Event(eventDocument as EventProps);
     return eventBuscat;
+    }
+    else return null;
   }
 
   public static async editarEvent(newEvent: IEvent): Promise<void> {

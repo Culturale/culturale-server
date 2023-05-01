@@ -9,7 +9,13 @@ const UserSchema = new Schema({
     password: { required: true, type: String },
     phoneNumber: { required: true, type: String },
     profilePicture: { required: true, type: String },
-    usertype: { required: true, type: String }
+    usertype: { required: true, type: String },
+    followers: [
+        { required: true, type: Schema.Types.ObjectId, model: 'User' },
+      ],
+    followeds: [
+        { required: true, type: Schema.Types.ObjectId, model: 'User' },
+      ],
 });
 
 const UserModel = model<IUser>('User', UserSchema);

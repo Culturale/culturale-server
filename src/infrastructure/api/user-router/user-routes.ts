@@ -13,4 +13,6 @@ userRouter.get('/users', authMiddleware, UserController.getAllUsers);
 
 userRouter.post('/users/login', loginDto, logIn);
 
-userRouter.post('/users/edit', editUserDTO, UserController.editUser);
+userRouter.post('/users/edit', editUserDTO, UserController.editUser); //falta test ruta
+
+userRouter.post('/users/newFollower', UserController.addFollower); //falta test ruta

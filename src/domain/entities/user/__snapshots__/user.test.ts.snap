@@ -3,6 +3,9 @@
 exports[`User Entity can be created 1`] = `
 User {
   "email": "test-email",
+  "followeds": [],
+  "followers": [],
+  "id": undefined,
   "name": "test-name",
   "password": "test-password",
   "phoneNumber": "test-phone",

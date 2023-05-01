@@ -3,7 +3,6 @@ import type { Chat, IChat } from '~/domain/entities/chat';
 import type { EventProps, IEvent} from '~/domain/entities/event';
 import { Event } from '~/domain/entities/event';
 import { EventModel } from '~/domain/entities/event';
-// import type { IUser } from '~/domain/entities/user';
 import type { CreateEventDto } from '~/infrastructure';
 import type { MongoId } from '~/types/types';
 
@@ -18,13 +17,13 @@ export class EventRepository {
     return newEvent;
   }
 
-  public static async deleteEvent(codi: string): Promise<void> {
-    await EventModel.findByIdAndDelete(codi);
-    
-  }
+  
 
   public static async getAllEvents(): Promise<IEvent[]> {
     return await EventModel.find();
+  }
+  public static async deleteEvent(codi: string): Promise<void> {
+    await EventModel.deleteOne({codi: codi });
   }
 
   public static async findEvent(codiEvent: string): Promise<IEvent> {
@@ -65,19 +64,6 @@ export class EventRepository {
   ): Promise<void> {
     await EventModel.findOneAndUpdate(event, { chat: chat }, { new: true });
   }
-
-  // public static async addParticipant(
-  //   event: IEvent,
-  //   user: IUser
-  // ): Promise<IUser[]> {
-  //   event.participants.push(user);
-  //   const updatedEvent: IEvent = await EventModel.findOneAndUpdate(
-  //     { _id: event.id },
-  //     { $push: { participants: user } }, 
-  //     { new: true } 
-  //   ).populate('participants'); 
-  //   return updatedEvent.participants;
-  // }
 
 
 }

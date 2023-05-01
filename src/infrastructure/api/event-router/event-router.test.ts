@@ -64,6 +64,21 @@ describe('Event Routes', function () {
     });
   });
 
+  describe('POST /events/delete', function () {
+    beforeEach(async function () {
+      await request(app)
+        .post('/events/delete')
+        .send({
+          id: 12348173049,
+        });
+    });
+    it('returns the list of events', async function () {
+      const res = await request(app).get('/events');
+      expect(res.statusCode).toBe(200);
+      expect(res.body.events).toHaveLength(1);
+    });
+  });
+
   describe('POST events/newMessage', function () {
     it('it sends a new message', async function () {
       const res = await request(app).post('/events/newMessage').send({
@@ -190,7 +205,16 @@ describe('Event Routes', function () {
       expect(res.statusCode).toBe(200);
       expect(res.body.message).toBe('Participante añadido correctamente');
     });
-
+    it('if the payload is incorrect it sends the error', async function () {
+      const res = await request(app)
+      .post('/events/newParticipant')
+      .send({
+        codi: 12348173000,
+        username: 'test-username',
+      });
+      expect(res.statusCode).toBe(404);
+      expect(res.body.message).toBe('user or event not found');
+    });
   });
 
 

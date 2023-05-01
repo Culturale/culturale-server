@@ -136,6 +136,7 @@ export class EventController {
         res.json({
           message: 'user or event not found'
         });
+        return;
       }
       const castedEvent = new Event(newEvent as EventProps);
       castedEvent.updateParticipant(newParticipant);

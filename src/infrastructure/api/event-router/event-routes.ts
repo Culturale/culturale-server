@@ -14,3 +14,4 @@ eventRouter.get('/events/messages', EventController.getAllMessages);
 eventRouter.get('/events', EventController.getAllEvents);
 
 eventRouter.post('/events/edit', editEventDTO, EventController.editEvent );
+eventRouter.post('/events/delete', EventController.deleteEvent );

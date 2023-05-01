@@ -39,10 +39,36 @@ export class UserController {
     }
   }
 
+  public static async getUserForUsername(req: Request, res: Response): Promise<void> {
+    try {
+      const username: String = req.body.username;
+      const user: IUser = await UserRepository.findUserByUserId(username);
+      if (user) {
+        res.status(200);
+        res.json({
+          message: 'Usuario encontrado',
+          user: user
+        });
+      }
+      else {
+        res.status(404);
+        res.json({
+          message: 'Usuario no encontrado' 
+        });
+      }
+    }
+    catch (e) {
+      res.status(500);
+      res.json({
+        error: e,
+      });
+    }
+  }
    
   public static async editUser(req: Request, res: Response): Promise<void> {
     try{
-      const oldUser: IUser = await UserRepository.findUserByUserId(req.body.username);
+      const username: String = req.body.username;
+      const oldUser: IUser = await UserRepository.findUserByUserId(username);
       if(!oldUser){
         res.status(404).json({message: 'El usuario indicado no existe'});
         return;

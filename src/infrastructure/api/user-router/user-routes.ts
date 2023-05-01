@@ -15,4 +15,5 @@ userRouter.post('/users/login', loginDto, logIn);
 
 userRouter.post('/users/edit', editUserDTO, UserController.editUser); //falta test ruta
 
+userRouter.get('/users/username', UserController.getUserForUsername);
 userRouter.post('/users/newFollower', UserController.addFollower); //falta test ruta

@@ -2,7 +2,6 @@
 import type { Chat, IChat } from '~/domain/entities/chat';
 import { EventProps, IEvent, Event } from '~/domain/entities/event';
 import { EventModel } from '~/domain/entities/event';
-import type { IReview } from '~/domain/entities/review';
 // import type { IUser } from '~/domain/entities/user';
 import type { CreateEventDto } from '~/infrastructure';
 import type { MongoId } from '~/types/types';

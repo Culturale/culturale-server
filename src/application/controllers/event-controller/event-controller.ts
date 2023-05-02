@@ -4,7 +4,8 @@ import type { Chat, IChat } from '~/domain/entities/chat';
 import type { EventProps, IEvent} from '~/domain/entities/event';
 import { Event} from '~/domain/entities/event';
 import type { IMessage } from '~/domain/entities/message';
-import type { IUser } from '~/domain/entities/user';
+import { User} from '~/domain/entities/user';
+import type { UserProps, IUser} from '~/domain/entities/user';
 import { UserRepository } from '~/domain/repositories';
 import { ChatRepository } from '~/domain/repositories/chat-repository/chat-repository';
 import { EventRepository } from '~/domain/repositories/event-repository/event-repository';
@@ -141,7 +142,12 @@ export class EventController {
       const castedEvent = new Event(newEvent as EventProps);
       castedEvent.updateParticipant(newParticipant);
 
+      const castedUser = new User (newParticipant as UserProps);
+      castedUser.updateEventsSubs(newEvent);
+
       await EventRepository.editarEvent(castedEvent);
+
+      await UserRepository.editarUsuari(castedUser);
       
       res.status(200);
       res.json({

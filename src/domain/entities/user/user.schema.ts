@@ -16,6 +16,9 @@ const UserSchema = new Schema({
     followeds: [
         { required: true, type: Schema.Types.ObjectId, model: 'User' },
       ],
+    eventsSubs: [
+      { required: true, type: Schema.Types.ObjectId, model: 'Event' },
+    ],
 });
 
 const UserModel = model<IUser>('User', UserSchema);

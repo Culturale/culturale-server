@@ -165,5 +165,28 @@ describe('EditPerfil', function () {
     });
   });
 });
+
+describe('deleteUser', function () {
+  const req: Request = expressRequest;
+  req.params = {id: '0'};
+
+  const res = {} as unknown as Response;
+  res.json = jest.fn();
+  res.status = jest.fn(() => res);
+  res.setHeader = jest.fn();
+
+  /*beforeEach(async function () {
+    await UserController.createUser(req, res);
+  });*/
+
+  it('Dont exist user', function () {
+    UserController.deleteUser(req, res);
+    expect(res.status).toBeCalledWith(500);
+    expect(res.json).toBeCalledWith({
+      error: 'Cannot find user with that id'
+    });
+  });
+});
+
 });
 

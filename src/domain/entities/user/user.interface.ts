@@ -1,5 +1,6 @@
 import type { MongoId } from '~/types/types';
-import { IEvent } from '../event';
+
+import type { IEvent } from '../event';
 
 export interface IUser {
     id: MongoId;

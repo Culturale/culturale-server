@@ -1,6 +1,6 @@
 import type { MongoId } from '~/types/types';
 
-import { IEvent } from '../event';
+import type { IEvent } from '../event';
 
 import type { IUser } from './user.interface';
 
@@ -13,7 +13,7 @@ export type UserProps = {
     profilePicture: string;
     phoneNumber: string;
     usertype: string;
-    eventsSubs: IEvent[];
+    eventsSubs?: IEvent[];
     followers?: IUser[];
     followeds?: IUser[];
 };

@@ -135,6 +135,7 @@ describe('EditPerfil', function () {
           profilePicture: 'test-imageurl1',
           phoneNumber: '111111111',
           usertype: 'usuario',
+          eventsSubs:[],
           followers: [],
           followeds:[],
           id: undefined,

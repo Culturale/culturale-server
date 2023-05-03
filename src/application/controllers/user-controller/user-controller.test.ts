@@ -174,7 +174,7 @@ describe('deleteUser', function () {
   res1.setHeader = jest.fn();
 
   // Esta parte depende del funcionamiento de "createUser"
-  const userUsername: string = 'test-username';
+  const userUsername = 'test-username';
   const req2: Request = expressRequest;
   req2.body = {
     email: 'email@example.com',

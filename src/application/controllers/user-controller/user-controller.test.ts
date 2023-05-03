@@ -167,25 +167,82 @@ describe('EditPerfil', function () {
 });
 
 describe('deleteUser', function () {
-  const req: Request = expressRequest;
-  req.params = {id: '0'};
+  const req1: Request = expressRequest;
+  req1.params = {id: '0'};
 
-  const res = {} as unknown as Response;
-  res.json = jest.fn();
-  res.status = jest.fn(() => res);
-  res.setHeader = jest.fn();
+  const res1 = {} as unknown as Response;
+  res1.json = jest.fn();
+  res1.status = jest.fn(() => res1);
+  res1.setHeader = jest.fn();
 
-  /*beforeEach(async function () {
-    await UserController.createUser(req, res);
-  });*/
+  // Esta parte depende del funcionamiento de "createUser"
+  const userUsername: string = 'test-username';
+  const req2: Request = expressRequest;
+  req2.body = {
+    email: 'email@example.com',
+    password: 'test-password',
+    username: userUsername,
+    name: 'test-name',
+    profilePicture: 'test-imageurl',
+    phoneNumber: '000000000',
+    usertype: 'usuario',
+  };
+
+  const res2 = {} as unknown as Response;
+  res2.json = jest.fn();
+  res2.status = jest.fn(() => res2);
+  res2.setHeader = jest.fn();
+
+  const req3: Request = expressRequest;
+  const res3 = {} as unknown as Response;
+  res3.json = jest.fn();
+  res3.status = jest.fn(() => res3);
+  res3.setHeader = jest.fn();
+
+  const req4: Request = expressRequest;
+  const res4 = {} as unknown as Response;
+  res4.json = jest.fn();
+  res4.status = jest.fn(() => res4);
+  res4.setHeader = jest.fn();
+
+
+
+
+  beforeAll(async function () {
+    // Prerequisito primer test
+    await UserController.deleteUser(req1, res1);
+
+    // Prerequisito segundo test
+    // Creamos el usuario que posteriormente será eliminado
+    await UserController.createUser(req2, res2);
+
+    // Buscamos al usuario que será eliminado
+    await UserController.getAllUsers(req3, res3);
+    const obj = (res3.json as jest.Mock).mock.calls[(res3.json as jest.Mock).mock.calls.length - 1][0];
+    const userId: string = obj.users[0]._id;
+    //console.log('ID: ' + userId);
+
+    // Eliminamos el usuario que acabamos de crear
+    req4.params = {id: userId};
+    await UserController.deleteUser(req4, res4);
+
+  });
 
   it('Dont exist user', function () {
-    UserController.deleteUser(req, res);
-    expect(res.status).toBeCalledWith(500);
-    expect(res.json).toBeCalledWith({
+    expect(res1.status).toBeCalledWith(500);
+    expect(res1.json).toBeCalledWith({
       error: 'Cannot find user with that id'
     });
   });
+
+  it('User deleted correctly', function () {
+    expect(res4.status).toBeCalledWith(200);
+    expect(res4.json).toBeCalledWith({
+      message: 'User deleted',
+      username: userUsername
+    });
+  });
+
 });
 
 });

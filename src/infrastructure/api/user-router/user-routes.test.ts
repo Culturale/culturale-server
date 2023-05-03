@@ -41,6 +41,27 @@ describe('User Routes', function () {
     });
   });
 
+  describe('GET /users/username', function () {
+    it ('if the payload is correct it returns the user with the given username', async function () {
+      const res = await request(app).get('/users/username').send({
+        username: 'test-username',
+      });
+
+      expect(res.statusCode).toBe(200);
+      expect(res.body.message).toBe('Usuario encontrado');
+      expect(res.body.user.username).toBe('test-username');
+    });
+
+    it('if the username does not exist it returns an error', async function () {
+      const res = await request(app).get('/users/username').send({
+        username: 'non-existent-username',
+      });
+  
+      expect(res.statusCode).toBe(404);
+      expect(res.body.message).toBe('Usuario no encontrado');
+    });
+  });
+
   describe('POST /users/login', function () {
     beforeEach(async function () {
       await request(app).post('/users/create').send({

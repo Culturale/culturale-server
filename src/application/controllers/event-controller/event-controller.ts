@@ -1,7 +1,8 @@
 import type { Request, Response } from 'express';
 
 import type { Chat, IChat } from '~/domain/entities/chat';
-import { Event, EventProps, IEvent} from '~/domain/entities/event';
+import type { EventProps, IEvent} from '~/domain/entities/event';
+import { Event} from '~/domain/entities/event';
 import type { IMessage } from '~/domain/entities/message';
 import type { IUser } from '~/domain/entities/user';
 import { UserRepository } from '~/domain/repositories';
@@ -29,7 +30,7 @@ export class EventController {
     }
   }
 
-  public static async getAllEvents( _req: Request, res: Response): Promise<void> {
+  public static async getAllEvents(req: Request, res: Response): Promise<void> {
     try {
       const events: IEvent[] = await EventRepository.getAllEvents();
       res.status(200);
@@ -135,6 +136,7 @@ export class EventController {
         res.json({
           message: 'user or event not found'
         });
+        return;
       }
       const castedEvent = new Event(newEvent as EventProps);
       castedEvent.updateParticipant(newParticipant);
@@ -154,21 +156,107 @@ export class EventController {
     }
   }
 
-public static async deleteEvent(_req: Request, res: Response): Promise<void> {
-
-  try {
-    const codi: string = _req.body.id;
-    await EventRepository.deleteEvent(codi);
-    res.status(200);
-    res.json({
-      message: 'event deleted',
-    });
-  } catch (e) {
-    res.status(500);
-    res.json({
-      error: e,
-    });
+  public static async deleteEvent(_req: Request, res: Response): Promise<void> {
+    try {
+      const codi: string = _req.body.id;
+      await EventRepository.deleteEvent(codi);
+      res.status(200);
+      res.json({
+        message: 'event deleted',
+      });
+    } catch (e) {
+      res.status(500);
+      res.json({
+        error: e,
+      });
+    }
+  }
+  
+  public static async getEventbydenominacio(req: Request, res: Response): Promise<void> {
+    try {
+      const event: IEvent[] = await EventRepository.getEventbydenominacio(req.params.denominacio);
+      if (event.length == 0) {
+        res.status(404);
+        res.json({
+          error: 'No event with that denomination found',
+        });
+      }
+      res.status(200);
+      res.json({
+        event,
+      });
+    }
+    catch (e) {
+      res.status(500);
+      res.json({
+        error: e,
+      });
+    }
   }
 
-}
+  public static async getEventbydataIni(req: Request, res: Response): Promise<void> {
+    try {
+      const event: IEvent[] = await EventRepository.getEventbydataIni(new Date(req.params.dataIni));
+      if (event.length == 0) {
+        res.status(404);
+        res.json({
+          error: 'No event with that dateIni found',
+        });
+      }
+      res.status(200);
+      res.json({
+        event,
+      });
+    }
+    catch (e) {
+      res.status(500);
+      res.json({
+        error: e,
+      });
+    }
+  }
+
+  public static async getEventbydataFi(req: Request, res: Response): Promise<void> {
+    try {
+      const event: IEvent[] = await EventRepository.getEventbydataFi(new Date(req.params.dataFi));
+      if (event.length == 0) {
+        res.status(404);
+        res.json({
+          error: 'No event with that dataFi found',
+        });
+      }
+      res.status(200);
+      res.json({
+        event,
+      });
+    }
+    catch (e) {
+      res.status(500);
+      res.json({
+        error: e,
+      });
+    }
+  }
+
+  public static async getEventbycategoria(req: Request, res: Response): Promise<void> {
+    try {
+      const event: IEvent[] = await EventRepository.getEventbycategoria(req.params.categoria);
+      if (event.length == 0) {
+        res.status(404);
+        res.json({
+          error: 'No event with that categoria found',
+        });
+      }
+      res.status(200);
+      res.json({
+        event,
+      });
+    }
+    catch (e) {
+      res.status(500);
+      res.json({
+        error: e,
+      });
+    }
+  }
 }

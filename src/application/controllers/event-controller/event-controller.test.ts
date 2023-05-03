@@ -160,5 +160,43 @@ describe('Event Controller', function () {
       }));
     }); 
   });
+  describe('deleteEvent', function () {
+    const expressRequest: Request = {} as Request;
+    const req: Request = JSON.parse(JSON.stringify(expressRequest));
+    req.body = {
+        id: 12348173655,
+    };
+    const res = {} as unknown as Response;
+    res.json = jest.fn();
+    res.status = jest.fn(() => res);
+    res.setHeader = jest.fn();
+
+    const reqCreate: Request = JSON.parse(JSON.stringify(expressRequest));
+    reqCreate.body = {
+        codi: 12348173655,
+        denominacio: 'test-event',
+        descripcio: 'test-description',
+        dataIni: new Date(1),
+        dataFi: new Date(2),
+        horari: '2h',
+        adress: 'Passeig de Gràcia',
+        url: 'https://test-url.com',
+    };
+    const resCreate = {} as unknown as Response;
+    resCreate.json = jest.fn();
+    resCreate.status = jest.fn(() => resCreate);
+    resCreate.setHeader = jest.fn();
+    beforeEach(async function () {
+      await EventController.createEvent(reqCreate, resCreate);
+      await EventController.deleteEvent(req, res);
+    });
+
+    it('returns the correct payload', function () {
+      expect(res.status).toBeCalledWith(200);
+      expect(res.json).toBeCalledWith({
+        message: 'event deleted',
+      });
+    });
+  });
 
 });

@@ -2,7 +2,6 @@
 import type { Chat, IChat } from '~/domain/entities/chat';
 import type { IEvent } from '~/domain/entities/event';
 import { EventModel } from '~/domain/entities/event';
-// import type { IUser } from '~/domain/entities/user';
 import type { CreateEventDto } from '~/infrastructure';
 import type { MongoId } from '~/types/types';
 
@@ -22,7 +21,7 @@ export class EventRepository {
     return await EventModel.find();
   }
   public static async deleteEvent(codi: string): Promise<void> {
-    await EventModel.deleteOne({id: codi });
+    await EventModel.deleteOne({codi: codi });
   }
 
   public static async findEvent(codiEvent: string): Promise<IEvent> {
@@ -56,18 +55,19 @@ export class EventRepository {
     await EventModel.findOneAndUpdate(event, { chat: chat }, { new: true });
   }
 
-  // public static async addParticipant(
-  //   event: IEvent,
-  //   user: IUser
-  // ): Promise<IUser[]> {
-  //   event.participants.push(user);
-  //   const updatedEvent: IEvent = await EventModel.findOneAndUpdate(
-  //     { _id: event.id },
-  //     { $push: { participants: user } }, 
-  //     { new: true } 
-  //   ).populate('participants'); 
-  //   return updatedEvent.participants;
-  // }
+  public static async getEventbydenominacio(name: String): Promise<IEvent[]> {
+    return await EventModel.find({denominacio: name});
+  }
 
+  public static async getEventbydataIni(data: Date): Promise<IEvent[]> {
+    return await EventModel.find({dataIni: data});
+  }
 
+  public static async getEventbydataFi(data: Date): Promise<IEvent[]> {
+    return await EventModel.find({dataFi: data});
+  }
+
+  public static async getEventbycategoria(cat: String): Promise<IEvent[]> {
+    return await EventModel.find({categoria: cat});
+  }
 }

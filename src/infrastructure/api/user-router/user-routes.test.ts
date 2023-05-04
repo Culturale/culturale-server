@@ -43,7 +43,7 @@ describe('User Routes', function () {
 
   describe('GET /users/username', function () {
     it ('if the payload is correct it returns the user with the given username', async function () {
-      const res = await request(app).get('/users/username').send({
+      const res = await request(app).get('/users/username/test-username').send({
         username: 'test-username',
       });
 
@@ -53,7 +53,7 @@ describe('User Routes', function () {
     });
 
     it('if the username does not exist it returns an error', async function () {
-      const res = await request(app).get('/users/username').send({
+      const res = await request(app).get('/users/username/non-existing-user').send({
         username: 'non-existent-username',
       });
   

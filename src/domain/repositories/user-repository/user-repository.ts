@@ -37,8 +37,5 @@ export class UserRepository {
       followeds,
     });
   }
-
-  
-
 }
  

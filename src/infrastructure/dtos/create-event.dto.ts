@@ -40,8 +40,10 @@ export class CreateEventDto {
   adress: string;
 
   @IsString()
-  @IsNotEmpty()
   url: string;
+
+  @IsString()
+  photo: string;
 }
 
 export async function createEventDto(
@@ -58,6 +60,7 @@ export async function createEventDto(
   DTO.horari = req.body.horari;
   DTO.adress = req.body.adress;
   DTO.url = req.body.url;
+  DTO.photo = req.body.photo;
 
   const errors = await validate(DTO);
   if (errors.length) {

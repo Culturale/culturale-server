@@ -13,5 +13,6 @@ Event {
   "id": undefined,
   "participants": [],
   "url": "test-adress",
+  "photo": "test-photo.jpg",
 }
 `;

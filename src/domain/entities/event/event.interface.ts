@@ -12,7 +12,8 @@ export interface IEvent {
   dataFi: Date;
   horari?: string;
   adress?: string;
-  url: string;
+  url?: string;
+  photo?: string;
   chat: IChat;
   participants: IUser[];
 

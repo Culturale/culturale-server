@@ -12,9 +12,13 @@ import {
 
 export class EditEventDTO {
     @IsNotEmpty()
+    @IsString()
+    id: string;
+
     @IsNumber()
     @Min(11111111111)
     @Max(99999999999)
+    @IsOptional()
     codi: number;
   
     @IsString()
@@ -52,7 +56,8 @@ export async function editEventDTO(
   next: NextFunction,
 ) {
   const DTO = new EditEventDTO();
-  
+
+  DTO.id = req.body.id;
   DTO.codi = req.body.codi;
   DTO.denominacio = req.body.denominacio;
   DTO.descripcio = req.body.descripcio;

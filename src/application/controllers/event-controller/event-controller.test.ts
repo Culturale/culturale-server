@@ -1,6 +1,6 @@
 import * as dotenv from 'dotenv';
 import type { Request} from 'express';
-import { Response } from 'express';
+import type { Response } from 'express';
 import { request as expressRequest } from 'express';
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import mongoose from 'mongoose';

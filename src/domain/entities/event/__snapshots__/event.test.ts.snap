@@ -12,7 +12,7 @@ Event {
   "horari": "2h",
   "id": undefined,
   "participants": [],
-  "url": "test-adress",
   "photo": "test-photo.jpg",
+  "url": "test-url",
 }
 `;

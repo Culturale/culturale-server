@@ -15,7 +15,7 @@ describe('Event Entity', function () {
   beforeEach(function () {
     const time = Date.now();
     const date = new Date(time);
-    const eventProps: CreateEventDto  = {codi: 20211006023, denominacio: 'test-denominacio' , descripcio: 'test-descripcio', dataIni: date, dataFi: date, horari: '2h', adress: 'test-adress', url: 'test-adress', photo: 'test-photo.jpg'};
+    const eventProps: CreateEventDto  = {codi: 20211006023, denominacio: 'test-denominacio' , descripcio: 'test-descripcio', dataIni: date, dataFi: date, horari: '2h', adress: 'test-adress', url: 'test-url', photo: 'test-photo.jpg'};
     instance = new Event(
       eventProps,
     );

@@ -1,4 +1,6 @@
 
+import mongoose from 'mongoose';
+
 import type { Chat, IChat } from '~/domain/entities/chat';
 import type { IEvent } from '~/domain/entities/event';
 import { EventModel } from '~/domain/entities/event';
@@ -12,7 +14,6 @@ export class EventRepository {
       chat: chatId,
       participants: [],
     });
-
     return newEvent;
   }
 
@@ -20,12 +21,12 @@ export class EventRepository {
   public static async getAllEvents(): Promise<IEvent[]> {
     return await EventModel.find();
   }
-  public static async deleteEvent(codi: string): Promise<void> {
-    await EventModel.deleteOne({codi: codi });
+  public static async deleteEvent(idEvent: string): Promise<void> {
+    await EventModel.deleteOne(new mongoose.Types.ObjectId(idEvent));
   }
 
-  public static async findEvent(codiEvent: string): Promise<IEvent> {
-    const eventDocument = await EventModel.findOne({codi: codiEvent})
+  public static async findEvent(idEvent: string): Promise<IEvent> {
+    const eventDocument = await EventModel.findById(idEvent)
     .populate({
       path: 'participants',
       model: 'User',
@@ -42,8 +43,8 @@ export class EventRepository {
   }
 
 
-  public static async getChatEvent(codi: number): Promise<IChat | null> {
-    const event = await EventModel.findOne({ codi: codi });
+  public static async getChatEvent(idEvent: string): Promise<IChat | null> {
+    const event = await EventModel.findById(new mongoose.Types.ObjectId(idEvent));
     if (!event) return null;
     return event.chat;
   }

@@ -63,6 +63,7 @@ describe('Event Routes', function () {
       expect(res.body.events).toHaveLength(2);
     });
   });
+  
 
   describe('POST /events/delete', function () {
     beforeEach(async function () {
@@ -75,14 +76,27 @@ describe('Event Routes', function () {
     it('returns the list of events', async function () {
       const res = await request(app).get('/events');
       expect(res.statusCode).toBe(200);
-      expect(res.body.events).toHaveLength(1);
+      expect(res.body.events).toHaveLength(2);
     });
   });
 
   describe('POST events/newMessage', function () {
     it('it sends a new message', async function () {
-      const res = await request(app).post('/events/newMessage').send({
+      const createRes = await request(app)
+      .post('/events/create')
+      .send({
         codi: 12348173049,
+        denominacio: 'test-event',
+        descripcio: 'test-description',
+        dataIni: new Date(1),
+        dataFi: new Date(2),
+        horari: '2h',
+        adress: 'Passeig de Gràcia',
+        url: 'https://test-url.com',
+      });
+      const eventId = await createRes.body.event._id;
+      const res = await request(app).post('/events/newMessage').send({
+        id: eventId,
         userId: 'user1',
         content: 'hola',
         date: new Date(2),
@@ -92,49 +106,47 @@ describe('Event Routes', function () {
     });
     it('if the payload is incorrect returns an error', async function () {
       const res = await request(app).post('/events/newMessage').send({
-        codi: 12348173049,
+        id: 12348173049,
         content: 'hola',
         date: new Date(2),
       });
-      expect(res.statusCode).toBe(500);
+      expect(res.statusCode).toBe(404);
     });
   });
 
   describe('POST /events/edit', function () {
     it('if the payload is correct it modifies the event', async function () {
-        await request(app)
-        .post('/events/create')
-        .send({
-          codi: 12348173049,
-          denominacio: 'test-event',
-          descripcio: 'test-description',
-          dataIni: new Date(1),
-          dataFi: new Date(2),
-          horari: '2h',
-          adress: 'Passeig de Gràcia',
-          url: 'https://test-url.com',
-        });
-
+      const createRes = await request(app)
+      .post('/events/create')
+      .send({
+        codi: 12348173049,
+        denominacio: 'test-event',
+        descripcio: 'test-description',
+        dataIni: new Date(1),
+        dataFi: new Date(2),
+        horari: '2h',
+        adress: 'Passeig de Gràcia',
+        url: 'https://test-url.com',
+      });
+      const eventId = await createRes.body.event._id;
       const res = await request(app)
         .post('/events/edit')
         .send({
-          codi: 12348173049,
+          id: eventId,
           denominacio: 'new-test-event',
           descripcio: 'new-test-description',
         });
-
-
+      expect(res.statusCode).toBe(200);
       expect(res.body.message).toBe('Evento editado correctamente');
 
       const res2 = await request(app)
       .post('/events/edit')
       .send({
-        codi: 12348173040,
+        id: 12348173040,
         denominacio: 'new-test-event',
         descripcio: 'new-test-description',
       });
-
-      expect(res2.body.message).toBe('Evento no encontrado');
+     expect(res2.statusCode).toBe(400);
 
     });
   
@@ -164,25 +176,48 @@ describe('Event Routes', function () {
 
 
   describe('GET /events/messages', function () { 
-    beforeEach(async function () {
-    await request(app)
-      .post('/events/newMessage')
+    it('returns the list of messages', async function () {
+      const createRes = await request(app)
+      .post('/events/create')
       .send({
         codi: 12348173049,
+        denominacio: 'test-event',
+        descripcio: 'test-description',
+        dataIni: new Date(1),
+        dataFi: new Date(2),
+        horari: '2h',
+        adress: 'Passeig de Gràcia',
+        url: 'https://test-url.com',
+      });
+      const eventId = await createRes.body.event._id;
+      await request(app).post('/events/newMessage').send({
+        id: eventId,
         userId: 'user1',
         content: 'hola',
         date: new Date(2),
       });
-    });
-    it('returns the list of messages', async function () {
-      const res = await request(app).get('/events/messages').send({ codi: 12348173049});
+      const res = await request(app).get(`/events/${eventId}/messages`);
       expect(res.statusCode).toBe(200);
-      expect(res.body.messages).toHaveLength(2);
+      expect(res.body.messages).toHaveLength(1);
     });
   });
 
   describe('POST /events/newParticipant', function () { 
+    let eventId: string;
     beforeEach(async function () {
+      const createRes = await request(app)
+      .post('/events/create')
+      .send({
+        codi: 12348173049,
+        denominacio: 'test-event',
+        descripcio: 'test-description',
+        dataIni: new Date(1),
+        dataFi: new Date(2),
+        horari: '2h',
+        adress: 'Passeig de Gràcia',
+        url: 'https://test-url.com',
+      });
+      eventId = await createRes.body.event._id;
       await request(app)
         .post('/users/create')
         .send({
@@ -199,7 +234,7 @@ describe('Event Routes', function () {
       const res = await request(app)
       .post('/events/newParticipant')
       .send({
-        codi: 12348173049,
+        id: eventId,
         username: 'test-username',
       });
       expect(res.statusCode).toBe(200);

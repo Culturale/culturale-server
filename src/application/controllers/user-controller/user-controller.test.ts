@@ -166,19 +166,45 @@ describe('EditPerfil', function () {
 });
 
 describe('getUserForUsername', function () {
+  const expressRequest: Request = {} as Request;
+
   const req: Request = expressRequest;
+  req.params = {id:'test-username'};
   const res = {} as unknown as Response;
   res.json = jest.fn();
   res.status = jest.fn(() => res);
   res.setHeader = jest.fn();
+  const badReq: Request =  JSON.parse(JSON.stringify(expressRequest));
+  badReq.params = {id:'non-existing-username'};
+  const badRes = {} as unknown as Response;
+  badRes.json = jest.fn();
+  badRes.status = jest.fn(() => badRes);
+  badRes.setHeader = jest.fn();
 
   beforeEach(async function () {
     await UserController.getUserForUsername(req, res);
+    await UserController.getUserForUsername(badReq, badRes);
+  });
+
+  it('returns the info user when it does exists', function () {
+    expect(res.status).toBeCalledWith(200);
+    expect(res.json).toBeCalledWith(expect.objectContaining({
+      message: 'Usuario encontrado',
+      user: expect.objectContaining({  
+        email: 'email@example.com',
+        password: 'test-password',
+        username: 'test-username',
+        name: 'test-name',
+        profilePicture: 'test-imageurl',
+        phoneNumber: '000000000',
+        usertype: 'usuario',
+      })
+    }));
   });
 
   it('returns 404 when username does not exists', function () {
-    expect(res.status).toBeCalledWith(404);
-    expect(res.json).toBeCalledWith({
+    expect(badRes.status).toBeCalledWith(404);
+    expect(badRes.json).toBeCalledWith({
       message: 'Usuario no encontrado'
     });
   });

@@ -41,7 +41,7 @@ export class UserController {
 
   public static async getUserForUsername(req: Request, res: Response): Promise<void> {
     try {
-      const username: String = req.body.username;
+      const username: String = req.params.id;
       const user: IUser = await UserRepository.findUserByUserId(username);
       if (user) {
         res.status(200);

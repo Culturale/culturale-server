@@ -17,11 +17,11 @@ export class EventController {
     try {
       const eventDTO: CreateEventDto = req.body;
       const chat: Chat = await ChatRepository.createEmptyChat();
-      await EventRepository.addEvent(eventDTO,chat.id);
+      const event = await EventRepository.addEvent(eventDTO,chat.id);
       res.status(200);
       res.json({
         message: 'event created',
-        event: eventDTO,
+        event: event,
       });
     } catch (e) {
       res.status(500);
@@ -48,13 +48,16 @@ export class EventController {
 
   public static async editEvent(req: Request, res: Response): Promise<void> {
     try{
-      const oldEvent = await EventRepository.findEvent(req.body.codi);
+      const oldEvent = await EventRepository.findEvent(req.body.id);
       if (!oldEvent) {
-        res.status(404).json({message: 'Evento no encontrado'});
+        res.status(404);
+        res.json({message: 'Evento no encontrado'});
         return;
       }
       const newEvent: IEvent = {
         ... oldEvent,
+        id: oldEvent.id,
+        codi: oldEvent.codi,
         denominacio: req.body.denominacio || oldEvent.denominacio,
         descripcio: req.body.descripcio || oldEvent.descripcio,
         dataIni: req.body.dataIni || oldEvent.dataIni,
@@ -63,11 +66,13 @@ export class EventController {
         adress: req.body.adress || oldEvent.adress,
         url: req.body.url || oldEvent.adress,
         chat: oldEvent.chat,
-        participants: oldEvent.participants,
       };
-      await EventRepository.editarEvent(newEvent);
-       res.status(500).json({message: 'Evento editado correctamente'});  
-      }
+      const { ...eventProps } = newEvent; // Excluye el campo 'id' del objeto 'newUser'
+      const castedEvent = new Event(eventProps as EventProps);
+      await EventRepository.editarEvent(castedEvent);
+      res.status(200);
+      res.json({message: 'Evento editado correctamente'});  
+    }
     catch (e) {
         res.status(500);
         res.json({
@@ -81,8 +86,8 @@ export class EventController {
     res: Response
   ): Promise<void> {
     try {
-      const codiEvent = req.body.codi;
-      const chatEvent: IChat = await EventRepository.getChatEvent(codiEvent);
+      const idEvent = req.body.id;
+      const chatEvent: IChat = await EventRepository.getChatEvent(idEvent);
       if(!chatEvent){
         res.status(404);
         res.json({message:'event not found'});
@@ -90,7 +95,7 @@ export class EventController {
       }
       const newMessage: IMessage = await MessageRepository.addMessage(req.body.content, req.body.userId, req.body.date);
       const chat: Chat = await ChatRepository.addMessage(chatEvent, newMessage);
-      await EventRepository.modifyChatEvent(codiEvent, chat);
+      await EventRepository.modifyChatEvent(idEvent, chat);
       res.status(200);
       res.json({ 
         message: 'chat sent it',
@@ -109,8 +114,15 @@ export class EventController {
     res: Response
   ): Promise<void> {
     try {
-      const codiEvent = req.body.codi;
-      const chatEvent: IChat = await EventRepository.getChatEvent(codiEvent);
+      const idEvent = req.params.id;
+      const chatEvent: IChat = await EventRepository.getChatEvent(idEvent);
+      if(chatEvent === null){
+        res.status(404);
+        res.json({
+          message: 'Event not found'
+        });
+        return;
+      }
       const messages: IMessage[] = await ChatRepository.getMessages(chatEvent);
       res.status(200);
       res.json({
@@ -128,7 +140,7 @@ export class EventController {
     res: Response
   ): Promise<void> {
     try {
-      const codiEvent = req.body.codi;
+      const codiEvent = req.body.id;
       const username = req.body.username;
       const newEvent: IEvent = await EventRepository.findEvent(codiEvent);
       const newParticipant: IUser = await UserRepository.findUserByUserId(username);
@@ -164,8 +176,8 @@ export class EventController {
 
   public static async deleteEvent(_req: Request, res: Response): Promise<void> {
     try {
-      const codi: string = _req.body.id;
-      await EventRepository.deleteEvent(codi);
+      const id: string = _req.body.id;
+      await EventRepository.deleteEvent(id);
       res.status(200);
       res.json({
         message: 'event deleted',

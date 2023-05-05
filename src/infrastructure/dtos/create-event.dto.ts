@@ -40,8 +40,18 @@ export class CreateEventDto {
   @IsString()
   adress: string;
 
+  @IsNumber()
+  lat: number;
+
+  @IsNumber()
+  long: number;
+
   @IsString()
   @IsOptional()
+  price: string;
+
+  @IsString()
+  @IsNotEmpty()
   url: string;
 
   @IsString()
@@ -63,6 +73,9 @@ export async function createEventDto(
   DTO.dataFi = new Date(req.body.dataFi);
   DTO.horari = req.body.horari;
   DTO.adress = req.body.adress;
+  DTO.lat = req.body.lat;
+  DTO.long = req.body.long;
+  DTO.price = req.body.price;
   DTO.url = req.body.url;
   DTO.photo = req.body.photo;
 

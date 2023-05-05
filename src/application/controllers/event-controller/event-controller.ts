@@ -63,7 +63,11 @@ export class EventController {
         dataFi: req.body.dataFi || oldEvent.dataFi,
         horari: req.body.horari || oldEvent.horari,
         adress: req.body.adress || oldEvent.adress,
-        url: req.body.url || oldEvent.adress,
+        lat: req.body.lat || oldEvent.lat,
+        long: req.body.long || oldEvent.long,
+        price: req.body.price || oldEvent.price,
+        url: req.body.url || oldEvent.url,
+        photo: req.body.photo || oldEvent.photo,
         chat: oldEvent.chat,
       };
       const { ...eventProps } = newEvent; // Excluye el campo 'id' del objeto 'newUser'

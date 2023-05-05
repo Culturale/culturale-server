@@ -27,7 +27,11 @@ describe('Event Routes', function () {
           dataFi: new Date(2),
           horari: '2h',
           adress: 'Passeig de Gràcia',
+          lat: 123.456,
+          long: 789.012,
+          price: '12 €',
           url: 'https://test-url.com',
+          photo: 'test-photo.jpg',
         });
       expect(res.statusCode).toBe(200);
     });
@@ -52,7 +56,11 @@ describe('Event Routes', function () {
           dataFi: new Date(2),
           horari: '2h',
           adress: 'Passeig de Gràcia',
+          lat: 123.456,
+          long: 789.012,
+          price: '12 €',
           url: 'https://test-url.com',
+          photo: 'test-photo.jpg',
         });
     });
 
@@ -92,7 +100,11 @@ describe('Event Routes', function () {
         dataFi: new Date(2),
         horari: '2h',
         adress: 'Passeig de Gràcia',
+        lat: 123.456,
+        long: 789.012,
+        price: '12 €',
         url: 'https://test-url.com',
+        photo: 'test-photo.jpg',
       });
       const eventId = await createRes.body.event._id;
       const res = await request(app).post('/events/newMessage').send({
@@ -126,7 +138,11 @@ describe('Event Routes', function () {
         dataFi: new Date(2),
         horari: '2h',
         adress: 'Passeig de Gràcia',
+        lat: 123.456,
+        long: 789.012,
+        price: '12 €',
         url: 'https://test-url.com',
+        photo: 'test-photo.jpg',
       });
       const eventId = await createRes.body.event._id;
       const res = await request(app)
@@ -161,7 +177,11 @@ describe('Event Routes', function () {
         dataFi: new Date(2),
         horari: '2h',
         adress: 'Passeig de Gràcia',
+        lat: 123.456,
+        long: 789.012,
+        price: '12 €',
         url: 'https://test-url.com',
+        photo: 'test-photo.jpg',
       });
   
       const res = await request(app).post('/events/edit').send({
@@ -187,7 +207,11 @@ describe('Event Routes', function () {
         dataFi: new Date(2),
         horari: '2h',
         adress: 'Passeig de Gràcia',
+        lat: 123.456,
+        long: 789.012,
+        price: '12 €',
         url: 'https://test-url.com',
+        photo: 'test-photo.jpg',
       });
       const eventId = await createRes.body.event._id;
       await request(app).post('/events/newMessage').send({
@@ -215,7 +239,11 @@ describe('Event Routes', function () {
         dataFi: new Date(2),
         horari: '2h',
         adress: 'Passeig de Gràcia',
+        lat: 123.456,
+        long: 789.012,
+        price: '12 €',
         url: 'https://test-url.com',
+        photo: 'test-photo.jpg',
       });
       eventId = await createRes.body.event._id;
       await request(app)

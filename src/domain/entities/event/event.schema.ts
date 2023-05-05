@@ -11,6 +11,9 @@ const EventSchema = new Schema({
   denominacio: { required: true, type: String },
   descripcio: { required: true, type: String },
   horari: { required: false, type: String },
+  lat: { required: true, type: Number },
+  long: { required: true, type: Number },
+  price: { required: false, type: String },
   url: { required: true, type: String },
   participants: [
     { required: true, type: Schema.Types.ObjectId, model: 'User' },

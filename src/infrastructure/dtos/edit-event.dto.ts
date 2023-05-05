@@ -48,6 +48,10 @@ export class EditEventDTO {
     @IsString()
     @IsOptional()
     url: string;
+
+    @IsString()
+    @IsOptional()
+    photo: string;
 }
 
 export async function editEventDTO(
@@ -66,6 +70,7 @@ export async function editEventDTO(
   DTO.horari = req.body.horari;
   DTO.adress = req.body.adress;
   DTO.url = req.body.url;
+  DTO.photo = req.body.photo;
 
   const errors = await validate(DTO);
   if (errors.length) {

@@ -6,6 +6,7 @@ import {
   Max,
   IsNumber,
   Min,
+  IsOptional,
 } from 'class-validator';
 import { validate } from 'class-validator';
 import type { NextFunction, Request, Response } from 'express';
@@ -40,8 +41,13 @@ export class CreateEventDto {
   adress: string;
 
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   url: string;
+
+  @IsString()
+  @IsOptional()
+  photo: string;
+
 }
 
 export async function createEventDto(
@@ -58,6 +64,7 @@ export async function createEventDto(
   DTO.horari = req.body.horari;
   DTO.adress = req.body.adress;
   DTO.url = req.body.url;
+  DTO.photo = req.body.photo;
 
   const errors = await validate(DTO);
   if (errors.length) {

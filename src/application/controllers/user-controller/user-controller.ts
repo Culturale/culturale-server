@@ -137,6 +137,45 @@ export class UserController {
       });
     }
   }
+
+
+  public static async Unfollow(
+    req: Request,
+    res: Response
+  ): Promise<void> {
+    try {
+      const username = req.body.username;
+      const follower = req.body.follower;
+      const newFollower: IUser = await UserRepository.findUserByUserId(follower);
+      const newUser: IUser = await UserRepository.findUserByUserId(username);
+      
+      if(!newUser || !newFollower){
+        res.status(404);
+        res.json({
+          message: 'user unfollowed or new unfollow not found'
+        });
+      }
+      const castedUser = new User(newUser as UserProps);
+      castedUser.deleteFollowers(newFollower); //los que te siguen a ti -> se añade newFollower como seguidor en el perfil de newUser
+      const castedUser2 = new User(newFollower as UserProps);
+      castedUser2.deleteFolloweds(newUser); //los que tu sigues -> se añade newUser como nueva persona seguida en el perfil de newFollower
+      
+
+      await UserRepository.editarUsuari(castedUser);
+      await UserRepository.editarUsuari(castedUser2);
+
+      res.status(200);
+      res.json({
+        message: 'Follower i followed eliminados correctamente',
+        followers: newUser.followers,
+      });
+    } catch (e) {
+      res.status(500);
+      res.json({
+        error: e,
+      });
+    }
+  }
 }
  
 

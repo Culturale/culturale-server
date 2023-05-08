@@ -32,7 +32,11 @@ describe('Event Controller', function () {
         dataFi: new Date(2),
         horari: '2h',
         adress: 'Passeig de Gràcia',
+        lat: 123.456,
+        long: 789.012,
+        price: '12 €',
         url: 'https://test-url.com',
+        photo: 'test-photo.jpg',
     };
     const res = {} as unknown as Response;
     res.json = jest.fn();
@@ -55,7 +59,11 @@ describe('Event Controller', function () {
           dataFi: new Date(2),
           horari: '2h',
           adress: 'Passeig de Gràcia',
+          lat: 123.456,
+          long: 789.012,
+          price: '12 €',
           url: 'https://test-url.com',
+          photo: 'test-photo.jpg',
         }),
       });
     });
@@ -85,7 +93,11 @@ describe('Event Controller', function () {
             dataFi: new Date(2),
             horari: '2h',
             adress: 'Passeig de Gràcia',
+            lat: 123.456,
+            long: 789.012,
+            price: '12 €',
             url: 'https://test-url.com',
+            photo: 'test-photo.jpg',
           }),
         ],
       });
@@ -116,7 +128,7 @@ describe('Event Controller', function () {
       date: new Date(2),
       codi: eventId,
     };
-    
+    //quitar
     const res = {} as unknown as Response;
     res.json = jest.fn();
     res.status = jest.fn(() => res);
@@ -132,7 +144,11 @@ describe('Event Controller', function () {
         dataFi: new Date(2),
         horari: '2h',
         adress: 'Passeig de Gràcia',
+        lat: 123.456,
+        long: 789.012,
+        price: '12 €',
         url: 'https://test-url.com',
+        photo: 'test-photo.jpg',
       };
       // Crear el evento y guardar su id en la variable eventId
       eventId = await createTestEvent(req);
@@ -191,7 +207,11 @@ describe('Event Controller', function () {
         dataFi: new Date(2),
         horari: '2h',
         adress: 'Passeig de Gràcia',
+        lat: 123.456,
+        long: 789.012,
+        price: '12 €',
         url: 'https://test-url.com',
+        photo: 'test-photo.jpg',
       };
       // Crear el evento y guardar su id en la variable eventId
       eventId = await createTestEvent(req);
@@ -238,7 +258,11 @@ describe('Event Controller', function () {
         dataFi: new Date(2),
         horari: '2h',
         adress: 'Passeig de Gràcia',
+        lat: 123.456,
+        long: 789.012,
+        price: '12 €',
         url: 'https://test-url.com',
+        photo: 'test-photo.jpg',
     };
     const resCreate = {} as unknown as Response;
     resCreate.json = jest.fn();

@@ -37,5 +37,17 @@ export class UserRepository {
       eventsSubs,
     });
   }
+  public static async existParam(param: string, tipusAtribut: string): Promise<boolean> {
+    let existe: boolean;
+    switch (tipusAtribut) {
+      case 'username':
+        existe = !(await UserModel.exists({ username: param }) == null);
+        break;
+      case 'email':
+        existe = !(await UserModel.exists({ username: param }) == null);
+    }
+    return existe;
+  
+  }
 }
  

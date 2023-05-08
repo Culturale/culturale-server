@@ -12,9 +12,12 @@ const EventSchema = new Schema({
   descripcio: { required: true, type: String },
   horari: { required: false, type: String },
   url: { required: true, type: String },
-  participants: [
-    { required: true, type: Schema.Types.ObjectId, model: 'User' },
-  ],
+  valoracions: { required: false, type: [Schema.Types.ObjectId], model: 'Review' },
+  participants: { required: false, type: [Schema.Types.ObjectId], model: 'User' },
+  lat: { required: false, type: Number },
+  long: { required: false, type: Number },
+  price: { required: false, type: String },
+  photo: { required: false, type: String },
 });
 
 

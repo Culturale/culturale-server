@@ -1,4 +1,3 @@
-/* eslint-disable no-octal */
 import {
   IsString,
   IsNotEmpty,
@@ -6,6 +5,7 @@ import {
   Max,
   IsNumber,
   Min,
+  IsOptional,
 } from 'class-validator';
 import { validate } from 'class-validator';
 import type { NextFunction, Request, Response } from 'express';
@@ -39,9 +39,24 @@ export class CreateEventDto {
   @IsString()
   adress: string;
 
+  @IsNumber()
+  lat: number;
+
+  @IsNumber()
+  long: number;
+
+  @IsString()
+  @IsOptional()
+  price: string;
+
   @IsString()
   @IsNotEmpty()
   url: string;
+
+  @IsString()
+  @IsOptional()
+  photo: string;
+
 }
 
 export async function createEventDto(
@@ -57,7 +72,11 @@ export async function createEventDto(
   DTO.dataFi = new Date(req.body.dataFi);
   DTO.horari = req.body.horari;
   DTO.adress = req.body.adress;
+  DTO.lat = req.body.lat;
+  DTO.long = req.body.long;
+  DTO.price = req.body.price;
   DTO.url = req.body.url;
+  DTO.photo = req.body.photo;
 
   const errors = await validate(DTO);
   if (errors.length) {

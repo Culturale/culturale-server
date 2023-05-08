@@ -5,7 +5,7 @@ import {
     Max,
     IsNumber,
     Min,
-    IsOptional
+    IsOptional,
   } from 'class-validator';
   import { validate } from 'class-validator';
   import type { NextFunction, Request, Response } from 'express';
@@ -44,10 +44,26 @@ export class EditEventDTO {
     @IsString()
     @IsOptional()
     adress: string;
+
+    @IsNumber()
+    @IsOptional()
+    lat: number;
+
+    @IsNumber()
+    @IsOptional()
+    long: number;
+
+    @IsString()
+    @IsOptional()
+    price: string;
   
     @IsString()
     @IsOptional()
     url: string;
+
+    @IsString()
+    @IsOptional()
+    photo: string;
 }
 
 export async function editEventDTO(
@@ -65,7 +81,11 @@ export async function editEventDTO(
   DTO.dataFi = req.body.dataFi;
   DTO.horari = req.body.horari;
   DTO.adress = req.body.adress;
+  DTO.lat = req.body.lat;
+  DTO.long = req.body.long;
+  DTO.price = req.body.price;
   DTO.url = req.body.url;
+  DTO.photo = req.body.photo;
 
   const errors = await validate(DTO);
   if (errors.length) {

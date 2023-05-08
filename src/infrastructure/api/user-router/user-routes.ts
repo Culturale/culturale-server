@@ -17,4 +17,4 @@ userRouter.post('/users/edit', editUserDTO, UserController.editUser); //falta te
 
 userRouter.get('/users/username/:id', UserController.getUserForUsername);
 userRouter.post('/users/newFollower', UserController.addFollower); //falta test ruta
-userRouter.post('/users/deleteFollower', UserController.Unfollow); //falta test ruta
+userRouter.delete('/users/deleteFollower', UserController.Unfollow); //falta test ruta

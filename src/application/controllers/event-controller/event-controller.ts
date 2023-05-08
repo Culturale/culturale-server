@@ -197,14 +197,6 @@ export class EventController {
         return;
       }
 
-      if(!event.participants.includes(participant)){
-      res.status(404);
-        res.json({
-          message: 'el user no participa en el evento'
-        });
-        return;
-      }
-
       const castedEvent = new Event(event as EventProps);
       castedEvent.deleteParticipant(participant);
 

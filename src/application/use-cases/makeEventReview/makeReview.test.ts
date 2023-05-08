@@ -70,7 +70,6 @@ describe('Make Review use case', function () {
     res.setHeader = jest.fn();
   
     await EventController.createEvent(req, res);
-    console.log(eventId)
     return eventId;
   };
   

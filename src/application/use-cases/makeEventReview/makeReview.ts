@@ -5,7 +5,7 @@ import type {  IEvent } from '~/domain/entities/event';
 import type { IReview } from '~/domain/entities/review';
 import { EventRepository } from '~/domain/repositories';
 import { ReviewRepository } from '~/domain/repositories/review-repository';
-import { MakeReviewDTO } from '~/infrastructure/dtos/make-review.dto';
+import type { MakeReviewDTO } from '~/infrastructure/dtos/make-review.dto';
 
 export async function makeReview(req: Request, res: Response): Promise<void> {
   res.setHeader('Content-Type', 'application/json');
@@ -14,7 +14,6 @@ export async function makeReview(req: Request, res: Response): Promise<void> {
       const newValoracioDTO: MakeReviewDTO = req.body;
       const newIReview: IReview = await ReviewRepository.addReview(newValoracioDTO.eventId, newValoracioDTO.author, newValoracioDTO.puntuation, newValoracioDTO.comment);
       const event: IEvent = await EventRepository.findEvent(newIReview.eventId);
-      console.log(event)
       const oldValoracions: IReview[] =  event.valoracions;
       if (event) {
         for (const val of oldValoracions) {
@@ -26,10 +25,8 @@ export async function makeReview(req: Request, res: Response): Promise<void> {
             return;
             }
           }
-          console.log("3")
      event.updateValoracions(newIReview);
-     console.log("4")
-      try{
+     try{
       await EventRepository.editarEvent(event);
       }
       catch (e){

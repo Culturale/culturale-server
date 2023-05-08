@@ -7,9 +7,12 @@ import { createEventDto, editEventDTO } from '~/infrastructure/dtos';
 export const eventRouter = express.Router();
 
 eventRouter.post('/events/create', createEventDto, EventController.createEvent);
+
 eventRouter.post('/events/newMessage', EventController.addMessageEvent);
-eventRouter.post('/events/newParticipant', EventController.addParticipant);
-eventRouter.delete('/events/newParticipant', EventController.addParticipant);
+
+eventRouter.post('/events/newParticipant/:username/:eventid', EventController.addParticipant);
+
+eventRouter.delete('/events/deleteParticipant/:username/:eventid', EventController.deleteParticipant);
 
 eventRouter.get('/events/:id/messages', EventController.getAllMessages);
 eventRouter.get('/events', EventController.getAllEvents);

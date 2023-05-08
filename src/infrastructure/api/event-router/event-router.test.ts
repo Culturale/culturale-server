@@ -226,8 +226,9 @@ describe('Event Routes', function () {
     });
   });
 
-  describe('POST /events/newParticipant', function () { 
+  describe('POST /events/newParticipant/:username/:eventid', function () { 
     let eventId: string;
+
     beforeEach(async function () {
       const createRes = await request(app)
       .post('/events/create')
@@ -258,26 +259,22 @@ describe('Event Routes', function () {
           usertype: 'usuario',
         });
     });
+    
     it('if the payload is correct it adds the participant', async function () {
       const res = await request(app)
-      .post('/events/newParticipant')
-      .send({
-        id: eventId,
-        username: 'test-username',
-      });
+      .post(`/events/newParticipant/test-username/${eventId}`)
+      .send();
       expect(res.statusCode).toBe(200);
       expect(res.body.message).toBe('Participante añadido correctamente');
     });
+
     it('if the payload is incorrect it sends the error', async function () {
       const res = await request(app)
-      .post('/events/newParticipant')
-      .send({
-        codi: 12348173000,
-        username: 'test-username',
-      });
+        .post('/events/newParticipant/test-username1/12348173000');
       expect(res.statusCode).toBe(404);
       expect(res.body.message).toBe('user or event not found');
     });
+    
   });
 
 

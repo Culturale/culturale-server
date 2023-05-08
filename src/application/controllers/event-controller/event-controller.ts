@@ -147,6 +147,7 @@ export class EventController {
       const username = req.params.username;
       const newEvent: IEvent = await EventRepository.findEvent(codiEvent);
       const newParticipant: IUser = await UserRepository.findUserByUserId(username);
+      
       if(!newEvent || !newParticipant){
         res.status(404);
         res.json({
@@ -181,14 +182,6 @@ export class EventController {
       const username = req.params.username;
       const event: IEvent = await EventRepository.findEvent(codiEvent);
       const participant: IUser = await UserRepository.findUserByUserId(username);
-      if(!event || !participant){
-        res.status(404);
-        res.json({
-          message: 'user or event not found'
-        });
-        return;
-      }
-
       if(!event || !participant){
         res.status(404);
         res.json({

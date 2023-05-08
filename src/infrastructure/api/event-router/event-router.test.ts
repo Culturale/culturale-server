@@ -270,7 +270,7 @@ describe('Event Routes', function () {
 
     it('if the payload is incorrect it sends the error', async function () {
       const res = await request(app)
-        .post('/events/newParticipant/test-username1/12348173000');
+        .post('/events/newParticipant/test-username1/6453e1acd9fd34011413c89b');
       expect(res.statusCode).toBe(404);
       expect(res.body.message).toBe('user or event not found');
     });

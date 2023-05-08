@@ -128,7 +128,7 @@ describe('Event Controller', function () {
       date: new Date(2),
       codi: eventId,
     };
-    
+    //quitar
     const res = {} as unknown as Response;
     res.json = jest.fn();
     res.status = jest.fn(() => res);

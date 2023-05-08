@@ -1,4 +1,3 @@
-/* eslint-disable no-octal */
 import {
   IsString,
   IsNotEmpty,

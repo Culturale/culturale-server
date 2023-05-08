@@ -1,9 +1,18 @@
+<<<<<<< HEAD
 import bcrypt from 'bcrypt';
 import type { Request, Response } from 'express';
 
 import type { IUser, UserProps } from '~/domain/entities/user';
 import { User } from '~/domain/entities/user';
 import { UserRepository } from '~/domain/repositories/user-repository/user-repository';
+=======
+import type { Request, Response } from "express";
+
+//import { MongoNetworkTimeoutError } from "mongodb";
+import type { IUser } from "~/domain/entities/user";
+import { UserRepository } from "~/domain/repositories/user-repository/user-repository";
+//import { isNull } from "util";
+>>>>>>> b568b67 (5 Editar perfil, solo username y email)
 
 export class UserController {
   public static async createUser(req: Request, res: Response): Promise<void> {

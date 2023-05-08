@@ -26,6 +26,7 @@ export class UserRepository {
   } 
 
   
+<<<<<<< HEAD
 
   public static async editarUsuari(newUser: IUser): Promise<void> {
     const followers = newUser.followers;
@@ -36,6 +37,19 @@ export class UserRepository {
       followers,
       followeds,
     });
+=======
+  public static async existParam(param: string, tipusAtribut: string): Promise<boolean> {
+    let existe: boolean;
+    switch (tipusAtribut) {
+      case "username":
+        existe = !(await UserModel.exists({ username: param }) == null);
+        break;
+      case "email":
+        existe = !(await UserModel.exists({ username: param }) == null);
+    }
+    return existe;
+  
+>>>>>>> b568b67 (5 Editar perfil, solo username y email)
   }
 }
  

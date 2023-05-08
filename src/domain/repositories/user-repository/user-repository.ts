@@ -25,8 +25,6 @@ export class UserRepository {
     return userDoc;
   } 
 
-  
-
   public static async editarUsuari(newUser: IUser): Promise<void> {
     const followers = newUser.followers;
     const followeds = newUser.followeds;

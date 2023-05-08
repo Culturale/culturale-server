@@ -1,6 +1,7 @@
 import type { MongoId } from '~/types/types';
 
 import type { IChat } from '../chat';
+import type { IReview } from '../review';
 import type { IUser } from '../user';
 
 import type { IEvent } from './event.interface';
@@ -21,6 +22,7 @@ export type EventProps = {
   photo?: string;
   chat?: IChat;
   participants?: IUser[];
+  valoracions?: IReview[];
 };
 
 export class Event implements IEvent {
@@ -39,9 +41,10 @@ export class Event implements IEvent {
   public photo: string;
   public chat: IChat;
   public participants: IUser[];
+  public valoracions: IReview[];
 
   constructor(props: EventProps) {
-    const {id, codi, denominacio, descripcio, dataIni, dataFi, horari, adress, lat, long, price, url, photo, chat, participants} = props;
+    const {id, codi, denominacio, descripcio, dataIni, dataFi, horari, adress, valoracions, lat, long, price, url, photo, chat, participants} = props;
     this.id = id;
     this.codi = codi;
     this.denominacio = denominacio;
@@ -57,6 +60,7 @@ export class Event implements IEvent {
     this.photo = photo;
     this.chat = chat;
     this.participants = participants || [];
+    this.valoracions = valoracions || [];
   }
   public updateParticipant(newParticipant: IUser): void {
     const newParticipants = [...this.participants, newParticipant];
@@ -72,4 +76,8 @@ export class Event implements IEvent {
     const ids = this.participants.map((participant) => participant.username);
     return ids;
   }
+  public updateValoracions(newValoracio: IReview): void{
+    const newValoracions = [...this.valoracions, newValoracio];
+    this.valoracions = newValoracions;
+  } 
 }

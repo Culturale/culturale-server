@@ -44,14 +44,29 @@ export class User implements IUser {
     }
     
     public updateFollowers(newFollower: IUser): void {
+        if (!this.followers.find((follower) => follower.id === newFollower.id)) {
         const newFollowers = [...this.followers, newFollower];
         this.followers = newFollowers;
+        }
     }
 
     public updateFolloweds(newUser: IUser): void {
-        const newFolloweds = [...this.followeds, newUser];
-        this.followeds = newFolloweds;
+        if (!this.followeds.find((followed) => followed.id !== newUser.id)) {
+            const newFolloweds = [...this.followeds, newUser];
+            this.followeds = newFolloweds;
+          }
     }
+
+    public deleteFollowers(newFollower: IUser): void {
+        const updatedFollowers = this.followers.filter(follower => follower.id !== newFollower.id);
+        this.followers = updatedFollowers;
+    }
+
+    public deleteFolloweds(newUser: IUser): void {
+        const updatedFolloweds = this.followeds.filter(followed => followed.id === newUser.id);
+        this.followeds = updatedFolloweds;
+    }
+
     public get followersUsernames(): string[] {
         const ids = this.followers.map((follower) => follower.username);
         return ids;

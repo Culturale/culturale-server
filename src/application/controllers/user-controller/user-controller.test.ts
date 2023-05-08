@@ -4,7 +4,8 @@ import type { Request, Response } from 'express';
 import { request as expressRequest } from 'express';
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import mongoose from 'mongoose';
-//import { UserModel } from '~/domain/entities/user';
+
+import { UserRepository } from '~/domain/repositories/user-repository/user-repository';
 
 import { UserController } from './user-controller';
 
@@ -251,6 +252,91 @@ describe('add follower user', function () {
     }));
   }); 
 });
+
+
+describe('Unfollow user', function () {
+    // Crear usuario 1 que sigue a usuario 2
+  const expressRequest: Request = {} as Request;
+  const reqUser: Request = JSON.parse(JSON.stringify(expressRequest));
+  reqUser.body = { //usaurio añadido en la lista
+      name: 'User1',
+      username: 'user1',
+      email: 'user1@example.com',
+      password: 'password1',
+      phoneNumber: '123456789',
+      profilePicture: 'https://example.com/user1.jpg',
+      usertype: 'usuario',
+    };
+    const expressRequest2: Request = {} as Request;
+    const reqUser2: Request = JSON.parse(JSON.stringify(expressRequest2));
+    reqUser2.body = { //usaurio añadido en la lista
+      name: 'User2',
+      username: 'user2',
+      email: 'user2@example.com',
+      password: 'password2',
+      phoneNumber: '987654321',
+      profilePicture: 'https://example.com/user2.jpg',
+      usertype: 'usuario',
+    };
+
+  const resUser2 = {} as unknown as Response;
+  resUser2.json = jest.fn();
+  resUser2.status = jest.fn(() => resUser2);
+  resUser2.setHeader = jest.fn();
+
+  const resUser = {} as unknown as Response;
+  resUser.json = jest.fn();
+  resUser.status = jest.fn(() => resUser);
+  resUser.setHeader = jest.fn();
+
+
+  const reqAddFoll: Request = JSON.parse(JSON.stringify(expressRequest));
+    reqAddFoll.body = {
+      username: 'user1', //usuaio al cual se le añade un nuevo follower
+      follower: 'user2', //nuevo segidor añadido a ls lista
+    };
+    const resAddFoll = {} as unknown as Response;
+    resAddFoll.json = jest.fn();
+    resAddFoll.status = jest.fn(() => resAddFoll);
+    resAddFoll.setHeader = jest.fn();
+
+    beforeEach(async function () {
+      await UserController.createUser(reqUser, resUser);
+      await UserController.createUser(reqUser2, resUser2);
+      await UserController.addFollower(reqAddFoll, resAddFoll);
+    });
+
+  it('should unfollow user2', async function () {
+    // Llamar a Unfollow con los parámetros correspondientes
+    const req: Request = { body: { username: 'user2', follower: 'user1' } } as Request;
+    const res: Response = {} as Response;
+    res.json = jest.fn();
+    res.status = jest.fn(() => res);
+
+    await UserController.Unfollow(req, res);
+
+    // Comprobar que user1 ya no sigue a user2
+    const updatedUser1 = await UserRepository.findUserByUserId('user1');
+    expect(updatedUser1.followeds).toHaveLength(0);
+
+    // Comprobar que user2 ya no es seguido por user1
+    const updatedUser2 = await UserRepository.findUserByUserId('user2');
+    if (updatedUser2) {
+    expect(updatedUser2.followers).toHaveLength(0);
+    } else {
+    throw new Error('User not found');
+    }
+
+
+    // Comprobar la respuesta de la función
+    expect(res.status).toHaveBeenCalledWith(200);
+    expect(res.json).toHaveBeenCalledWith(expect.objectContaining({
+      message: 'Follower y followed eliminados correctamente',
+      followers: [],
+    }));
+  });
+});
+
 
 
 });

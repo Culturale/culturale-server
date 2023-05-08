@@ -25,8 +25,6 @@ export class UserRepository {
     return userDoc;
   } 
 
-  
-
   public static async editarUsuari(newUser: IUser): Promise<void> {
     const followers = newUser.followers;
     const followeds = newUser.followeds;
@@ -36,6 +34,18 @@ export class UserRepository {
       followers,
       followeds,
     });
+  }
+  public static async existParam(param: string, tipusAtribut: string): Promise<boolean> {
+    let existe: boolean;
+    switch (tipusAtribut) {
+      case 'username':
+        existe = !(await UserModel.exists({ username: param }) == null);
+        break;
+      case 'email':
+        existe = !(await UserModel.exists({ username: param }) == null);
+    }
+    return existe;
+  
   }
 }
  

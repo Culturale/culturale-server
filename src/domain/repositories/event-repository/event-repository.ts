@@ -2,7 +2,8 @@
 import mongoose from 'mongoose';
 
 import type { Chat, IChat } from '~/domain/entities/chat';
-import type { IEvent } from '~/domain/entities/event';
+import type { EventProps, IEvent} from '~/domain/entities/event';
+import { Event } from '~/domain/entities/event';
 import { EventModel } from '~/domain/entities/event';
 import type { CreateEventDto } from '~/infrastructure';
 import type { MongoId } from '~/types/types';
@@ -13,10 +14,12 @@ export class EventRepository {
       ...event,
       chat: chatId,
       participants: [],
+      valoracions: [],
     });
     return newEvent;
   }
 
+  
 
   public static async getAllEvents(): Promise<IEvent[]> {
     return await EventModel.find();
@@ -30,15 +33,23 @@ export class EventRepository {
     .populate({
       path: 'participants',
       model: 'User',
-    });
-    return eventDocument;
+    })
+    ;
+
+    if(eventDocument){
+    const eventBuscat:IEvent = new Event(eventDocument as EventProps);
+    return eventBuscat;
+    }
+    else return null;
   }
 
   public static async editarEvent(newEvent: IEvent): Promise<void> {
     const participants = newEvent.participants;
+    const valoracions = newEvent.valoracions;
     await EventModel.findByIdAndUpdate(newEvent.id, {
       ...newEvent,
-      participants,
+     participants,
+      valoracions,
     });
   }
 

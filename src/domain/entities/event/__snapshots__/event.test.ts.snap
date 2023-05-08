@@ -17,5 +17,6 @@ Event {
   "photo": "test-photo.jpg",
   "price": "12 €",
   "url": "test-url",
+  "valoracions": [],
 }
 `;

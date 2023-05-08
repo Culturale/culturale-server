@@ -43,7 +43,7 @@ export class Event implements IEvent {
   public participants: IUser[];
   public valoracions: IReview[];
 
-  constructor(props: EventProps) {ç
+  constructor(props: EventProps) {
     const {id, codi, denominacio, descripcio, dataIni, dataFi, horari, adress, valoracions, lat, long, price, url, photo, chat, participants} = props;
     this.id = id;
     this.codi = codi;

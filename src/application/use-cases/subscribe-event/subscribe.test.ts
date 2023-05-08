@@ -45,6 +45,7 @@ describe('LogIn use case', function () {
         horari: '2h',
         adress: 'Passeig de Gràcia',
         url: 'https://test-url.com',
+        photo: 'test-photo.jpg',
     };
     const resAddPar = {} as unknown as Response;
     resAddPar.json = jest.fn();

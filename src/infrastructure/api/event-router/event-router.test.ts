@@ -27,6 +27,9 @@ describe('Event Routes', function () {
           dataFi: new Date(2),
           horari: '2h',
           adress: 'Passeig de Gràcia',
+          lat: 123.456,
+          long: 789.012,
+          price: '12 €',
           url: 'https://test-url.com',
           photo: 'test-photo.jpg',
         });
@@ -53,6 +56,9 @@ describe('Event Routes', function () {
           dataFi: new Date(2),
           horari: '2h',
           adress: 'Passeig de Gràcia',
+          lat: 123.456,
+          long: 789.012,
+          price: '12 €',
           url: 'https://test-url.com',
           photo: 'test-photo.jpg',
         });
@@ -94,6 +100,9 @@ describe('Event Routes', function () {
         dataFi: new Date(2),
         horari: '2h',
         adress: 'Passeig de Gràcia',
+        lat: 123.456,
+        long: 789.012,
+        price: '12 €',
         url: 'https://test-url.com',
         photo: 'test-photo.jpg',
       });
@@ -129,6 +138,9 @@ describe('Event Routes', function () {
         dataFi: new Date(2),
         horari: '2h',
         adress: 'Passeig de Gràcia',
+        lat: 123.456,
+        long: 789.012,
+        price: '12 €',
         url: 'https://test-url.com',
         photo: 'test-photo.jpg',
       });
@@ -165,6 +177,9 @@ describe('Event Routes', function () {
         dataFi: new Date(2),
         horari: '2h',
         adress: 'Passeig de Gràcia',
+        lat: 123.456,
+        long: 789.012,
+        price: '12 €',
         url: 'https://test-url.com',
         photo: 'test-photo.jpg',
       });
@@ -192,6 +207,9 @@ describe('Event Routes', function () {
         dataFi: new Date(2),
         horari: '2h',
         adress: 'Passeig de Gràcia',
+        lat: 123.456,
+        long: 789.012,
+        price: '12 €',
         url: 'https://test-url.com',
         photo: 'test-photo.jpg',
       });
@@ -221,6 +239,9 @@ describe('Event Routes', function () {
         dataFi: new Date(2),
         horari: '2h',
         adress: 'Passeig de Gràcia',
+        lat: 123.456,
+        long: 789.012,
+        price: '12 €',
         url: 'https://test-url.com',
         photo: 'test-photo.jpg',
       });

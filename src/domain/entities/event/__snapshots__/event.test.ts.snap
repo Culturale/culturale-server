@@ -11,8 +11,11 @@ Event {
   "descripcio": "test-descripcio",
   "horari": "2h",
   "id": undefined,
+  "lat": 123.456,
+  "long": 789.012,
   "participants": [],
   "photo": "test-photo.jpg",
+  "price": "12 €",
   "url": "test-url",
 }
 `;

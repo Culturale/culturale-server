@@ -11,6 +11,9 @@ const EventSchema = new Schema({
   denominacio: { required: true, type: String },
   descripcio: { required: true, type: String },
   horari: { required: false, type: String },
+  lat: { required: false, type: Number },
+  long: { required: false, type: Number },
+  price: { required: false, type: String },
   url: { required: false, type: String },
   photo: { required: false, type: String },
   participants: [

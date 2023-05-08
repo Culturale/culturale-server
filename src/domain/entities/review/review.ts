@@ -7,22 +7,22 @@ export type reviewProps = {
   puntuation: number;
   comment?: string;
   author: string;
-  eventCode: string;
+  eventId: string;
 };
 export class Review implements IReview  {
   public _id: MongoId;
   public puntuation: number;
   public comment?: string;
   public author: string;
-  public eventCode: string;
+  public eventId: string;
 
   constructor(props: reviewProps) {
-    const {id, puntuation, comment, author, eventCode} = props;
+    const {id, puntuation, comment, author, eventId} = props;
     this._id = id;
     this.puntuation = puntuation;
     this.comment = comment || null;
     this.author = author;
-    this.eventCode = eventCode;
+    this.eventId = eventId;
   }
   
 }

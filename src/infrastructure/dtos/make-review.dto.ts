@@ -5,7 +5,7 @@ import type { NextFunction, Request, Response } from 'express';
 export class MakeReviewDTO {
     @IsString()
     @IsNotEmpty()
-    eventCode: string;
+    eventId: string;
   
     @IsNotEmpty()
     @IsString()
@@ -29,7 +29,7 @@ export async function makeReviewDTO(
 ) {
   const DTO = new MakeReviewDTO();
   
-  DTO.eventCode = req.body.eventCode;
+  DTO.eventId = req.body.eventId;
   DTO.comment = req.body.comment;
   DTO.author = req.body.author;
   DTO.puntuation = req.body.puntuation;

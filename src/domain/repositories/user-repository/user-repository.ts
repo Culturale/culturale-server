@@ -21,6 +21,10 @@ export class UserRepository {
     .populate({
       path: 'followers',
       model: 'User',
+    })
+    .populate({
+      path: 'followeds',
+      model: 'User',
     });
     return userDoc;
   } 

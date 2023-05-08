@@ -143,10 +143,11 @@ export class EventController {
     res: Response
   ): Promise<void> {
     try {
-      const codiEvent = req.body.id;
-      const username = req.body.username;
+      const codiEvent = req.params.eventid;
+      const username = req.params.username;
       const newEvent: IEvent = await EventRepository.findEvent(codiEvent);
       const newParticipant: IUser = await UserRepository.findUserByUserId(username);
+      
       if(!newEvent || !newParticipant){
         res.status(404);
         res.json({
@@ -162,6 +163,41 @@ export class EventController {
       res.json({
         message: 'Participante añadido correctamente',
         participants: newEvent.participants,
+      });
+    } catch (e) {
+      res.status(500);
+      res.json({
+        error: e,
+      });
+    }
+  }
+
+  public static async deleteParticipant(
+    req: Request,
+    res: Response
+  ): Promise<void> {
+    try {
+      const codiEvent = req.params.eventid;
+      const username = req.params.username;
+      const event: IEvent = await EventRepository.findEvent(codiEvent);
+      const participant: IUser = await UserRepository.findUserByUserId(username);
+      if(!event || !participant){
+        res.status(404);
+        res.json({
+          message: 'user or event not found'
+        });
+        return;
+      }
+
+      const castedEvent = new Event(event as EventProps);
+      castedEvent.deleteParticipant(participant);
+
+      await EventRepository.editarEvent(castedEvent);
+      
+      res.status(200);
+      res.json({
+        message: 'Participante eliminado correctamente',
+        participants: event.participants,
       });
     } catch (e) {
       res.status(500);

@@ -103,6 +103,7 @@ describe('Event Controller', function () {
       });
     });
   });
+
   const createTestEvent = async (req: Request): Promise<string> => {
     const res = {} as unknown as Response;
     let eventId: string;
@@ -220,11 +221,15 @@ describe('Event Controller', function () {
     });
 
     it('returns the participants', async function () {
-      const reqAddPar: Request = JSON.parse(JSON.stringify(expressRequest));
-      reqAddPar.body = {
-          id: eventId,
+      //onst reqAddPar: Request = JSON.parse(JSON.stringify(expressRequest));
+      const reqAddPar: Request<any, any, any, any, Record<string, unknown>> = {
+        params: {
           username: 'test-username',
-      };
+          eventid: eventId,
+        },
+      } as Request<any, any, any, any, Record<string, unknown>>;
+
+      
       
       const resAddPar = {} as unknown as Response;
       resAddPar.json = jest.fn();
@@ -237,6 +242,96 @@ describe('Event Controller', function () {
       }));
     }); 
   });
+
+
+
+
+  describe('delete participant event', function () {
+    let eventId: string;
+    //let participantId: string;
+  
+    const expressRequest: Request = {} as Request;
+  
+    const reqUser: Request = JSON.parse(JSON.stringify(expressRequest));
+    reqUser.body = {
+      email: 'email@example.com',
+      password: 'test-password',
+      username: 'test-username',
+      name: 'test-name',
+      profilePicture: 'test-imageurl',
+      phoneNumber: '000000000',
+      usertype: 'usuario',
+    };
+  
+    const resUser = {} as unknown as Response;
+    resUser.json = jest.fn();
+    resUser.status = jest.fn(() => resUser);
+    resUser.setHeader = jest.fn();
+
+    
+  
+    beforeEach(async function () {
+      const req: Request = expressRequest;
+      req.body = {
+        codi: 12348173050,
+        denominacio: 'test-event',
+        descripcio: 'test-description',
+        dataIni: new Date(1),
+        dataFi: new Date(2),
+        horari: '2h',
+        adress: 'Passeig de Gràcia',
+        lat: 123.456,
+        long: 789.012,
+        price: '12 €',
+        url: 'https://test-url.com',
+        photo: 'test-photo.jpg',
+      };
+      // Crear el evento y guardar su id en la variable eventId
+      eventId = await createTestEvent(req);
+  
+      await UserController.createUser(reqUser, resUser);
+    });
+  
+    it('deletes the participant from the event', async function () {
+      //const reqAddPar: Request = JSON.parse(JSON.stringify(expressRequest));
+      const reqAddPar: Request<any, any, any, any, Record<string, unknown>> = {
+        params: {
+          username: 'test-username',
+          eventid: eventId,
+         },
+      } as Request<any, any, any, any, Record<string, unknown>>;
+  
+  
+      const resAddPar = {} as unknown as Response;
+      resAddPar.json = jest.fn();
+      resAddPar.status = jest.fn(() => resAddPar);
+      resAddPar.setHeader = jest.fn();
+  
+      // Añadir el participante al evento
+      await EventController.addParticipant(reqAddPar, resAddPar);
+      expect(resAddPar.status).toBeCalledWith(200);
+      expect(resAddPar.json).toBeCalledWith(
+        expect.objectContaining({
+          message: 'Participante añadido correctamente',
+    
+    }));
+    
+      const resDelPar = {} as unknown as Response;
+      resDelPar.json = jest.fn();
+      resDelPar.status = jest.fn(() => resDelPar);
+      resDelPar.setHeader = jest.fn();
+  
+      // Eliminar el participante del evento
+      await EventController.deleteParticipant(reqAddPar, resDelPar);
+      expect(resDelPar.status).toBeCalledWith(200);
+      expect(resDelPar.json).toBeCalledWith(
+        expect.objectContaining({
+          message: 'Participante eliminado correctamente',
+        })
+      );
+    });
+  });
+  
   
   describe('deleteEvent', function () {
     const expressRequest: Request = {} as Request;

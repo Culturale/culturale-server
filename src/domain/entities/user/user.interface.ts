@@ -14,6 +14,8 @@ export interface IUser {
 
     updateFollowers: (newFollower: IUser) => void;
     updateFolloweds: (newFollowed:IUser) => void;
+    deleteFollowers: (follower: IUser) => void;
+    deleteFolloweds: (followed:IUser) => void;
 }
 
 

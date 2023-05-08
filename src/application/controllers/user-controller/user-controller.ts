@@ -166,7 +166,7 @@ export class UserController {
 
       res.status(200);
       res.json({
-        message: 'Follower i followed eliminados correctamente',
+        message: 'Follower y followed eliminados correctamente',
         followers: newUser.followers,
       });
     } catch (e) {

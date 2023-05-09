@@ -143,11 +143,10 @@ export class EventController {
     res: Response
   ): Promise<void> {
     try {
-      const codiEvent = req.params.eventid;
-      const username = req.params.username;
+      const codiEvent = req.body.id;
+      const username = req.body.username;
       const newEvent: IEvent = await EventRepository.findEvent(codiEvent);
       const newParticipant: IUser = await UserRepository.findUserByUserId(username);
-      
       if(!newEvent || !newParticipant){
         res.status(404);
         res.json({
@@ -157,6 +156,7 @@ export class EventController {
       }
       const castedEvent = new Event(newEvent as EventProps);
       castedEvent.updateParticipant(newParticipant);
+
       await EventRepository.editarEvent(castedEvent);
       
       res.status(200);
@@ -177,8 +177,8 @@ export class EventController {
     res: Response
   ): Promise<void> {
     try {
-      const codiEvent = req.params.eventid;
-      const username = req.params.username;
+      const codiEvent = req.body.eventid;
+      const username = req.body.username;
       const event: IEvent = await EventRepository.findEvent(codiEvent);
       const participant: IUser = await UserRepository.findUserByUserId(username);
       if(!event || !participant){

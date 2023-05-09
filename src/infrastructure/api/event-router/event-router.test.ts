@@ -226,9 +226,8 @@ describe('Event Routes', function () {
     });
   });
 
-  describe('POST /events/newParticipant/:username/:eventid', function () { 
+  describe('POST /events/newParticipant', function () { 
     let eventId: string;
-
     beforeEach(async function () {
       const createRes = await request(app)
       .post('/events/create')
@@ -259,30 +258,33 @@ describe('Event Routes', function () {
           usertype: 'usuario',
         });
     });
-    
     it('if the payload is correct it adds the participant', async function () {
       const res = await request(app)
-      .post(`/events/newParticipant/test-username/${eventId}`)
-      .send();
+      .post('/events/newParticipant')
+      .send({
+        id: eventId,
+        username: 'test-username',
+      });
       expect(res.statusCode).toBe(200);
       expect(res.body.message).toBe('Participante añadido correctamente');
     });
-
     it('if the payload is incorrect it sends the error', async function () {
       const res = await request(app)
-        .post('/events/newParticipant/test-username1/6453e1acd9fd34011413c89b');
+      .post('/events/newParticipant')
+      .send({
+        codi: 12348173000,
+        username: 'test-username',
+      });
       expect(res.statusCode).toBe(404);
       expect(res.body.message).toBe('user or event not found');
     });
-    
   });
 
 
 
 
-  describe('POST /events/deleteParticipant/:username/:eventid', function () { 
+  describe('DELETE /events/deleteParticipant', function () { 
     let eventId: string;
-
     beforeEach(async function () {
       const createRes = await request(app)
       .post('/events/create')
@@ -313,26 +315,35 @@ describe('Event Routes', function () {
           usertype: 'usuario',
         });
     });
-    
+
     it('if the payload is correct it deletes the participant', async function () {
       // primero agregamos el participante al evento
       await request(app)
-        .post(`/events/newParticipant/test-username/${eventId}`)
-        .send();
+        .post('/events/newParticipant')
+        .send({
+          id: eventId,
+          username: 'test-username',
+        });
     
-      // luego hacemos la petición para eliminarlo
-      const res = await request(app)
-        .delete(`/events/deleteParticipant/test-username/${eventId}`)
-        .send();
-      
-      expect(res.statusCode).toBe(200);
-      expect(res.body.message).toBe('Participante eliminado correctamente');
+      // luego eliminamos el participante del evento
+      const deleteParticipantRes = await request(app)
+        .delete('/events/deleteParticipant')
+        .send({
+          eventid: eventId,
+          username: 'test-username',
+        });
+      expect(deleteParticipantRes.statusCode).toBe(200);
+      expect(deleteParticipantRes.body.message).toBe('Participante eliminado correctamente');
     });
     
-    it('if the payload is incorrect it sends the error', async function () {
-      const res = await request(app)
-        .delete('/events/deleteParticipant/test-username1/6453e1acd9fd34011413c89b');
-      
+    
+    it('if the payload is incorrect it sends the error', async function () {  
+        const res = await request(app)
+        .delete('/events/deleteParticipant')
+        .send({
+          eventid: '6453e1acd9fd34011413c89b',
+          username: 'test-username1',
+        });
       expect(res.statusCode).toBe(404);
       expect(res.body.message).toBe('user or event not found');
     });

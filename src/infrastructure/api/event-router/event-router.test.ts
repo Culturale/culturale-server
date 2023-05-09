@@ -272,7 +272,7 @@ describe('Event Routes', function () {
       const res = await request(app)
       .post('/events/newParticipant')
       .send({
-        codi: '12348173000',
+        id: '645ac0f30679a1fcb116d440',
         username: 'test-username',
       });
       expect(res.statusCode).toBe(404);

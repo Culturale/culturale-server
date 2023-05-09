@@ -18,7 +18,7 @@ export async function addParticipantDto(
   next: NextFunction,
 ) {
   const DTO = new AddParticipantDto();
-  DTO.id = req.body.eventid;
+  DTO.id = req.body.id;
   DTO.username = req.body.username;
 
   const errors = await validate(DTO);

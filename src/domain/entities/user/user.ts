@@ -51,7 +51,7 @@ export class User implements IUser {
     }
 
     public updateFolloweds(newUser: IUser): void {
-        if (!this.followeds.find((followed) => followed.id !== newUser.id)) {
+        if (!this.followeds.find((followed) => followed.id === newUser.id)) {
             const newFolloweds = [...this.followeds, newUser];
             this.followeds = newFolloweds;
           }

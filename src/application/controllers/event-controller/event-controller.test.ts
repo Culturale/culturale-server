@@ -245,6 +245,7 @@ describe('Event Controller', function () {
 
   describe('delete participant event', function () {
     let eventId: string;
+    //let participantId: string;
   
     const expressRequest: Request = {} as Request;
   
@@ -312,7 +313,7 @@ describe('Event Controller', function () {
 
       const reqDelPar: Request = {} as Request;
       reqDelPar.body = {
-          eventid: eventId,
+          id: eventId,
           username: 'test-username',
       };
 

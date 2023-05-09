@@ -272,7 +272,7 @@ describe('Event Routes', function () {
       const res = await request(app)
       .post('/events/newParticipant')
       .send({
-        codi: 12348173000,
+        codi: '12348173000',
         username: 'test-username',
       });
       expect(res.statusCode).toBe(404);
@@ -329,7 +329,7 @@ describe('Event Routes', function () {
       const deleteParticipantRes = await request(app)
         .delete('/events/deleteParticipant')
         .send({
-          eventid: eventId,
+          id: eventId,
           username: 'test-username',
         });
       expect(deleteParticipantRes.statusCode).toBe(200);
@@ -341,7 +341,7 @@ describe('Event Routes', function () {
         const res = await request(app)
         .delete('/events/deleteParticipant')
         .send({
-          eventid: '6453e1acd9fd34011413c89b',
+          id: '6453e1acd9fd34011413c89b',
           username: 'test-username1',
         });
       expect(res.statusCode).toBe(404);

@@ -154,6 +154,7 @@ export class EventController {
         });
         return;
       }
+      
       const castedEvent = new Event(newEvent as EventProps);
       castedEvent.updateParticipant(newParticipant);
 
@@ -177,7 +178,7 @@ export class EventController {
     res: Response
   ): Promise<void> {
     try {
-      const codiEvent = req.body.eventid;
+      const codiEvent = req.body.id;
       const username = req.body.username;
       const event: IEvent = await EventRepository.findEvent(codiEvent);
       const participant: IUser = await UserRepository.findUserByUserId(username);

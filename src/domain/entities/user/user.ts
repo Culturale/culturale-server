@@ -63,7 +63,7 @@ export class User implements IUser {
     }
 
     public deleteFolloweds(newUser: IUser): void {
-        const updatedFolloweds = this.followeds.filter(followed => followed.id === newUser.id);
+        const updatedFolloweds = this.followeds.filter(followed => followed.id !== newUser.id);
         this.followeds = updatedFolloweds;
     }
 

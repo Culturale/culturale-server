@@ -16,6 +16,9 @@ const UserSchema = new Schema({
     followeds: [
         { required: true, type: Schema.Types.ObjectId, model: 'User'},
       ],
+    reviews: [
+        { required: true, type: Schema.Types.ObjectId, model: 'Review'},
+    ]
 });
 
 const UserModel = model<IUser>('User', UserSchema);

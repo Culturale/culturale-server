@@ -66,12 +66,10 @@ export class Event implements IEvent {
     const newParticipants = [...this.participants, newParticipant];
     this.participants = newParticipants;
   }
-
-  public deleteParticipant(delParticipant: IUser): void {
-    const updatedParticipants = this.participants.filter(participant => participant.id !== delParticipant.id);
+  public deleteParticipant(newParticipant: IUser): void {
+    const updatedParticipants = this.participants.filter(participants => participants.id !== newParticipant.id);
     this.participants = updatedParticipants;
   }
-
   public get participantsUsernames(): string[] {
     const ids = this.participants.map((participant) => participant.username);
     return ids;

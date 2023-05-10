@@ -1,5 +1,7 @@
 import type { MongoId } from '~/types/types';
 
+import type { IEvent } from '../event';
+
 
 import type { IUser } from './user.interface';
 
@@ -14,6 +16,7 @@ export type UserProps = {
     usertype: string;
     followers?: IUser[];
     followeds?: IUser[];
+    eventSub?: IEvent[];
 };
 
   
@@ -28,9 +31,10 @@ export class User implements IUser {
     public usertype: string;
     public followers: IUser[];
     public followeds: IUser[];
+    public eventSub: IEvent[];
 
     constructor(props: UserProps) {
-        const {id, username, name, password, email, profilePicture, phoneNumber, usertype, followers, followeds} = props;
+        const {id, username, name, password, email, profilePicture, phoneNumber, usertype, followers, followeds, eventSub} = props;
         this.id = id;
         this.username = username;
         this.name = name;
@@ -41,8 +45,21 @@ export class User implements IUser {
         this.usertype = usertype;
         this.followers = followers || [];
         this.followeds = followeds || [];
+        this.eventSub = eventSub || [];
     }
     
+    public updateEventSub (newEvent: IEvent): void {
+        if (!this.eventSub.find((eventSub) => eventSub.id === newEvent.id)) {
+        const newEvents = [...this.eventSub, newEvent];
+        this.eventSub = newEvents;
+        }
+    }
+
+    public deleteEventSub (newEvent: IEvent): void{
+        const updatedEvents = this.eventSub.filter(eventSub => eventSub.id !== newEvent.id);
+        this.eventSub = updatedEvents;
+    }
+
     public updateFollowers(newFollower: IUser): void {
         if (!this.followers.find((follower) => follower.id === newFollower.id)) {
         const newFollowers = [...this.followers, newFollower];

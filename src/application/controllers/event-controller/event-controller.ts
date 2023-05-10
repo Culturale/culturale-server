@@ -1,15 +1,18 @@
 import type { Request, Response } from 'express';
+import { Types } from 'mongoose';
 
 import type { Chat, IChat } from '~/domain/entities/chat';
 import type { EventProps, IEvent} from '~/domain/entities/event';
 import { Event} from '~/domain/entities/event';
 import type { IMessage } from '~/domain/entities/message';
-import type { IUser } from '~/domain/entities/user';
+import { IUser, User, UserProps } from '~/domain/entities/user';
 import { UserRepository } from '~/domain/repositories';
 import { ChatRepository } from '~/domain/repositories/chat-repository/chat-repository';
 import { EventRepository } from '~/domain/repositories/event-repository/event-repository';
 import { MessageRepository } from '~/domain/repositories/message-repository/message-repository';
 import type { CreateEventDto, AddParticipantDto } from '~/infrastructure';
+
+
 
 export class EventController {
   public static async createEvent(req: Request, res: Response): Promise<void> {
@@ -55,7 +58,6 @@ export class EventController {
       }
       const newEvent: IEvent = {
         ... oldEvent,
-        id: oldEvent.id,
         codi: oldEvent.codi,
         denominacio: req.body.denominacio || oldEvent.denominacio,
         descripcio: req.body.descripcio || oldEvent.descripcio,
@@ -138,16 +140,21 @@ export class EventController {
       });
     }
   }
+
+  
   public static async addParticipant(
     req: Request,
     res: Response
   ): Promise<void> {
     try {
       const participantDTO: AddParticipantDto = req.body;
-      const codiEvent = participantDTO.id;
+      const codiEvent = new Types.ObjectId(participantDTO.id.toString());
+      console.log('hola', typeof codiEvent);
       const username = participantDTO.username;
-      const newEvent: IEvent = await EventRepository.findEvent(codiEvent);
+      const newEvent: IEvent = await EventRepository.findEventMongo(codiEvent);
+      console.log('aqui', typeof newEvent.id);
       const newParticipant: IUser = await UserRepository.findUserByUserId(username);
+      console.log('user', typeof newParticipant.id);
       if(!newEvent || !newParticipant){
         res.status(404);
         res.json({
@@ -158,8 +165,19 @@ export class EventController {
       
       const castedEvent = new Event(newEvent as EventProps);
       castedEvent.updateParticipant(newParticipant);
+      
+      
+      const castedUser = new User(newParticipant as UserProps);
+      castedUser.updateEventSub(newEvent);
 
+      console.log('userdef', castedUser.id);
+      console.log('eventdef', typeof castedEvent.id);
       await EventRepository.editarEvent(castedEvent);
+
+      console.log(castedEvent);
+      console.log(castedUser);
+      await UserRepository.editarUsuari(castedUser);
+      
       
       res.status(200);
       res.json({

@@ -10,6 +10,7 @@ import { UserRepository } from '~/domain/repositories/user-repository/user-repos
 import { UserController } from './user-controller';
 
 
+
 dotenv.config();
 
 describe('User Controller', function () {
@@ -138,6 +139,7 @@ describe('EditPerfil', function () {
           usertype: 'usuario',
           followers: [],
           followeds:[],
+          eventSub: [],
           id: undefined,
         },
     });

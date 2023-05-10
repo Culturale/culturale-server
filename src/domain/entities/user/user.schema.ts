@@ -11,11 +11,12 @@ const UserSchema = new Schema({
     profilePicture: { required: true, type: String },
     usertype: { required: true, type: String },
     followers: [
-        { required: true, type: Schema.Types.ObjectId, model: 'User'},
+        { required: false, type: Schema.Types.ObjectId, model: 'User'},
       ],
     followeds: [
-        { required: true, type: Schema.Types.ObjectId, model: 'User'},
+        { required: false, type: Schema.Types.ObjectId, model: 'User'},
       ],
+    eventSub: { required: false, type: [Schema.Types.ObjectId], model: 'Event' },
 });
 
 const UserModel = model<IUser>('User', UserSchema);

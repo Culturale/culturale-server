@@ -43,6 +43,23 @@ export class EventRepository {
     else return null;
   }
 
+  public static async findEventMongo(idEvent: mongoose.Types.ObjectId): Promise<IEvent> {
+    const eventDocument = await EventModel.findById(idEvent)
+    .populate({
+      path: 'participants',
+      model: 'User',
+    })
+    ;
+
+    if(eventDocument){
+    const eventBuscat:IEvent = new Event(eventDocument as EventProps);
+    return eventBuscat;
+    }
+    else return null;
+}
+
+
+
   public static async editarEvent(newEvent: IEvent): Promise<void> {
     const participants = newEvent.participants;
     const valoracions = newEvent.valoracions;

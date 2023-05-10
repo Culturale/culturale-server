@@ -32,11 +32,13 @@ export class UserRepository {
   public static async editarUsuari(newUser: IUser): Promise<void> {
     const followers = newUser.followers;
     const followeds = newUser.followeds;
+    const eventSub = newUser.eventSub;
     
     await UserModel.findByIdAndUpdate(newUser.id, {
       ...newUser,
       followers,
       followeds,
+      eventSub,
     });
   }
   public static async existParam(param: string, tipusAtribut: string): Promise<boolean> {

@@ -180,7 +180,9 @@ describe('Event Controller', function () {
   });
 
   describe('add participant event', function () { 
-    let eventId: string ;
+    let id: mongoose.Types.ObjectId;
+    let eventid: string;
+
     
     const expressRequest: Request = {} as Request;
     const reqUser: Request = JSON.parse(JSON.stringify(expressRequest));
@@ -215,15 +217,15 @@ describe('Event Controller', function () {
         photo: 'test-photo.jpg',
       };
       // Crear el evento y guardar su id en la variable eventId
-      eventId = await createTestEvent(req);
-
+      eventid =  await createTestEvent(req);
+      id = new mongoose.Types.ObjectId(eventid);
       await UserController.createUser(reqUser, resUser);
     });
 
     it('returns the participants', async function () {
       const reqAddPar: Request = JSON.parse(JSON.stringify(expressRequest));
       reqAddPar.body = {
-          id: eventId,
+          id: id,
           username: 'test-username',
       };
       
@@ -244,8 +246,8 @@ describe('Event Controller', function () {
 
 
   describe('delete participant event', function () {
-    let eventId: string;
-    //let participantId: string;
+    let id: mongoose.Types.ObjectId;
+    let eventid: string;
   
     const expressRequest: Request = {} as Request;
   
@@ -282,8 +284,9 @@ describe('Event Controller', function () {
         url: 'https://test-url.com',
         photo: 'test-photo.jpg',
       };
-      // Crear el evento y guardar su id en la variable eventId
-      eventId = await createTestEvent(req);
+      eventid =  await createTestEvent(req);
+      id = new mongoose.Types.ObjectId(eventid);
+      await UserController.createUser(reqUser, resUser);
   
       await UserController.createUser(reqUser, resUser);
     });
@@ -293,7 +296,7 @@ describe('Event Controller', function () {
             
       const reqAddPar: Request = {} as Request;
       reqAddPar.body = {
-          id: eventId,
+          id: id,
           username: 'test-username',
       };
 
@@ -313,7 +316,7 @@ describe('Event Controller', function () {
 
       const reqDelPar: Request = {} as Request;
       reqDelPar.body = {
-          id: eventId,
+          id: id,
           username: 'test-username',
       };
 

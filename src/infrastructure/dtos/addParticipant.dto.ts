@@ -1,11 +1,13 @@
-import { IsString, IsNotEmpty } from 'class-validator';
+
+import { IsString, IsNotEmpty, IsMongoId } from 'class-validator';
 import { validate } from 'class-validator';
 import type { NextFunction, Request, Response } from 'express';
+import type { ObjectId } from 'mongoose';
 
 export class AddParticipantDto {
-    @IsString()
+    @IsMongoId()
     @IsNotEmpty()
-    id: string;
+    id: ObjectId;
 
     @IsString()
     @IsNotEmpty()

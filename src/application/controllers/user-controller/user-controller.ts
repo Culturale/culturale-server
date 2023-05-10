@@ -85,6 +85,7 @@ export class UserController {
         phoneNumber: req.body.phoneNumber || oldUser.phoneNumber,
         usertype : oldUser.usertype,
         followers : oldUser.followers,
+        followeds : oldUser.followeds,
       };
 
       await UserRepository.editarUsuari(newUser);

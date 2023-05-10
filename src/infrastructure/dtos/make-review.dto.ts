@@ -9,7 +9,7 @@ export class MakeReviewDTO {
   
     @IsNotEmpty()
     @IsString()
-    author: string ;
+    authorId: string ;
 
     @IsNotEmpty()
     @IsNumber()
@@ -31,7 +31,7 @@ export async function makeReviewDTO(
   
   DTO.eventId = req.body.eventId;
   DTO.comment = req.body.comment;
-  DTO.author = req.body.author;
+  DTO.authorId = req.body.authorId;
   DTO.puntuation = req.body.puntuation;
 
   const errors = await validate(DTO);

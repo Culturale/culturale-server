@@ -1,6 +1,8 @@
 import type { MongoId } from '~/types/types';
 
 
+import type { IReview } from '../review';
+
 import type { IUser } from './user.interface';
 
 export type UserProps = {
@@ -14,6 +16,7 @@ export type UserProps = {
     usertype: string;
     followers?: IUser[];
     followeds?: IUser[];
+    reviews?: IReview[];
 };
 
   
@@ -28,9 +31,10 @@ export class User implements IUser {
     public usertype: string;
     public followers: IUser[];
     public followeds: IUser[];
+    public reviews: IReview[];
 
     constructor(props: UserProps) {
-        const {id, username, name, password, email, profilePicture, phoneNumber, usertype, followers, followeds} = props;
+        const {id, username, name, password, email, profilePicture, phoneNumber, usertype, followers, followeds, reviews} = props;
         this.id = id;
         this.username = username;
         this.name = name;
@@ -41,8 +45,14 @@ export class User implements IUser {
         this.usertype = usertype;
         this.followers = followers || [];
         this.followeds = followeds || [];
+        this.reviews = reviews || [];
     }
-    
+  
+    public updateValoracions(newReview: IReview): void {
+        
+        const reviews = [...this.reviews, newReview];
+        this.reviews = reviews;
+    }
     public updateFollowers(newFollower: IUser): void {
         if (!this.followers.find((follower) => follower.id === newFollower.id)) {
         const newFollowers = [...this.followers, newFollower];

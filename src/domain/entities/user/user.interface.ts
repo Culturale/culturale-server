@@ -1,5 +1,7 @@
 import type { MongoId } from '~/types/types';
 
+import type { IReview } from '../review';
+
 export interface IUser {
     id: MongoId;
     username: string;
@@ -11,7 +13,9 @@ export interface IUser {
     usertype: string;
     followers: IUser[]; //gente q me sigue
     followeds: IUser[]; //gente a la que sigo
+    reviews: IReview[];
 
+    updateValoracions: (review: IReview) => void;
     updateFollowers: (newFollower: IUser) => void;
     updateFolloweds: (newFollowed:IUser) => void;
     deleteFollowers: (follower: IUser) => void;

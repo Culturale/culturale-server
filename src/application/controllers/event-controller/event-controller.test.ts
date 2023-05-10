@@ -289,7 +289,6 @@ describe('Event Controller', function () {
     });
   
     it('deletes the participant from the event', async function () {
-      //const reqAddPar: Request = JSON.parse(JSON.stringify(expressRequest));
             
       const reqAddPar: Request = {} as Request;
       reqAddPar.body = {

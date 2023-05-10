@@ -1,5 +1,6 @@
+import mongoose from 'mongoose';
+
 import type { IUser } from '~/domain/entities/user';
-//import { User } from '~/domain/entities/user';
 import { UserModel } from '~/domain/entities/user';
 import type { CreateUserDto } from '~/infrastructure';
 
@@ -16,7 +17,7 @@ export class UserRepository {
     return await UserModel.find();
   }
 
-  public static async findUserByUserId(username: String): Promise<IUser> {
+  public static async findUserByUsername(username: String): Promise<IUser> {
     const userDoc = await UserModel.findOne({ username: username })
     .populate({
       path: 'followers',
@@ -26,18 +27,39 @@ export class UserRepository {
       path: 'followeds',
       model: 'User',
     });
+    
     return userDoc;
   } 
+  
+  public static async findUserById(userId: string): Promise<IUser> {
+    const userDoc = await UserModel.findById(new mongoose.Types.ObjectId(userId))   
+    .populate({
+      path: 'followers',
+      model: 'User',
+    })
+    .populate({
+      path: 'followeds',
+      model: 'User',
+    })
+    .populate({
+      path: 'reviews',
+      model: 'Review',
+      });
+    if (!userDoc) return null;
+    return userDoc;
+  }
 
+  
   public static async editarUsuari(newUser: IUser): Promise<void> {
     const followers = newUser.followers;
     const followeds = newUser.followeds;
-    
+    const reviews = newUser.reviews;
     await UserModel.findByIdAndUpdate(newUser.id, {
       ...newUser,
       followers,
       followeds,
-    });
+      reviews,
+    },{new: true});
   }
   public static async existParam(param: string, tipusAtribut: string): Promise<boolean> {
     let existe: boolean;

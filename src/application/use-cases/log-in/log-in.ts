@@ -6,7 +6,6 @@ import { UserModel } from '~/domain/entities/user';
 
 export async function logIn(req: Request, res: Response): Promise<void> {
   res.setHeader('Content-Type', 'application/json');
-console.log("LOGEANDO USER")
   try {
     const user = await UserModel.findOne({ username: req.body.username });
     if (user) {

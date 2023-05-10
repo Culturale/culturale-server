@@ -67,8 +67,13 @@ export class EventRepository {
     await EventModel.findOneAndUpdate(event, { chat: chat }, { new: true });
   }
 
-  public static async getEventbydenominacio(name: String): Promise<IEvent[]> {
-    return await EventModel.find({denominacio: name});
+  public static async getEventbydenominacio(searchtext: String[]): Promise<IEvent[]> {
+    return EventModel.find({
+      $or: [
+        { denominacio: { $regex: searchtext.join('|'), $options: 'i' } },
+        { descripcio: { $regex: searchtext.join('|'), $options: 'i' } },
+      ],
+    })
   }
 
   public static async getEventbydataIni(data: Date): Promise<IEvent[]> {

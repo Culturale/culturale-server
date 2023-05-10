@@ -226,8 +226,9 @@ export class EventController {
   }
   
   public static async getEventbydenominacio(req: Request, res: Response): Promise<void> {
+    const searchtext: string[] = req.params.denominacio.toString().split(',');
     try {
-      const event: IEvent[] = await EventRepository.getEventbydenominacio(req.params.denominacio);
+      const event: IEvent[] = await EventRepository.getEventbydenominacio(searchtext);
       if (event.length == 0) {
         res.status(404);
         res.json({

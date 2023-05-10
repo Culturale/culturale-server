@@ -221,15 +221,11 @@ describe('Event Controller', function () {
     });
 
     it('returns the participants', async function () {
-      //onst reqAddPar: Request = JSON.parse(JSON.stringify(expressRequest));
-      const reqAddPar: Request<any, any, any, any, Record<string, unknown>> = {
-        params: {
+      const reqAddPar: Request = JSON.parse(JSON.stringify(expressRequest));
+      reqAddPar.body = {
+          id: eventId,
           username: 'test-username',
-          eventid: eventId,
-        },
-      } as Request<any, any, any, any, Record<string, unknown>>;
-
-      
+      };
       
       const resAddPar = {} as unknown as Response;
       resAddPar.json = jest.fn();
@@ -242,6 +238,7 @@ describe('Event Controller', function () {
       }));
     }); 
   });
+  
 
 
 
@@ -269,7 +266,6 @@ describe('Event Controller', function () {
     resUser.setHeader = jest.fn();
 
     
-  
     beforeEach(async function () {
       const req: Request = expressRequest;
       req.body = {
@@ -294,40 +290,45 @@ describe('Event Controller', function () {
   
     it('deletes the participant from the event', async function () {
       //const reqAddPar: Request = JSON.parse(JSON.stringify(expressRequest));
-      const reqAddPar: Request<any, any, any, any, Record<string, unknown>> = {
-        params: {
+            
+      const reqAddPar: Request = {} as Request;
+      reqAddPar.body = {
+          id: eventId,
           username: 'test-username',
-          eventid: eventId,
-         },
-      } as Request<any, any, any, any, Record<string, unknown>>;
-  
-  
+      };
+
       const resAddPar = {} as unknown as Response;
       resAddPar.json = jest.fn();
       resAddPar.status = jest.fn(() => resAddPar);
       resAddPar.setHeader = jest.fn();
-  
+
       // Añadir el participante al evento
       await EventController.addParticipant(reqAddPar, resAddPar);
       expect(resAddPar.status).toBeCalledWith(200);
       expect(resAddPar.json).toBeCalledWith(
-        expect.objectContaining({
-          message: 'Participante añadido correctamente',
-    
-    }));
-    
+          expect.objectContaining({
+              message: 'Participante añadido correctamente',
+          })
+      );
+
+      const reqDelPar: Request = {} as Request;
+      reqDelPar.body = {
+          id: eventId,
+          username: 'test-username',
+      };
+
       const resDelPar = {} as unknown as Response;
       resDelPar.json = jest.fn();
       resDelPar.status = jest.fn(() => resDelPar);
       resDelPar.setHeader = jest.fn();
-  
+
       // Eliminar el participante del evento
-      await EventController.deleteParticipant(reqAddPar, resDelPar);
+      await EventController.deleteParticipant(reqDelPar, resDelPar);
       expect(resDelPar.status).toBeCalledWith(200);
       expect(resDelPar.json).toBeCalledWith(
-        expect.objectContaining({
-          message: 'Participante eliminado correctamente',
-        })
+          expect.objectContaining({
+              message: 'Participante eliminado correctamente',
+          })
       );
     });
   });

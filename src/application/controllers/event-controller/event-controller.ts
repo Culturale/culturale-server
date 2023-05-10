@@ -9,7 +9,7 @@ import { UserRepository } from '~/domain/repositories';
 import { ChatRepository } from '~/domain/repositories/chat-repository/chat-repository';
 import { EventRepository } from '~/domain/repositories/event-repository/event-repository';
 import { MessageRepository } from '~/domain/repositories/message-repository/message-repository';
-import type { CreateEventDto } from '~/infrastructure';
+import type { CreateEventDto, AddParticipantDto } from '~/infrastructure';
 
 export class EventController {
   public static async createEvent(req: Request, res: Response): Promise<void> {
@@ -143,11 +143,11 @@ export class EventController {
     res: Response
   ): Promise<void> {
     try {
-      const codiEvent = req.params.eventid;
-      const username = req.params.username;
+      const participantDTO: AddParticipantDto = req.body;
+      const codiEvent = participantDTO.id;
+      const username = participantDTO.username;
       const newEvent: IEvent = await EventRepository.findEvent(codiEvent);
       const newParticipant: IUser = await UserRepository.findUserByUserId(username);
-      
       if(!newEvent || !newParticipant){
         res.status(404);
         res.json({
@@ -155,8 +155,10 @@ export class EventController {
         });
         return;
       }
+      
       const castedEvent = new Event(newEvent as EventProps);
       castedEvent.updateParticipant(newParticipant);
+
       await EventRepository.editarEvent(castedEvent);
       
       res.status(200);
@@ -177,8 +179,8 @@ export class EventController {
     res: Response
   ): Promise<void> {
     try {
-      const codiEvent = req.params.eventid;
-      const username = req.params.username;
+      const codiEvent = req.body.id;
+      const username = req.body.username;
       const event: IEvent = await EventRepository.findEvent(codiEvent);
       const participant: IUser = await UserRepository.findUserByUserId(username);
       if(!event || !participant){

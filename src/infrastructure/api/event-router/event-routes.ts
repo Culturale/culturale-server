@@ -2,7 +2,7 @@ import express from 'express';
 
 import { EventController } from '~/application';
 import { makeReview } from '~/application/use-cases/makeEventReview';
-import { createEventDto, editEventDTO } from '~/infrastructure/dtos';
+import { createEventDto, editEventDTO, addParticipantDto} from '~/infrastructure/dtos';
 import { makeReviewDTO } from '~/infrastructure/dtos/make-review.dto';
 
 export const eventRouter = express.Router();
@@ -11,9 +11,9 @@ eventRouter.post('/events/create', createEventDto, EventController.createEvent);
 
 eventRouter.post('/events/newMessage', EventController.addMessageEvent);
 
-eventRouter.post('/events/newParticipant/:username/:eventid', EventController.addParticipant);
+eventRouter.post('/events/newParticipant', addParticipantDto, EventController.addParticipant);
 
-eventRouter.delete('/events/deleteParticipant/:username/:eventid', EventController.deleteParticipant);
+eventRouter.delete('/events/deleteParticipant', EventController.deleteParticipant);
 
 eventRouter.get('/events/:id/messages', EventController.getAllMessages);
 eventRouter.get('/events', EventController.getAllEvents);

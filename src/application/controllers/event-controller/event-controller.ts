@@ -1,25 +1,31 @@
 import type { Request, Response } from 'express';
-import { Types } from 'mongoose';
 
-import type { Chat, IChat } from '~/domain/entities/chat';
-import type { EventProps, IEvent} from '~/domain/entities/event';
-import { Event} from '~/domain/entities/event';
-import type { IMessage } from '~/domain/entities/message';
-import { IUser, User, UserProps } from '~/domain/entities/user';
-import { UserRepository } from '~/domain/repositories';
-import { ChatRepository } from '~/domain/repositories/chat-repository/chat-repository';
-import { EventRepository } from '~/domain/repositories/event-repository/event-repository';
-import { MessageRepository } from '~/domain/repositories/message-repository/message-repository';
-import type { CreateEventDto, AddParticipantDto } from '~/infrastructure';
-
-
+import type {
+  IUser,
+  IMessage,
+  IEvent,
+  EventProps,
+  IChat,
+} from '~/domain/entities';
+import { Event } from '~/domain/entities/event';
+import {
+  UserRepository,
+  ChatRepository,
+  EventRepository,
+  MessageRepository,
+} from '~/domain/repositories';
+import type {
+  CreateEventDto,
+  AddParticipantDto,
+  EditEventDTO,
+} from '~/infrastructure';
 
 export class EventController {
   public static async createEvent(req: Request, res: Response): Promise<void> {
     try {
       const eventDTO: CreateEventDto = req.body;
-      const chat: Chat = await ChatRepository.createEmptyChat();
-      const event = await EventRepository.addEvent(eventDTO,chat.id);
+      const chat: IChat = await ChatRepository.createEmptyChat();
+      const event = await EventRepository.addEvent(eventDTO, chat.id);
       res.status(200);
       res.json({
         message: 'event created',
@@ -49,60 +55,69 @@ export class EventController {
   }
 
   public static async editEvent(req: Request, res: Response): Promise<void> {
-    try{
-      const oldEvent = await EventRepository.findEvent(req.body.id);
-      if (!oldEvent) {
+    try {
+      const editEventDto: EditEventDTO = req.body;
+      const event = await EventRepository.findEvent(req.body.id);
+
+      if (!event) {
         res.status(404);
-        res.json({message: 'Evento no encontrado'});
+        res.json({ message: 'Evento no encontrado' });
         return;
       }
-      const newEvent: IEvent = {
-        ... oldEvent,
-        codi: oldEvent.codi,
-        denominacio: req.body.denominacio || oldEvent.denominacio,
-        descripcio: req.body.descripcio || oldEvent.descripcio,
-        dataIni: req.body.dataIni || oldEvent.dataIni,
-        dataFi: req.body.dataFi || oldEvent.dataFi,
-        horari: req.body.horari || oldEvent.horari,
-        adress: req.body.adress || oldEvent.adress,
-        lat: req.body.lat || oldEvent.lat,
-        long: req.body.long || oldEvent.long,
-        price: req.body.price || oldEvent.price,
-        url: req.body.url || oldEvent.url,
-        photo: req.body.photo || oldEvent.photo,
-        chat: oldEvent.chat,
+
+      const newEventProps: EventProps = {
+        ...event,
+        codi: event.codi,
+        denominacio: editEventDto.denominacio || event.denominacio,
+        descripcio: editEventDto.descripcio || event.descripcio,
+        dataIni: editEventDto.dataIni || event.dataIni,
+        dataFi: editEventDto.dataFi || event.dataFi,
+        horari: editEventDto.horari || event.horari,
+        adress: editEventDto.adress || event.adress,
+        lat: editEventDto.lat || event.lat,
+        long: editEventDto.long || event.long,
+        price: editEventDto.price || event.price,
+        url: editEventDto.url || event.url,
+        photo: editEventDto.photo || event.photo,
+        chat: event.chat,
       };
-      const { ...eventProps } = newEvent; // Excluye el campo 'id' del objeto 'newUser'
-      const castedEvent = new Event(eventProps as EventProps);
-      await EventRepository.editarEvent(castedEvent);
+      const newEvent = new Event(newEventProps);
+      await EventRepository.editarEvent(newEvent);
+
       res.status(200);
-      res.json({message: 'Evento editado correctamente'});  
+      res.json({ message: 'Evento editado correctamente' });
+    } catch (e) {
+      res.status(500);
+      res.json({
+        error: e,
+      });
     }
-    catch (e) {
-        res.status(500);
-        res.json({
-          error: e,
-        });
-      }
-   }
+  }
 
   public static async addMessageEvent(
     req: Request,
-    res: Response
+    res: Response,
   ): Promise<void> {
     try {
       const idEvent = req.body.id;
       const chatEvent: IChat = await EventRepository.getChatEvent(idEvent);
-      if(!chatEvent){
+      if (!chatEvent) {
         res.status(404);
-        res.json({message:'event not found'});
+        res.json({ message: 'event not found' });
         return;
       }
-      const newMessage: IMessage = await MessageRepository.addMessage(req.body.content, req.body.userId, req.body.date);
-      const chat: Chat = await ChatRepository.addMessage(chatEvent, newMessage);
+      const newMessage: IMessage = await MessageRepository.addMessage(
+        req.body.content,
+        req.body.userId,
+        req.body.date,
+      );
+      const chat: IChat = await ChatRepository.addMessage(
+        chatEvent,
+        newMessage,
+      );
       await EventRepository.modifyChatEvent(idEvent, chat);
       res.status(200);
-      res.json({ 
+      res.json({
         message: 'chat sent it',
         messages: newMessage,
       });
@@ -116,15 +131,15 @@ export class EventController {
 
   public static async getAllMessages(
     req: Request,
-    res: Response
+    res: Response,
   ): Promise<void> {
     try {
       const idEvent = req.params.id;
       const chatEvent: IChat = await EventRepository.getChatEvent(idEvent);
-      if(chatEvent === null){
+      if (chatEvent === null) {
         res.status(404);
         res.json({
-          message: 'Event not found'
+          message: 'Event not found',
         });
         return;
       }
@@ -141,70 +156,56 @@ export class EventController {
     }
   }
 
-  
   public static async addParticipant(
     req: Request,
-    res: Response
+    res: Response,
   ): Promise<void> {
     try {
-      const participantDTO: AddParticipantDto = req.body;
-      const codiEvent = new Types.ObjectId(participantDTO.id.toString());
-      console.log('hola', typeof codiEvent);
-      const username = participantDTO.username;
-      const newEvent: IEvent = await EventRepository.findEventMongo(codiEvent);
-      console.log('aqui', typeof newEvent.id);
-      const newParticipant: IUser = await UserRepository.findUserByUserId(username);
-      console.log('user', typeof newParticipant.id);
-      if(!newEvent || !newParticipant){
+      const addParticipantDto: AddParticipantDto = req.body;
+      const { id, username } = addParticipantDto;
+
+      const event: IEvent = await EventRepository.findEvent(id);
+      const user: IUser = await UserRepository.findByUsername(username);
+
+      if (!event || !user) {
         res.status(404);
         res.json({
-          message: 'user or event not found'
+          message: 'user or event not found',
         });
         return;
       }
-      
-      const castedEvent = new Event(newEvent as EventProps);
-      castedEvent.updateParticipant(newParticipant);
-      
-      
-      const castedUser = new User(newParticipant as UserProps);
-      castedUser.updateEventSub(newEvent);
 
-      console.log('userdef', castedUser.id);
-      console.log('eventdef', typeof castedEvent.id);
-      await EventRepository.editarEvent(castedEvent);
+      event.addParticipant(user);
+      user.updateEventSub(event);
 
-      console.log(castedEvent);
-      console.log(castedUser);
-      await UserRepository.editarUsuari(castedUser);
-      
-      
+      await EventRepository.editarEvent(event);
+      await UserRepository.editarUsuari(user);
+
       res.status(200);
       res.json({
         message: 'Participante añadido correctamente',
-        participants: newEvent.participants,
       });
-    } catch (e) {
+    } catch (error) {
       res.status(500);
       res.json({
-        error: e,
+        error,
       });
     }
   }
 
   public static async deleteParticipant(
     req: Request,
-    res: Response
+    res: Response,
   ): Promise<void> {
     try {
       const codiEvent = req.body.id;
       const username = req.body.username;
       const event: IEvent = await EventRepository.findEvent(codiEvent);
-      const participant: IUser = await UserRepository.findUserByUserId(username);
-      if(!event || !participant){
+      const participant: IUser = await UserRepository.findByUsername(username);
+      if (!event || !participant) {
         res.status(404);
         res.json({
-          message: 'user or event not found'
+          message: 'user or event not found',
         });
         return;
       }
@@ -213,7 +214,7 @@ export class EventController {
       castedEvent.deleteParticipant(participant);
 
       await EventRepository.editarEvent(castedEvent);
-      
+
       res.status(200);
       res.json({
         message: 'Participante eliminado correctamente',
@@ -242,10 +243,15 @@ export class EventController {
       });
     }
   }
-  
-  public static async getEventbydenominacio(req: Request, res: Response): Promise<void> {
+
+  public static async getEventbydenominacio(
+    req: Request,
+    res: Response,
+  ): Promise<void> {
     try {
-      const event: IEvent[] = await EventRepository.getEventbydenominacio(req.params.denominacio);
+      const event: IEvent[] = await EventRepository.getEventbydenominacio(
+        req.params.denominacio,
+      );
       if (event.length == 0) {
         res.status(404);
         res.json({
@@ -256,8 +262,7 @@ export class EventController {
       res.json({
         event,
       });
-    }
-    catch (e) {
+    } catch (e) {
       res.status(500);
       res.json({
         error: e,
@@ -265,9 +270,14 @@ export class EventController {
     }
   }
 
-  public static async getEventbydataIni(req: Request, res: Response): Promise<void> {
+  public static async getEventbydataIni(
+    req: Request,
+    res: Response,
+  ): Promise<void> {
     try {
-      const event: IEvent[] = await EventRepository.getEventbydataIni(new Date(req.params.dataIni));
+      const event: IEvent[] = await EventRepository.getEventbydataIni(
+        new Date(req.params.dataIni),
+      );
       if (event.length == 0) {
         res.status(404);
         res.json({
@@ -278,8 +288,7 @@ export class EventController {
       res.json({
         event,
       });
-    }
-    catch (e) {
+    } catch (e) {
       res.status(500);
       res.json({
         error: e,
@@ -287,9 +296,14 @@ export class EventController {
     }
   }
 
-  public static async getEventbydataFi(req: Request, res: Response): Promise<void> {
+  public static async getEventbydataFi(
+    req: Request,
+    res: Response,
+  ): Promise<void> {
     try {
-      const event: IEvent[] = await EventRepository.getEventbydataFi(new Date(req.params.dataFi));
+      const event: IEvent[] = await EventRepository.getEventbydataFi(
+        new Date(req.params.dataFi),
+      );
       if (event.length == 0) {
         res.status(404);
         res.json({
@@ -300,8 +314,7 @@ export class EventController {
       res.json({
         event,
       });
-    }
-    catch (e) {
+    } catch (e) {
       res.status(500);
       res.json({
         error: e,
@@ -309,9 +322,14 @@ export class EventController {
     }
   }
 
-  public static async getEventbycategoria(req: Request, res: Response): Promise<void> {
+  public static async getEventbycategoria(
+    req: Request,
+    res: Response,
+  ): Promise<void> {
     try {
-      const event: IEvent[] = await EventRepository.getEventbycategoria(req.params.categoria);
+      const event: IEvent[] = await EventRepository.getEventbycategoria(
+        req.params.categoria,
+      );
       if (event.length == 0) {
         res.status(404);
         res.json({
@@ -322,8 +340,7 @@ export class EventController {
       res.json({
         event,
       });
-    }
-    catch (e) {
+    } catch (e) {
       res.status(500);
       res.json({
         error: e,

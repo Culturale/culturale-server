@@ -1,17 +1,14 @@
-
-import { IsString, IsNotEmpty, IsMongoId } from 'class-validator';
-import { validate } from 'class-validator';
+import { IsString, IsNotEmpty, validate } from 'class-validator';
 import type { NextFunction, Request, Response } from 'express';
-import type { ObjectId } from 'mongoose';
 
 export class AddParticipantDto {
-    @IsMongoId()
-    @IsNotEmpty()
-    id: ObjectId;
+  @IsString()
+  @IsNotEmpty()
+  id: string;
 
-    @IsString()
-    @IsNotEmpty()
-    username: string;
+  @IsString()
+  @IsNotEmpty()
+  username: string;
 }
 
 export async function addParticipantDto(

@@ -4,7 +4,6 @@ import type { IChat } from '../chat';
 import type { IReview } from '../review';
 import type { IUser } from '../user';
 
-
 export interface IEvent {
   id: MongoId;
   codi: number;
@@ -13,7 +12,7 @@ export interface IEvent {
   dataIni: Date;
   dataFi: Date;
   horari?: string;
-  adress?: string;
+  adress: string;
   lat?: number;
   long?: number;
   price?: string;
@@ -21,9 +20,10 @@ export interface IEvent {
   photo?: string;
   chat: IChat;
   valoracions?: IReview[];
-  
+
   updateValoracions: (newValoracio: IReview) => void;
   participants?: IUser[];
 
-  updateParticipant: (newParticipant: IUser) => void;
+  addParticipant: (newParticipant: IUser) => void;
+  deleteParticipant: (participant: IUser) => void;
 }

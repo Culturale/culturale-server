@@ -9,8 +9,6 @@ import { UserRepository } from '~/domain/repositories/user-repository/user-repos
 
 import { UserController } from './user-controller';
 
-
-
 dotenv.config();
 
 describe('User Controller', function () {
@@ -90,46 +88,46 @@ describe('User Controller', function () {
     });
   });
 
-describe('EditPerfil', function () {
-  const createReq: Request = expressRequest;
-  createReq.body = {
-    email: 'email@example.com',
-    password: 'test-password',
-    username: 'test-username',
-    name: 'test-name',
-    profilePicture: 'test-imageurl',
-    phoneNumber: '000000000',
-    usertype: 'usuario',
-  };
-  const createRes = {} as unknown as Response;
-  createRes.json = jest.fn();
-  createRes.status = jest.fn(() => createRes);
-  createRes.setHeader = jest.fn();
-
-  beforeEach(async function () {
-    await UserController.createUser(createReq, createRes);
-  });
-
-  it('Edits the atributes of an user', async function () {
-    const editReq: Request = expressRequest;
-    editReq.body = {
-      password: 'test-password1',
+  describe('EditPerfil', function () {
+    const createReq: Request = expressRequest;
+    createReq.body = {
+      email: 'email@example.com',
+      password: 'test-password',
       username: 'test-username',
-      name: 'test-name1',
-      email: 'email1@example.com',
-      profilePicture: 'test-imageurl1',
-      phoneNumber: '111111111',
+      name: 'test-name',
+      profilePicture: 'test-imageurl',
+      phoneNumber: '000000000',
+      usertype: 'usuario',
     };
-    const editRes = {} as unknown as Response;
-    editRes.json = jest.fn();
-    editRes.status = jest.fn(() => editRes);
-    editRes.setHeader = jest.fn();
+    const createRes = {} as unknown as Response;
+    createRes.json = jest.fn();
+    createRes.status = jest.fn(() => createRes);
+    createRes.setHeader = jest.fn();
 
-     await UserController.editUser(editReq, editRes);
-    expect(editRes.status).toBeCalledWith(200);
-    expect(editRes.json).toBeCalledWith({
-      message:'Usuario editado correctamente',
-      user:{
+    beforeEach(async function () {
+      await UserController.createUser(createReq, createRes);
+    });
+
+    it('Edits the atributes of an user', async function () {
+      const editReq: Request = expressRequest;
+      editReq.body = {
+        password: 'test-password1',
+        username: 'test-username',
+        name: 'test-name1',
+        email: 'email1@example.com',
+        profilePicture: 'test-imageurl1',
+        phoneNumber: '111111111',
+      };
+      const editRes = {} as unknown as Response;
+      editRes.json = jest.fn();
+      editRes.status = jest.fn(() => editRes);
+      editRes.setHeader = jest.fn();
+
+      await UserController.editUser(editReq, editRes);
+      expect(editRes.status).toBeCalledWith(200);
+      expect(editRes.json).toBeCalledWith({
+        message: 'Usuario editado correctamente',
+        user: {
           email: 'email1@example.com',
           password: 'test-password1',
           username: 'test-username',
@@ -138,100 +136,101 @@ describe('EditPerfil', function () {
           phoneNumber: '111111111',
           usertype: 'usuario',
           followers: [],
-          followeds:[],
+          followeds: [],
           eventSub: [],
           id: undefined,
         },
+      });
+    });
+
+    it('Returns error when no username exists', async function () {
+      const editReq: Request = expressRequest;
+      editReq.body = {
+        password: 'test-password1',
+        username: 'non-existing-username',
+        name: 'test-name1',
+        email: 'email1@example.com',
+      };
+      const editRes = {} as unknown as Response;
+      editRes.json = jest.fn();
+      editRes.status = jest.fn(() => editRes);
+      editRes.setHeader = jest.fn();
+
+      await UserController.editUser(editReq, editRes);
+
+      expect(editRes.status).toBeCalledWith(404);
+      expect(editRes.json).toBeCalledWith({
+        message: 'El usuario indicado no existe',
+      });
     });
   });
 
-  it('Returns error when no username exists', async function () {
-    const editReq: Request = expressRequest;
-    editReq.body = {
-      password: 'test-password1',
-      username: 'non-existing-username',
-      name: 'test-name1',
-      email: 'email1@example.com',
+  describe('getUserForUsername', function () {
+    const expressRequest: Request = {} as Request;
+
+    const req: Request = expressRequest;
+    req.params = { id: 'test-username' };
+    const res = {} as unknown as Response;
+    res.json = jest.fn();
+    res.status = jest.fn(() => res);
+    res.setHeader = jest.fn();
+    const badReq: Request = JSON.parse(JSON.stringify(expressRequest));
+    badReq.params = { id: 'non-existing-username' };
+    const badRes = {} as unknown as Response;
+    badRes.json = jest.fn();
+    badRes.status = jest.fn(() => badRes);
+    badRes.setHeader = jest.fn();
+
+    beforeEach(async function () {
+      await UserController.getUserForUsername(req, res);
+      await UserController.getUserForUsername(badReq, badRes);
+    });
+
+    it('returns the info user when it does exists', function () {
+      expect(res.status).toBeCalledWith(200);
+      expect(res.json).toBeCalledWith(
+        expect.objectContaining({
+          message: 'Usuario encontrado',
+          user: expect.objectContaining({
+            email: 'email@example.com',
+            password: 'test-password',
+            username: 'test-username',
+            name: 'test-name',
+            profilePicture: 'test-imageurl',
+            phoneNumber: '000000000',
+            usertype: 'usuario',
+          }),
+        }),
+      );
+    });
+
+    it('returns 404 when username does not exists', function () {
+      expect(badRes.status).toBeCalledWith(404);
+      expect(badRes.json).toBeCalledWith({
+        message: 'Usuario no encontrado',
+      });
+    });
+  });
+
+  describe('add follower user', function () {
+    const expressRequest: Request = {} as Request;
+    const reqUser: Request = JSON.parse(JSON.stringify(expressRequest));
+    reqUser.body = {
+      //usaurio añadido en la lista
+      email: 'email@example.com',
+      password: 'test-password',
+      username: 'test-username-follower',
+      name: 'test-name',
+      profilePicture: 'test-imageurl',
+      phoneNumber: '000000000',
+      usertype: 'usuario',
     };
-    const editRes = {} as unknown as Response;
-    editRes.json = jest.fn();
-    editRes.status = jest.fn(() => editRes);
-    editRes.setHeader = jest.fn();
+    const resUser = {} as unknown as Response;
+    resUser.json = jest.fn();
+    resUser.status = jest.fn(() => resUser);
+    resUser.setHeader = jest.fn();
 
-     await UserController.editUser(editReq, editRes);
-  
-    expect(editRes.status).toBeCalledWith(404);
-    expect(editRes.json).toBeCalledWith({
-      message:'El usuario indicado no existe',
-    });
-  });
-});
-
-describe('getUserForUsername', function () {
-  const expressRequest: Request = {} as Request;
-
-  const req: Request = expressRequest;
-  req.params = {id:'test-username'};
-  const res = {} as unknown as Response;
-  res.json = jest.fn();
-  res.status = jest.fn(() => res);
-  res.setHeader = jest.fn();
-  const badReq: Request =  JSON.parse(JSON.stringify(expressRequest));
-  badReq.params = {id:'non-existing-username'};
-  const badRes = {} as unknown as Response;
-  badRes.json = jest.fn();
-  badRes.status = jest.fn(() => badRes);
-  badRes.setHeader = jest.fn();
-
-  beforeEach(async function () {
-    await UserController.getUserForUsername(req, res);
-    await UserController.getUserForUsername(badReq, badRes);
-  });
-
-  it('returns the info user when it does exists', function () {
-    expect(res.status).toBeCalledWith(200);
-    expect(res.json).toBeCalledWith(expect.objectContaining({
-      message: 'Usuario encontrado',
-      user: expect.objectContaining({  
-        email: 'email@example.com',
-        password: 'test-password',
-        username: 'test-username',
-        name: 'test-name',
-        profilePicture: 'test-imageurl',
-        phoneNumber: '000000000',
-        usertype: 'usuario',
-      })
-    }));
-  });
-
-  it('returns 404 when username does not exists', function () {
-    expect(badRes.status).toBeCalledWith(404);
-    expect(badRes.json).toBeCalledWith({
-      message: 'Usuario no encontrado'
-    });
-  });
-});
-
-
-
-describe('add follower user', function () { 
-  const expressRequest: Request = {} as Request;
-  const reqUser: Request = JSON.parse(JSON.stringify(expressRequest));
-  reqUser.body = { //usaurio añadido en la lista
-    email: 'email@example.com',
-    password: 'test-password',
-    username: 'test-username-follower',
-    name: 'test-name',
-    profilePicture: 'test-imageurl',
-    phoneNumber: '000000000',
-    usertype: 'usuario',
-  };
-  const resUser = {} as unknown as Response;
-  resUser.json = jest.fn();
-  resUser.status = jest.fn(() => resUser);
-  resUser.setHeader = jest.fn();
-
-  const reqAddFoll: Request = JSON.parse(JSON.stringify(expressRequest));
+    const reqAddFoll: Request = JSON.parse(JSON.stringify(expressRequest));
     reqAddFoll.body = {
       username: 'test-username', //usuaio al cual se le añade un nuevo follower
       follower: 'test-username-follower', //nuevo segidor añadido a ls lista
@@ -240,27 +239,28 @@ describe('add follower user', function () {
     resAddFoll.json = jest.fn();
     resAddFoll.status = jest.fn(() => resAddFoll);
     resAddFoll.setHeader = jest.fn();
-  
-  
-  beforeEach(async function () {
-    await UserController.createUser(reqUser, resUser);
-    await UserController.addFollower(reqAddFoll, resAddFoll);
+
+    beforeEach(async function () {
+      await UserController.createUser(reqUser, resUser);
+      await UserController.addFollower(reqAddFoll, resAddFoll);
+    });
+
+    it('returns the followers', function () {
+      expect(resAddFoll.status).toBeCalledWith(200);
+      expect(resAddFoll.json).toBeCalledWith(
+        expect.objectContaining({
+          message: 'Follower i followed añadido correctamente',
+        }),
+      );
+    });
   });
 
-  it('returns the followers', function () {
-    expect(resAddFoll.status).toBeCalledWith(200);
-    expect(resAddFoll.json).toBeCalledWith(expect.objectContaining({
-      message: 'Follower i followed añadido correctamente',
-    }));
-  }); 
-});
-
-
-describe('Unfollow user', function () {
+  describe('Unfollow user', function () {
     // Crear usuario 1 que sigue a usuario 2
-  const expressRequest: Request = {} as Request;
-  const reqUser: Request = JSON.parse(JSON.stringify(expressRequest));
-  reqUser.body = { //usaurio añadido en la lista
+    const expressRequest: Request = {} as Request;
+    const reqUser: Request = JSON.parse(JSON.stringify(expressRequest));
+    reqUser.body = {
+      //usaurio añadido en la lista
       name: 'User1',
       username: 'user1',
       email: 'user1@example.com',
@@ -271,7 +271,8 @@ describe('Unfollow user', function () {
     };
     const expressRequest2: Request = {} as Request;
     const reqUser2: Request = JSON.parse(JSON.stringify(expressRequest2));
-    reqUser2.body = { //usaurio añadido en la lista
+    reqUser2.body = {
+      //usaurio añadido en la lista
       name: 'User2',
       username: 'user2',
       email: 'user2@example.com',
@@ -281,18 +282,17 @@ describe('Unfollow user', function () {
       usertype: 'usuario',
     };
 
-  const resUser2 = {} as unknown as Response;
-  resUser2.json = jest.fn();
-  resUser2.status = jest.fn(() => resUser2);
-  resUser2.setHeader = jest.fn();
+    const resUser2 = {} as unknown as Response;
+    resUser2.json = jest.fn();
+    resUser2.status = jest.fn(() => resUser2);
+    resUser2.setHeader = jest.fn();
 
-  const resUser = {} as unknown as Response;
-  resUser.json = jest.fn();
-  resUser.status = jest.fn(() => resUser);
-  resUser.setHeader = jest.fn();
+    const resUser = {} as unknown as Response;
+    resUser.json = jest.fn();
+    resUser.status = jest.fn(() => resUser);
+    resUser.setHeader = jest.fn();
 
-
-  const reqAddFoll: Request = JSON.parse(JSON.stringify(expressRequest));
+    const reqAddFoll: Request = JSON.parse(JSON.stringify(expressRequest));
     reqAddFoll.body = {
       username: 'user1', //usuaio al cual se le añade un nuevo follower
       follower: 'user2', //nuevo segidor añadido a ls lista
@@ -308,38 +308,37 @@ describe('Unfollow user', function () {
       await UserController.addFollower(reqAddFoll, resAddFoll);
     });
 
-  it('should unfollow user2', async function () {
-    // Llamar a Unfollow con los parámetros correspondientes
-    const req: Request = { body: { username: 'user2', follower: 'user1' } } as Request;
-    const res: Response = {} as Response;
-    res.json = jest.fn();
-    res.status = jest.fn(() => res);
+    it('should unfollow user2', async function () {
+      // Llamar a Unfollow con los parámetros correspondientes
+      const req: Request = {
+        body: { username: 'user2', follower: 'user1' },
+      } as Request;
+      const res: Response = {} as Response;
+      res.json = jest.fn();
+      res.status = jest.fn(() => res);
 
-    await UserController.Unfollow(req, res);
+      await UserController.Unfollow(req, res);
 
-    // Comprobar que user1 ya no sigue a user2
-    const updatedUser1 = await UserRepository.findUserByUserId('user1');
-    expect(updatedUser1.followeds).toHaveLength(0);
+      // Comprobar que user1 ya no sigue a user2
+      const updatedUser1 = await UserRepository.findByUsername('user1');
+      expect(updatedUser1.followeds).toHaveLength(0);
 
-    // Comprobar que user2 ya no es seguido por user1
-    const updatedUser2 = await UserRepository.findUserByUserId('user2');
-    if (updatedUser2) {
-    expect(updatedUser2.followers).toHaveLength(0);
-    } else {
-    throw new Error('User not found');
-    }
+      // Comprobar que user2 ya no es seguido por user1
+      const updatedUser2 = await UserRepository.findByUsername('user2');
+      if (updatedUser2) {
+        expect(updatedUser2.followers).toHaveLength(0);
+      } else {
+        throw new Error('User not found');
+      }
 
-
-    // Comprobar la respuesta de la función
-    expect(res.status).toHaveBeenCalledWith(200);
-    expect(res.json).toHaveBeenCalledWith(expect.objectContaining({
-      message: 'Follower y followed eliminados correctamente',
-      followers: [],
-    }));
+      // Comprobar la respuesta de la función
+      expect(res.status).toHaveBeenCalledWith(200);
+      expect(res.json).toHaveBeenCalledWith(
+        expect.objectContaining({
+          message: 'Follower y followed eliminados correctamente',
+          followers: [],
+        }),
+      );
+    });
   });
 });
-
-
-
-});
-

@@ -9,7 +9,7 @@ import { UserRepository } from '~/domain/repositories';
 import { ChatRepository } from '~/domain/repositories/chat-repository/chat-repository';
 import { EventRepository } from '~/domain/repositories/event-repository/event-repository';
 import { MessageRepository } from '~/domain/repositories/message-repository/message-repository';
-import type { CreateEventDto } from '~/infrastructure';
+import type { CreateEventDto, AddParticipantDto } from '~/infrastructure';
 
 export class EventController {
   public static async createEvent(req: Request, res: Response): Promise<void> {
@@ -143,8 +143,9 @@ export class EventController {
     res: Response
   ): Promise<void> {
     try {
-      const codiEvent = req.body.id;
-      const username = req.body.username;
+      const participantDTO: AddParticipantDto = req.body;
+      const codiEvent = participantDTO.id;
+      const username = participantDTO.username;
       const newEvent: IEvent = await EventRepository.findEvent(codiEvent);
       const newParticipant: IUser = await UserRepository.findUserByUserId(username);
       if(!newEvent || !newParticipant){

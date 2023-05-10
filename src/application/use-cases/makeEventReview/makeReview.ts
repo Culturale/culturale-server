@@ -33,6 +33,7 @@ export async function makeReview(req: Request, res: Response): Promise<void> {
      castedUser.updateValoracions(newIReview);
      try{
       await EventRepository.editarEvent(event);
+      await UserRepository.editarUsuari(castedUser);
       }
       catch (e){
         res.status(119);

@@ -53,12 +53,13 @@ export class UserRepository {
   public static async editarUsuari(newUser: IUser): Promise<void> {
     const followers = newUser.followers;
     const followeds = newUser.followeds;
-    
+    const reviews = newUser.reviews;
     await UserModel.findByIdAndUpdate(newUser.id, {
       ...newUser,
       followers,
       followeds,
-    });
+      reviews,
+    },{new: true});
   }
   public static async existParam(param: string, tipusAtribut: string): Promise<boolean> {
     let existe: boolean;

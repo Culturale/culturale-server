@@ -19,7 +19,7 @@ export class UserRepository {
     const userDocs = await UserModel.find()
       .populate({
         path: 'eventSub',
-        model: 'Event',
+        model: 'Event'
       })
       .populate({
         path: 'followers',
@@ -47,7 +47,6 @@ export class UserRepository {
       })
       .populate({
         path: 'eventSub',
-        
       })
       .populate({
         path: 'followers',

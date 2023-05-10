@@ -43,7 +43,7 @@ export class UserController {
   public static async getUserForUsername(req: Request, res: Response): Promise<void> {
     try {
       const username: String = req.params.id;
-      const user: IUser = await UserRepository.findUserByUserId(username);
+      const user: IUser = await UserRepository.findUserByUsername(username);
       if (user) {
         res.status(200);
         res.json({
@@ -69,7 +69,7 @@ export class UserController {
   public static async editUser(req: Request, res: Response): Promise<void> {
     try{
       const username: String = req.body.username;
-      const oldUser: IUser = await UserRepository.findUserByUserId(username);
+      const oldUser: IUser = await UserRepository.findUserByUsername(username);
       if(!oldUser){
         res.status(404).json({message: 'El usuario indicado no existe'});
         return;
@@ -108,8 +108,8 @@ export class UserController {
     try {
       const username = req.body.username;
       const follower = req.body.follower;
-      const newFollower: IUser = await UserRepository.findUserByUserId(follower);
-      const newUser: IUser = await UserRepository.findUserByUserId(username);
+      const newFollower: IUser = await UserRepository.findUserByUsername(follower);
+      const newUser: IUser = await UserRepository.findUserByUsername(username);
       
       if(!newUser || !newFollower){
         res.status(404);
@@ -147,8 +147,8 @@ export class UserController {
     try {
       const username = req.body.username;
       const follower = req.body.follower;
-      const newFollower: IUser = await UserRepository.findUserByUserId(follower);
-      const newUser: IUser = await UserRepository.findUserByUserId(username);
+      const newFollower: IUser = await UserRepository.findUserByUsername(follower);
+      const newUser: IUser = await UserRepository.findUserByUsername(username);
       
       if(!newUser || !newFollower){
         res.status(404);

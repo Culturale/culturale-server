@@ -138,6 +138,7 @@ describe('EditPerfil', function () {
           usertype: 'usuario',
           followers: [],
           followeds:[],
+          reviews: [],
           id: undefined,
         },
     });
@@ -316,11 +317,12 @@ describe('Unfollow user', function () {
     await UserController.Unfollow(req, res);
 
     // Comprobar que user1 ya no sigue a user2
-    const updatedUser1 = await UserRepository.findUserByUserId('user1');
+    const updatedUser1 = await UserRepository.findUserByUsername('user1');
     expect(updatedUser1.followeds).toHaveLength(0);
 
     // Comprobar que user2 ya no es seguido por user1
-    const updatedUser2 = await UserRepository.findUserByUserId('user2');
+    
+    const updatedUser2 = await UserRepository.findUserByUsername('user2');
     if (updatedUser2) {
     expect(updatedUser2.followers).toHaveLength(0);
     } else {

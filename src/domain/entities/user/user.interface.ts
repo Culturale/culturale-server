@@ -14,7 +14,7 @@ export interface IUser {
     followeds: IUser[]; //gente a la que sigo
     reviews: IReview[];
 
-    addReview: (review: IReview) => void;
+    updateValoracions: (review: IReview) => void;
     updateFollowers: (newFollower: IUser) => void;
     updateFolloweds: (newFollowed:IUser) => void;
     deleteFollowers: (follower: IUser) => void;

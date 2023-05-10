@@ -46,10 +46,13 @@ export class User implements IUser {
         this.followeds = followeds || [];
         this.reviews = reviews || [];
     }
-    addReview: (review: IReview) => void;
-    public updateReview(newReview: IReview): void {
+  
+    public updateValoracions(newReview: IReview): void {
+        console.log(1)
         const reviews = [...this.reviews, newReview];
+        console.log(reviews)
         this.reviews = reviews;
+        console.log(this.reviews, "uii")
     }
     public updateFollowers(newFollower: IUser): void {
         if (!this.followers.find((follower) => follower.id === newFollower.id)) {

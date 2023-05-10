@@ -147,7 +147,7 @@ export class EventController {
       const codiEvent = participantDTO.id;
       const username = participantDTO.username;
       const newEvent: IEvent = await EventRepository.findEvent(codiEvent);
-      const newParticipant: IUser = await UserRepository.findUserByUserId(username);
+      const newParticipant: IUser = await UserRepository.findUserByUsername(username);
       if(!newEvent || !newParticipant){
         res.status(404);
         res.json({
@@ -155,7 +155,6 @@ export class EventController {
         });
         return;
       }
-      
       const castedEvent = new Event(newEvent as EventProps);
       castedEvent.updateParticipant(newParticipant);
 
@@ -182,7 +181,7 @@ export class EventController {
       const codiEvent = req.body.id;
       const username = req.body.username;
       const event: IEvent = await EventRepository.findEvent(codiEvent);
-      const participant: IUser = await UserRepository.findUserByUserId(username);
+      const participant: IUser = await UserRepository.findUserByUsername(username);
       if(!event || !participant){
         res.status(404);
         res.json({

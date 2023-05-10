@@ -138,7 +138,7 @@ describe('User Controller', function () {
           followers: [],
           followeds: [],
           eventSub: [],
-          id: undefined,
+          id: expect.any(String),
         },
       });
     });
@@ -188,21 +188,24 @@ describe('User Controller', function () {
 
     it('returns the info user when it does exists', function () {
       expect(res.status).toBeCalledWith(200);
-      expect(res.json).toBeCalledWith(
-        expect.objectContaining({
+      expect(res.json).toBeCalledWith({
           message: 'Usuario encontrado',
-          user: expect.objectContaining({
-            email: 'email@example.com',
-            password: 'test-password',
+          user: {
+            email: 'email1@example.com',
+            password: 'test-password1',
             username: 'test-username',
-            name: 'test-name',
-            profilePicture: 'test-imageurl',
-            phoneNumber: '000000000',
+            name: 'test-name1',
+            profilePicture: 'test-imageurl1',
+            phoneNumber: '111111111',
             usertype: 'usuario',
-          }),
-        }),
-      );
-    });
+            followers: [],
+            followeds: [],
+            eventSub: [],
+            id: expect.any(String),
+          }
+        });
+        });
+    
 
     it('returns 404 when username does not exists', function () {
       expect(badRes.status).toBeCalledWith(404);

@@ -21,8 +21,26 @@ export class EventRepository {
   }
 
   public static async getAllEvents(): Promise<IEvent[]> {
-    return await EventModel.find();
+    const eventDocument = await EventModel.find()
+      .populate({
+        path: 'participants',
+        model: 'User',
+      })
+      .populate({
+        path: 'valoracions',
+        model: 'Review',
+      });
+
+      const events: IEvent[] = [];
+
+      for (const doc of eventDocument) {
+        const event = new Event(doc);
+        events.push(event);
+      }
+      
+      return events;
   }
+
   public static async deleteEvent(idEvent: string): Promise<void> {
     await EventModel.deleteOne(new mongoose.Types.ObjectId(idEvent));
   }
@@ -35,6 +53,7 @@ export class EventRepository {
       })
       .populate({
         path: 'valoracions',
+        model: 'Review',
       });
 
     if (eventDocument) {

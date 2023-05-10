@@ -8,12 +8,14 @@ export class UserRepository {
     const newUser = await UserModel.create({
       ...user,
       followers: [],
+      followeds: [],
+      eventSub: [],
     });
     return newUser;
   }
 
   public static async getAllUsers(): Promise<IUser[]> {
-    console.log('get ');
+    
     const userDocs = await UserModel.find()
       .populate({
         path: 'eventSub',
@@ -27,7 +29,6 @@ export class UserRepository {
         path: 'followeds',
         model: 'User',
       });
-    console.log(userDocs);
     const users: IUser[] = [];
 
     for (const doc of userDocs) {
@@ -41,18 +42,18 @@ export class UserRepository {
   public static async findByUsername(username: String): Promise<IUser> {
     const userDoc = await UserModel.findOne({ username: username })
       .populate({
-        path: 'followers',
-        model: 'User',
-      })
-      .populate({
         path: 'followeds',
         model: 'User',
       })
       .populate({
         path: 'eventSub',
-        model: 'Event',
+        
+      })
+      .populate({
+        path: 'followers',
+        model: 'User',
       });
-
+    
     if (userDoc) {
       const user: IUser = new User(userDoc);
       return user;

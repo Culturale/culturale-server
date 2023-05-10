@@ -1,8 +1,9 @@
 import type { MongoId } from '~/types/types';
 
 
+import type { IReview } from '../review';
+
 import type { IUser } from './user.interface';
-import { IReview } from '../review';
 
 export type UserProps = {
     id?: MongoId;
@@ -48,11 +49,9 @@ export class User implements IUser {
     }
   
     public updateValoracions(newReview: IReview): void {
-        console.log(1)
+        
         const reviews = [...this.reviews, newReview];
-        console.log(reviews)
         this.reviews = reviews;
-        console.log(this.reviews, "uii")
     }
     public updateFollowers(newFollower: IUser): void {
         if (!this.followers.find((follower) => follower.id === newFollower.id)) {

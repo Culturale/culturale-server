@@ -1,5 +1,6 @@
 import type { MongoId } from '~/types/types';
-import { IReview } from '../review';
+
+import type { IReview } from '../review';
 
 export interface IUser {
     id: MongoId;

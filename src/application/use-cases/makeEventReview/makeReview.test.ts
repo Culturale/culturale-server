@@ -4,10 +4,10 @@ import { request as expressRequest } from 'express';
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import mongoose from 'mongoose';
 
+import { UserController } from '~/application/controllers';
 import { EventController } from '~/application/controllers/event-controller';
 
 import { makeReview } from './makeReview';
-import { UserController } from '~/application/controllers';
 
 
 describe('Make Review use case', function () {

@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+
 import type { IUser } from '~/domain/entities/user';
 import { UserModel } from '~/domain/entities/user';
 import type { CreateUserDto } from '~/infrastructure';
@@ -25,7 +26,7 @@ export class UserRepository {
     .populate({
       path: 'followeds',
       model: 'User',
-    })
+    });
     
     return userDoc;
   } 
@@ -43,7 +44,7 @@ export class UserRepository {
     .populate({
       path: 'reviews',
       model: 'Review',
-      });;
+      });
     if (!userDoc) return null;
     return userDoc;
   }

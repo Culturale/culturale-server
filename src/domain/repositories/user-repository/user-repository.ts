@@ -1,3 +1,4 @@
+import { EventModel } from '~/domain/entities/event';
 import type { IUser } from '~/domain/entities/user';
 import { User } from '~/domain/entities/user';
 import { UserModel } from '~/domain/entities/user';
@@ -19,7 +20,7 @@ export class UserRepository {
     const userDocs = await UserModel.find()
       .populate({
         path: 'eventSub',
-        model: 'Event'
+        model: EventModel,
       })
       .populate({
         path: 'followers',
@@ -47,6 +48,7 @@ export class UserRepository {
       })
       .populate({
         path: 'eventSub',
+        model: EventModel,
       })
       .populate({
         path: 'followers',

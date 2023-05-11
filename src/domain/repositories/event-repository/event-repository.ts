@@ -21,7 +21,7 @@ export class EventRepository {
   }
 
   public static async getAllEvents(): Promise<IEvent[]> {
-    const eventDocument = await EventModel.find()
+    const eventDocs = await EventModel.find()
       .populate({
         path: 'participants',
         model: 'User',
@@ -30,15 +30,14 @@ export class EventRepository {
         path: 'valoracions',
         model: 'Review',
       });
+    const events: IEvent[] = [];
 
-      const events: IEvent[] = [];
+    for (const doc of eventDocs) {
+      const event = new Event(doc);
+      events.push(event);
+    }
 
-      for (const doc of eventDocument) {
-        const event = new Event(doc);
-        events.push(event);
-      }
-      
-      return events;
+    return events;
   }
 
   public static async deleteEvent(idEvent: string): Promise<void> {

@@ -6,9 +6,17 @@ import { UserModel } from '~/domain/entities/user';
 
 export async function logIn(req: Request, res: Response): Promise<void> {
   res.setHeader('Content-Type', 'application/json');
-
+console.log("LOGEANDO PUTA")
   try {
-    const user = await UserModel.findOne({ username: req.body.username });
+    const user = await UserModel.findOne({ username: req.body.username })
+    .populate({
+      path: 'followers',
+      model: 'User',
+    })
+    .populate({
+      path: 'followeds',
+      model: 'User',
+    });
     if (user) {
       const isPasswordCorrect = await bcrypt.compare(
         req.body.password,

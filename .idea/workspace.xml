@@ -4,21 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8e300671-00fd-4209-9ae7-b7e3379d5b06" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/application/use-cases/check-in/check-in.test.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/application/use-cases/check-in/check-in.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/application/use-cases/check-in/index.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/infrastructure/dtos/addAssistent.dto.ts" afterDir="false" />
+    <list default="true" id="8e300671-00fd-4209-9ae7-b7e3379d5b06" name="Changes" comment="check-in use case acabat">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/application/controllers/event-controller/event-controller.test.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/application/controllers/event-controller/event-controller.test.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/application/controllers/event-controller/event-controller.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/application/controllers/event-controller/event-controller.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/domain/entities/event/event.interface.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/domain/entities/event/event.interface.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/domain/entities/event/event.schema.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/domain/entities/event/event.schema.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/domain/entities/event/event.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/domain/entities/event/event.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/domain/repositories/event-repository/event-repository.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/domain/repositories/event-repository/event-repository.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/infrastructure/api/event-router/event-router.test.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/infrastructure/api/event-router/event-router.test.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/infrastructure/api/event-router/event-routes.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/infrastructure/api/event-router/event-routes.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/infrastructure/dtos/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/infrastructure/dtos/index.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -57,6 +45,14 @@
       <option name="presentableId" value="Default" />
       <updated>1679150455472</updated>
     </task>
+    <task id="LOCAL-00001" summary="check-in use case acabat">
+      <created>1683827161201</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1683827161201</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -69,5 +65,9 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="check-in use case acabat" />
+    <option name="LAST_COMMIT_MESSAGE" value="check-in use case acabat" />
   </component>
 </project>

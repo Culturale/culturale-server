@@ -298,7 +298,7 @@ describe('Event Controller', function () {
         await EventController.addAssistent(reqAssPar, resAssPar);
         expect(resAssPar.status).toBeCalledWith(200);
         expect(resAssPar.json).toBeCalledWith(expect.objectContaining({
-          message: 'Participante añadido correctamente',
+          message: 'Asistente añadido correctamente',
         }));
       });
     });

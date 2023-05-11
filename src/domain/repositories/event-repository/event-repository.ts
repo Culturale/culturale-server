@@ -1,15 +1,16 @@
-
 import mongoose from 'mongoose';
 
 import type { Chat, IChat } from '~/domain/entities/chat';
-import type { EventProps, IEvent} from '~/domain/entities/event';
-import { Event } from '~/domain/entities/event';
-import { EventModel } from '~/domain/entities/event';
+import type { IEvent } from '~/domain/entities/event';
+import { EventModel, Event } from '~/domain/entities/event';
 import type { CreateEventDto } from '~/infrastructure';
 import type { MongoId } from '~/types/types';
 
 export class EventRepository {
-  public static async addEvent(event: CreateEventDto, chatId: MongoId): Promise<IEvent> {
+  public static async addEvent(
+    event: CreateEventDto,
+    chatId: MongoId,
+  ): Promise<IEvent> {
     const newEvent = await EventModel.create({
       ...event,
       chat: chatId,
@@ -19,67 +20,90 @@ export class EventRepository {
     return newEvent;
   }
 
-  
-
   public static async getAllEvents(): Promise<IEvent[]> {
-    return await EventModel.find();
+    const eventDocument = await EventModel.find()
+      .populate({
+        path: 'participants',
+        model: 'User',
+      })
+      .populate({
+        path: 'valoracions',
+        model: 'Review',
+      });
+
+      const events: IEvent[] = [];
+
+      for (const doc of eventDocument) {
+        const event = new Event(doc);
+        events.push(event);
+      }
+      
+      return events;
   }
+
   public static async deleteEvent(idEvent: string): Promise<void> {
     await EventModel.deleteOne(new mongoose.Types.ObjectId(idEvent));
   }
 
   public static async findEvent(idEvent: string): Promise<IEvent> {
     const eventDocument = await EventModel.findById(idEvent)
-    .populate({
-      path: 'participants',
-      model: 'User',
-    })
-    ;
+      .populate({
+        path: 'participants',
+        model: 'User',
+      })
+      .populate({
+        path: 'valoracions',
+        model: 'Review',
+      });
 
-    if(eventDocument){
-    const eventBuscat:IEvent = new Event(eventDocument as EventProps);
-    return eventBuscat;
+    if (eventDocument) {
+      const event: IEvent = new Event(eventDocument);
+      return event;
     }
-    else return null;
+    return null;
   }
 
   public static async editarEvent(newEvent: IEvent): Promise<void> {
-    const participants = newEvent.participants;
-    const valoracions = newEvent.valoracions;
+    const participants = newEvent.participants.map(
+      (participant) => participant.id,
+    );
+    const valoracions = newEvent.valoracions.map((valoracio) => valoracio._id);
+
     await EventModel.findByIdAndUpdate(newEvent.id, {
       ...newEvent,
-     participants,
+      participants,
       valoracions,
     });
   }
 
-
   public static async getChatEvent(idEvent: string): Promise<IChat | null> {
-    const event = await EventModel.findById(new mongoose.Types.ObjectId(idEvent));
+    const event = await EventModel.findById(
+      new mongoose.Types.ObjectId(idEvent),
+    );
     if (!event) return null;
     return event.chat;
   }
 
   public static async modifyChatEvent(
     event: IEvent,
-    chat: Chat
+    chat: Chat,
   ): Promise<void> {
     await EventModel.findOneAndUpdate(event, { chat: chat }, { new: true });
   }
 
   public static async getEventbydenominacio(name: String): Promise<IEvent[]> {
-    return await EventModel.find({denominacio: name});
+    return await EventModel.find({ denominacio: name });
   }
 
   public static async getEventbydataIni(data: Date): Promise<IEvent[]> {
-    return await EventModel.find({dataIni: data});
+    return await EventModel.find({ dataIni: data });
   }
 
   public static async getEventbydataFi(data: Date): Promise<IEvent[]> {
-    return await EventModel.find({dataFi: data});
+    return await EventModel.find({ dataFi: data });
   }
 
   public static async getEventbycategoria(cat: String): Promise<IEvent[]> {
-    return await EventModel.find({categoria: cat});
+    return await EventModel.find({ categoria: cat });
   }
 }

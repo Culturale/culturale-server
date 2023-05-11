@@ -13,12 +13,12 @@ export type EventProps = {
   descripcio: string;
   dataIni: Date;
   dataFi: Date;
-  horari: string;
+  horari?: string;
   adress: string;
-  lat: number;
-  long: number;
-  price: string;
-  url: string;
+  lat?: number;
+  long?: number;
+  price?: string;
+  url?: string;
   photo?: string;
   chat?: IChat;
   participants?: IUser[];
@@ -44,7 +44,24 @@ export class Event implements IEvent {
   public valoracions: IReview[];
 
   constructor(props: EventProps) {
-    const {id, codi, denominacio, descripcio, dataIni, dataFi, horari, adress, valoracions, lat, long, price, url, photo, chat, participants} = props;
+    const {
+      id,
+      codi,
+      denominacio,
+      descripcio,
+      dataIni,
+      dataFi,
+      horari,
+      adress,
+      valoracions,
+      lat,
+      long,
+      price,
+      url,
+      photo,
+      chat,
+      participants,
+    } = props;
     this.id = id;
     this.codi = codi;
     this.denominacio = denominacio;
@@ -62,13 +79,16 @@ export class Event implements IEvent {
     this.participants = participants || [];
     this.valoracions = valoracions || [];
   }
-  public updateParticipant(newParticipant: IUser): void {
+  public addParticipant(newParticipant: IUser): void {
     const newParticipants = [...this.participants, newParticipant];
     this.participants = newParticipants;
   }
 
-  public deleteParticipant(delParticipant: IUser): void {
-    const updatedParticipants = this.participants.filter(participant => participant.id !== delParticipant.id);
+  public deleteParticipant(newParticipant: IUser): void {
+    const updatedParticipants = this.participants.filter(
+      (participants) => participants.id !== newParticipant.id,
+    );
+
     this.participants = updatedParticipants;
   }
 
@@ -76,8 +96,9 @@ export class Event implements IEvent {
     const ids = this.participants.map((participant) => participant.username);
     return ids;
   }
-  public updateValoracions(newValoracio: IReview): void{
+
+  public updateValoracions(newValoracio: IReview): void {
     const newValoracions = [...this.valoracions, newValoracio];
     this.valoracions = newValoracions;
-  } 
+  }
 }

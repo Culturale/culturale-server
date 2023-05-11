@@ -1,6 +1,5 @@
 import {
     IsString,
-    IsNotEmpty,
     IsDate,
     Max,
     IsNumber,
@@ -11,10 +10,6 @@ import {
   import type { NextFunction, Request, Response } from 'express';
 
 export class EditEventDTO {
-    @IsNotEmpty()
-    @IsString()
-    id: string;
-
     @IsNumber()
     @Min(11111111111)
     @Max(99999999999)
@@ -73,7 +68,6 @@ export async function editEventDTO(
 ) {
   const DTO = new EditEventDTO();
 
-  DTO.id = req.body.id;
   DTO.codi = req.body.codi;
   DTO.denominacio = req.body.denominacio;
   DTO.descripcio = req.body.descripcio;

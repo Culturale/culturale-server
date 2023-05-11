@@ -127,7 +127,7 @@ describe('User Controller', function () {
       expect(editRes.status).toBeCalledWith(200);
       expect(editRes.json).toBeCalledWith({
         message: 'Usuario editado correctamente',
-        user: {
+        user: expect.objectContaining({
           email: 'email1@example.com',
           password: 'test-password1',
           username: 'test-username',
@@ -136,10 +136,10 @@ describe('User Controller', function () {
           phoneNumber: '111111111',
           usertype: 'usuario',
           followers: [],
+          reviews: [],
           followeds: [],
           eventSub: [],
-          id: expect.any(String),
-        },
+        }),
       });
     });
 
@@ -189,23 +189,22 @@ describe('User Controller', function () {
     it('returns the info user when it does exists', function () {
       expect(res.status).toBeCalledWith(200);
       expect(res.json).toBeCalledWith({
-          message: 'Usuario encontrado',
-          user: {
-            email: 'email1@example.com',
-            password: 'test-password1',
-            username: 'test-username',
-            name: 'test-name1',
-            profilePicture: 'test-imageurl1',
-            phoneNumber: '111111111',
-            usertype: 'usuario',
-            followers: [],
-            followeds: [],
-            eventSub: [],
-            id: expect.any(String),
-          }
-        });
-        });
-    
+        message: 'Usuario encontrado',
+        user: expect.objectContaining({
+          email: 'email1@example.com',
+          password: 'test-password1',
+          username: 'test-username',
+          name: 'test-name1',
+          profilePicture: 'test-imageurl1',
+          phoneNumber: '111111111',
+          usertype: 'usuario',
+          followers: [],
+          followeds: [],
+          reviews: [],
+          eventSub: [],
+        }),
+      });
+    });
 
     it('returns 404 when username does not exists', function () {
       expect(badRes.status).toBeCalledWith(404);

@@ -1,7 +1,8 @@
+import { ReviewModel } from '~/domain/entities';
 import { EventModel } from '~/domain/entities/event';
 import type { IUser } from '~/domain/entities/user';
-import { User } from '~/domain/entities/user';
 import { UserModel } from '~/domain/entities/user';
+import { User } from '~/domain/entities/user';
 import type { CreateUserDto } from '~/infrastructure';
 
 export class UserRepository {
@@ -16,7 +17,6 @@ export class UserRepository {
   }
 
   public static async getAllUsers(): Promise<IUser[]> {
-    
     const userDocs = await UserModel.find()
       .populate({
         path: 'eventSub',
@@ -40,6 +40,32 @@ export class UserRepository {
     return users;
   }
 
+  public static async findById(userId: string): Promise<IUser> {
+    const userDoc = await UserModel.findById(userId)
+      .populate({
+        path: 'followeds',
+        model: 'User',
+      })
+      .populate({
+        path: 'eventSub',
+        model: 'Event',
+      })
+      .populate({
+        path: 'reviews',
+        model: 'Review',
+      })
+      .populate({
+        path: 'followers',
+        model: 'User',
+      });
+
+    if (userDoc) {
+      const user: IUser = new User(userDoc);
+      return user;
+    }
+    return null;
+  }
+
   public static async findByUsername(username: String): Promise<IUser> {
     const userDoc = await UserModel.findOne({ username: username })
       .populate({
@@ -48,13 +74,17 @@ export class UserRepository {
       })
       .populate({
         path: 'eventSub',
-        model: EventModel,
+        model: 'Event',
+      })
+      .populate({
+        path: 'reviews',
+        model: ReviewModel,
       })
       .populate({
         path: 'followers',
         model: 'User',
       });
-    
+
     if (userDoc) {
       const user: IUser = new User(userDoc);
       return user;
@@ -66,12 +96,14 @@ export class UserRepository {
     const followers = newUser.followers.map((follower) => follower.id);
     const followeds = newUser.followeds.map((followed) => followed.id);
     const eventSub = newUser.eventSub.map((event) => event.id);
+    const reviews = newUser.reviews.map((review) => review._id);
 
     await UserModel.findByIdAndUpdate(newUser.id, {
       ...newUser,
       followers,
       followeds,
       eventSub,
+      reviews,
     });
   }
 

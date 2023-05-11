@@ -85,6 +85,7 @@ export class UserController {
           usertype: oldUser.usertype,
           followers: oldUser.followers,
           followeds: oldUser.followeds,
+          eventSub: oldUser.eventSub,
         };
 
         await UserRepository.editarUsuari(newUser);

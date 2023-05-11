@@ -52,6 +52,7 @@ export class EventRepository {
       })
       .populate({
         path: 'valoracions',
+        model: 'Review',
       });
 
     if (eventDocument) {

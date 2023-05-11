@@ -15,6 +15,7 @@ export class EventRepository {
       ...event,
       chat: chatId,
       participants: [],
+      assistents: [],
       valoracions: [],
     });
     return newEvent;
@@ -25,6 +26,10 @@ export class EventRepository {
       .populate({
         path: 'participants',
         model: 'User',
+      })
+      .populate({
+      path: 'assistents',
+      model: 'User',
       })
       .populate({
         path: 'valoracions',
@@ -52,6 +57,10 @@ export class EventRepository {
         model: 'User',
       })
       .populate({
+            path: 'assistents',
+            model: 'User',
+            })
+      .populate({
         path: 'valoracions',
         model: 'Review',
       });
@@ -67,11 +76,13 @@ export class EventRepository {
     const participants = newEvent.participants.map(
       (participant) => participant.id,
     );
+    const assistents = newEvent.assistents.map((assistent) => assistent.id);
     const valoracions = newEvent.valoracions.map((valoracio) => valoracio._id);
 
     await EventModel.findByIdAndUpdate(newEvent.id, {
       ...newEvent,
       participants,
+      assistents,
       valoracions,
     });
   }

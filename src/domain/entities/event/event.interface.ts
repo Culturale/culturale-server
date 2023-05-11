@@ -23,7 +23,9 @@ export interface IEvent {
 
   updateValoracions: (newValoracio: IReview) => void;
   participants?: IUser[];
+  assistents?: IUser[];
 
   addParticipant: (newParticipant: IUser) => void;
+  addAssistent: (newAssistent: IUser) => void;
   deleteParticipant: (participant: IUser) => void;
 }

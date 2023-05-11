@@ -268,6 +268,58 @@ describe('Event Routes', function () {
     });
   });
 
+  describe('POST /events/newAssistent', function () {
+      let eventId: string;
+      beforeEach(async function () {
+        const createRes = await request(app)
+          .post('/events/create')
+          .send({
+            codi: 12348173049,
+            denominacio: 'test-event',
+            descripcio: 'test-description',
+            dataIni: new Date(1),
+            dataFi: new Date(2),
+            horari: '2h',
+            adress: 'Passeig de Gràcia',
+            lat: 123.456,
+            long: 789.012,
+            price: '12 €',
+            url: 'https://test-url.com',
+            photo: 'test-photo.jpg',
+          });
+        eventId = await createRes.body.event._id;
+        await request(app).post('/users/create').send({
+          email: 'email@example.com',
+          password: 'test-password',
+          username: 'test-username',
+          name: 'test-name',
+          profilePicture: 'test-imageurl',
+          phoneNumber: '000000000',
+          usertype: 'usuario',
+        });
+      });
+
+      it('if the payload is correct it adds the assistent', async function () {
+        const res = await request(app).post('/events/newAssistent').send({
+          id: eventId,
+          username: 'test-username',
+        });
+
+        expect(res.statusCode).toBe(200);
+        expect(res.body.message).toBe('Asistente añadido correctamente');
+      });
+
+      it('if the payload is incorrect it sends the error', async function () {
+        const res = await request(app).post('/events/newAssistent').send({
+          id: '645ac0f30679a1fcb116d440',
+          username: 'test-username',
+        });
+
+        expect(res.statusCode).toBe(404);
+        expect(res.body.message).toBe('user or event not found');
+      });
+    });
+
   describe('DELETE /events/deleteParticipant', function () {
     let eventId: string;
     beforeEach(async function () {

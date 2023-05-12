@@ -22,27 +22,31 @@ export class CreateEventDto {
   denominacio: string;
 
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   descripcio: string;
 
   @IsDate()
-  @IsNotEmpty()
+  @IsOptional()
   dataIni: Date;
 
   @IsDate()
-  @IsNotEmpty()
+  @IsOptional()
   dataFi: Date;
 
   @IsString()
+  @IsOptional()
   horari: string;
 
   @IsString()
+  @IsOptional()
   adress: string;
 
   @IsNumber()
+  @IsOptional()
   lat: number;
 
   @IsNumber()
+  @IsOptional()
   long: number;
 
   @IsString()
@@ -50,7 +54,7 @@ export class CreateEventDto {
   price: string;
 
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   url: string;
 
   @IsString()

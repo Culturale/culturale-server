@@ -40,9 +40,11 @@ export class CreateEventDto {
   adress: string;
 
   @IsNumber()
+  @IsOptional()
   lat: number;
 
   @IsNumber()
+  @IsOptional()
   long: number;
 
   @IsString()

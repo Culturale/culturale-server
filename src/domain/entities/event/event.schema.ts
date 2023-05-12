@@ -22,8 +22,8 @@ const EventSchema = new Schema({
     type: [Schema.Types.ObjectId],
     model: 'User',
   },
-  lat: { required: true, type: Number },
-  long: { required: true, type: Number },
+  lat: { required: false, type: Number },
+  long: { required: false, type: Number },
   price: { required: false, type: String },
   photo: { required: false, type: String },
 });

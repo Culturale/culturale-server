@@ -103,6 +103,38 @@ export class UserController {
     }
   }
 
+  public static async changePassword(req: Request, res: Response): Promise<void> {
+    try {
+      const current_password = req.body.current_password;
+      const new_password: string = req.body.new_password;
+      const username: string = req.params.username;
+
+      var user: IUser = await UserRepository.findByUsername(username);
+      
+      if (!user) {
+        // Caso usuario no existe:
+        res.status(404).json({ message: 'El usuario \'' +username + '\' no existe'});
+      } else if (!await bcrypt.compare(current_password, user.password)) {
+        // Caso la contrasena actual pasada por parametro no coincide con la contrasena del usuario:
+        res.status(400).json({ message: 'Contraseña actual no coincide con la del usuario' });
+      } else if (current_password == new_password) {
+        // Caso la contrasena actual y la nueva son la misma:
+        res.status(400).json({ message: 'La nueva contraseña es igual a la actual' });
+      } else {
+        // Caso existe usuario, la contrasena actual coincide con la del usuario y la contrasena nueva es diferente a la actual:
+        user.password = await bcrypt.hash(new_password, 10) as string;
+        await UserRepository.editarUsuari(user);
+        
+        res.status(200).json({ message: 'Contraseña modificada correctamente' });
+      }
+    } catch (e) {
+      res.status(500);
+      res.json({
+        error: e,
+      });
+    }
+  }
+
   public static async addFollower(req: Request, res: Response): Promise<void> {
     try {
       const username = req.body.username;

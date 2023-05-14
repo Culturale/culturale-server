@@ -109,7 +109,7 @@ export class UserController {
       const new_password: string = req.body.new_password;
       const user_id: string = req.params.id;
 
-      var user: IUser = await UserRepository.findById(user_id);
+      let user: IUser = await UserRepository.findById(user_id);
       
       if (!user) {
         // Caso usuario no existe:

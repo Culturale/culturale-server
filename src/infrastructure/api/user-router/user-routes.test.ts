@@ -89,7 +89,7 @@ describe('User Routes', function () {
   describe('PATCH /users/id/:id/edit/changePassword', function () {
     const user_name = 'username-test';
     
-    var user_id: string;
+    let user_id: string;
 
     beforeEach(async function () {
       await request(app).post('/users/create').send({

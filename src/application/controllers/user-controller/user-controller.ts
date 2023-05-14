@@ -4,6 +4,7 @@ import type { Request, Response } from 'express';
 import type { IUser, UserProps } from '~/domain/entities/user';
 import { User } from '~/domain/entities/user';
 import { UserRepository } from '~/domain/repositories/user-repository/user-repository';
+import { ChangePasswordDto } from '~/infrastructure';
 
 export class UserController {
   public static async createUser(req: Request, res: Response): Promise<void> {
@@ -105,8 +106,9 @@ export class UserController {
 
   public static async changePassword(req: Request, res: Response): Promise<void> {
     try {
-      const current_password = req.body.current_password;
-      const new_password: string = req.body.new_password;
+      const items: ChangePasswordDto = req.body;
+      const current_password: string = items.current_password;
+      const new_password: string = items.new_password;
       const user_id: string = req.params.id;
 
       const user: IUser = await UserRepository.findById(user_id);

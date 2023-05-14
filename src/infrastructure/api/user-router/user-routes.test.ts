@@ -108,7 +108,7 @@ describe('User Routes', function () {
 
     it('The user with that ID doesnt exist', async function () {
       const id = '000000000000000000000000';
-      const res = await request(app).patch('/users/id/' + id + '/edit/changePassword').send({
+      const res = await request(app).patch('/users/' + id + '/changePassword').send({
         current_password: 'fake',
         new_password: 'fake'
       });
@@ -118,7 +118,7 @@ describe('User Routes', function () {
     });
 
     it('Correct user but wrong current password', async function () {
-      const res = await request(app).patch('/users/id/' + user_id + '/edit/changePassword').send({
+      const res = await request(app).patch('/users/' + user_id + '/changePassword').send({
         current_password: 'fake',
         new_password: 'fake'
       });
@@ -128,7 +128,7 @@ describe('User Routes', function () {
     });
 
     it('Correct user, correct password but new password is equal to current password', async function () {
-      const res = await request(app).patch('/users/id/' + user_id + '/edit/changePassword').send({
+      const res = await request(app).patch('/users/' + user_id + '/changePassword').send({
         current_password: 'test-password',
         new_password: 'test-password'
       });
@@ -138,7 +138,7 @@ describe('User Routes', function () {
     });
 
     it('Correct user, correct password and different new password', async function () {
-      const res = await request(app).patch('/users/id/' + user_id + '/edit/changePassword').send({
+      const res = await request(app).patch('/users/' + user_id + '/changePassword').send({
         current_password: 'test-password',
         new_password: 'test'
       });
@@ -149,7 +149,7 @@ describe('User Routes', function () {
 
     it('Is not an ID', async function () {
       const id = '0';
-      const res = await request(app).patch('/users/id/' + id + '/edit/changePassword').send({
+      const res = await request(app).patch('/users/' + id + '/changePassword').send({
         current_password: 'fake',
         new_password: 'fake'
       });

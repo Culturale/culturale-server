@@ -22,4 +22,4 @@ userRouter.post('/users/newFollower', followDto, follow); //falta test ruta
 
 userRouter.delete('/users/deleteFollower', followDto, unfollow); //falta test ruta
 
-userRouter.patch('/users/id/:id/edit/changePassword', changePasswordDto, UserController.changePassword);
+userRouter.patch('/users/:id/changePassword', changePasswordDto, UserController.changePassword);

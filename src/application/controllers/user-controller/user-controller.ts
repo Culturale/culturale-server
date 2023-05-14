@@ -107,13 +107,13 @@ export class UserController {
     try {
       const current_password = req.body.current_password;
       const new_password: string = req.body.new_password;
-      const username: string = req.params.username;
+      const user_id: string = req.params.id;
 
-      var user: IUser = await UserRepository.findByUsername(username);
+      var user: IUser = await UserRepository.findById(user_id);
       
       if (!user) {
         // Caso usuario no existe:
-        res.status(404).json({ message: 'El usuario \'' +username + '\' no existe'});
+        res.status(404).json({ message: 'El usuario con ID: \'' +user_id + '\' no existe'});
       } else if (!await bcrypt.compare(current_password, user.password)) {
         // Caso la contrasena actual pasada por parametro no coincide con la contrasena del usuario:
         res.status(400).json({ message: 'Contraseña actual no coincide con la del usuario' });

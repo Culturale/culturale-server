@@ -40,6 +40,30 @@ export class UserRepository {
     return users;
   }
 
+  public static async getReportedUsers(): Promise<IUser[]> {
+    const userDocs = await UserModel.find({ report: true })
+      .populate({
+        path: 'eventSub',
+        model: EventModel,
+      })
+      .populate({
+        path: 'followers',
+        model: 'User',
+      })
+      .populate({
+        path: 'followeds',
+        model: 'User',
+      });
+    const users: IUser[] = [];
+  
+    for (const doc of userDocs) {
+      const user = new User(doc);
+      users.push(user);
+    }
+  
+    return users;
+  }  
+
   public static async findById(userId: string): Promise<IUser> {
     const userDoc = await UserModel.findById(userId)
       .populate({

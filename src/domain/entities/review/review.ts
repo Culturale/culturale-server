@@ -8,6 +8,7 @@ export type reviewProps = {
   comment?: string;
   authorId: string;
   eventId: string;
+  report: boolean;
 };
 export class Review implements IReview  {
   public _id: MongoId;
@@ -15,14 +16,16 @@ export class Review implements IReview  {
   public comment?: string;
   public authorId: string;
   public eventId: string;
+  public report?: boolean;
 
   constructor(props: reviewProps) {
-    const {id, puntuation, comment, authorId, eventId} = props;
+    const {id, puntuation, comment, authorId, eventId, report} = props;
     this._id = id;
     this.puntuation = puntuation;
     this.comment = comment || null;
     this.authorId = authorId;
     this.eventId = eventId;
+    this.report = report;
   }
   
 }

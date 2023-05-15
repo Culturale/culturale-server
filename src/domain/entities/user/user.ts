@@ -18,6 +18,7 @@ export type UserProps = {
   followeds?: IUser[];
   eventSub?: IEvent[];
   reviews?: IReview[];
+  report?: boolean;
 };
 
 export class User implements IUser {
@@ -33,6 +34,7 @@ export class User implements IUser {
   public followeds: IUser[];
   public eventSub: IEvent[];
   public reviews: IReview[];
+  public report: boolean;
 
   constructor(props: UserProps) {
     const {
@@ -48,6 +50,7 @@ export class User implements IUser {
       followeds,
       eventSub,
       reviews,
+      report,
     } = props;
     this.id = id;
     this.username = username;
@@ -61,7 +64,10 @@ export class User implements IUser {
     this.followeds = followeds || [];
     this.eventSub = eventSub || [];
     this.reviews = reviews || [];
+    this.report = report;
   }
+
+  
 
   public updateEventSub(newEvent: IEvent): void {
     if (!this.eventSub.find((eventSub) => eventSub.id === newEvent.id)) {

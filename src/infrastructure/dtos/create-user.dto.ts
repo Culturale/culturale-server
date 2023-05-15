@@ -1,4 +1,4 @@
-import { IsString, IsEmail, IsNotEmpty, IsIn } from 'class-validator';
+import { IsString, IsEmail, IsNotEmpty, IsIn, IsBoolean, IsOptional } from 'class-validator';
 import { validate } from 'class-validator';
 import type { NextFunction, Request, Response } from 'express';
 
@@ -34,6 +34,11 @@ export class CreateUserDto {
     @IsNotEmpty()
     @IsIn(usertypes)
     usertype: string;
+
+    @IsBoolean()
+    @IsOptional()
+    report: boolean;
+
 }
 
 export async function createUserDto(
@@ -49,7 +54,7 @@ export async function createUserDto(
     DTO.profilePicture = req.body.profilePicture;
     DTO.phoneNumber = req.body.phoneNumber;
     DTO.usertype = req.body.usertype;
-
+    DTO. report = false;
 
     const errors = await validate(DTO);
     if (errors.length) {

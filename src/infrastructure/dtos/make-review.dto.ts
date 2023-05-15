@@ -1,4 +1,4 @@
-import { IsString, IsNotEmpty, IsOptional, IsNumber } from 'class-validator';
+import { IsString, IsNotEmpty, IsOptional, IsNumber, IsBoolean} from 'class-validator';
 import { validate } from 'class-validator';
 import type { NextFunction, Request, Response } from 'express';
 
@@ -19,6 +19,9 @@ export class MakeReviewDTO {
     @IsString()
     comment: string;
 
+    @IsOptional()
+    @IsBoolean()
+    report: boolean;
 
 }
 
@@ -33,6 +36,7 @@ export async function makeReviewDTO(
   DTO.comment = req.body.comment;
   DTO.authorId = req.body.authorId;
   DTO.puntuation = req.body.puntuation;
+  DTO.report = false;
 
   const errors = await validate(DTO);
   if (errors.length) {

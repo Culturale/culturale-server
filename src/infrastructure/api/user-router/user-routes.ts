@@ -12,6 +12,10 @@ userRouter.post('/users/create', createUserDto, UserController.createUser);
 
 userRouter.get('/users', authMiddleware, UserController.getAllUsers);
 
+userRouter.get('/users/reported', authMiddleware, UserController.getReportedUsers);
+
+userRouter.put('/users/reportUser', authMiddleware, UserController.ReportUser);
+
 userRouter.post('/users/login', loginDto, logIn);
 
 userRouter.post('/users/edit', editUserDTO, UserController.editUser); //falta test ruta

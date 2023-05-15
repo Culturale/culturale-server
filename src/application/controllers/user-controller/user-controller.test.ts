@@ -139,6 +139,7 @@ describe('User Controller', function () {
           reviews: [],
           followeds: [],
           eventSub: [],
+          report: false,
         }),
       });
     });
@@ -164,6 +165,7 @@ describe('User Controller', function () {
       });
     });
   });
+
 
   describe('getUserForUsername', function () {
     const expressRequest: Request = {} as Request;
@@ -202,6 +204,7 @@ describe('User Controller', function () {
           followeds: [],
           reviews: [],
           eventSub: [],
+          report: false,
         }),
       });
     });

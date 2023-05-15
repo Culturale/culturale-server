@@ -11,6 +11,7 @@ export class ReviewRepository {
       authorId: authorId,
       eventId: eventId,
       comment: comment || null,
+      report: false,
     });
 
     return review;

@@ -1,6 +1,7 @@
 import type { Request, Response } from 'express';
+import { UserController } from '~/application/controllers';
 
-import { UserController } from '../../controllers/user-controller/user-controller';
+//import { UserController } from '../../controllers/user-controller/user-controller';
 
 
 export async function follow(req: Request, res: Response) {

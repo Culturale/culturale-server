@@ -1,6 +1,5 @@
 import type { Request, Response } from 'express';
-
-import { UserController } from '../../controllers/user-controller/user-controller';
+import { UserController } from '~/application/controllers';
 
 
 export async function unfollow(req: Request, res: Response) {

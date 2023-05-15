@@ -41,7 +41,7 @@ export class UserRepository {
   }
 
   public static async getReportedUsers(): Promise<IUser[]> {
-    const userDocs = await UserModel.find({ report: true })
+    const userDocs = await UserModel.find( { report: { $gt: 0 } }  )
       .populate({
         path: 'eventSub',
         model: EventModel,

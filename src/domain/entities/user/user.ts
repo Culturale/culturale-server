@@ -18,7 +18,7 @@ export type UserProps = {
   followeds?: IUser[];
   eventSub?: IEvent[];
   reviews?: IReview[];
-  report?: boolean;
+  report?: number;
 };
 
 export class User implements IUser {
@@ -34,7 +34,7 @@ export class User implements IUser {
   public followeds: IUser[];
   public eventSub: IEvent[];
   public reviews: IReview[];
-  public report: boolean;
+  public report: number;
 
   constructor(props: UserProps) {
     const {

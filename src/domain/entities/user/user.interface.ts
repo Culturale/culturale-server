@@ -16,7 +16,7 @@ export interface IUser {
   followeds?: IUser[]; //gente a la que sigo
   eventSub?: IEvent[];
   reviews?: IReview[];
-  report: boolean;
+  report: number;
 
   
   updateEventSub: (newEvent: IEvent) => void;

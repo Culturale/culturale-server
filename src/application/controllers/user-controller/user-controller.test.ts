@@ -139,7 +139,7 @@ describe('User Controller', function () {
           reviews: [],
           followeds: [],
           eventSub: [],
-          report: false,
+          report: 0,
         }),
       });
     });
@@ -204,7 +204,7 @@ describe('User Controller', function () {
           followeds: [],
           reviews: [],
           eventSub: [],
-          report: false,
+          report: 0,
         }),
       });
     });

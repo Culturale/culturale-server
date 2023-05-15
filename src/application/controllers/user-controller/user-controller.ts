@@ -61,7 +61,7 @@ export class UserController {
     const userReported: IUser = await UserRepository.findByUsername(username);
     const castedUser = new User(userReported as UserProps);
 
-   castedUser.report = true;
+   castedUser.report = castedUser.report + 1;
 
     await UserRepository.editarUsuari(castedUser);
 

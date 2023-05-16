@@ -159,7 +159,7 @@ describe('User Controller', function () {
     };
 
     describe('report user', function () {
-      // @ts-ignore
+     
       let userId: string;
     
       const expressRequest: Request = {} as Request;
@@ -202,7 +202,7 @@ describe('User Controller', function () {
 
       it('deletes the user', async function () {
         const req : Request = JSON.parse(JSON.stringify(expressRequest));
-        req.body = { username: 'userToReport' };
+        req.body = { id: userId };
         const res = {} as unknown as Response;
         res.json = jest.fn();
         res.status = jest.fn(() => res);

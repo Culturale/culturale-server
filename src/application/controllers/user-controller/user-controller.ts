@@ -143,6 +143,19 @@ export class UserController {
     }
   }
 
+  public static async deleteUser (req: Request, res: Response): Promise<void> {
+    try {
+      const id: string = req.body.id;
+      await UserRepository.deleteUser(id);
+      res.status(200);
+    } catch (e) {
+      res.status(500);
+      res.json({
+        error: e,
+      });
+    }
+  }
+
   public static async addFollower(req: Request, res: Response): Promise<void> {
     try {
       const username = req.body.username;

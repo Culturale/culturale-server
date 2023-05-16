@@ -1,4 +1,5 @@
 import type { ObjectId } from 'mongodb';
+import mongoose from 'mongoose';
 
 import type { IReview } from '~/domain/entities/review';
 import { ReviewModel } from '~/domain/entities/review';
@@ -25,6 +26,10 @@ export class ReviewRepository {
     await ReviewModel.findByIdAndUpdate(newReview._id, {
       ...newReview,
     });
+  }
+
+  public static async deleteReview(idReview: string): Promise<void> {
+    await ReviewModel.deleteOne(new mongoose.Types.ObjectId(idReview));
   }
 
   public static async getReportedValoracio(): Promise<IReview[]> {

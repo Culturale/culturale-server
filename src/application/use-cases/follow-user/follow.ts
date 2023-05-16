@@ -2,7 +2,6 @@ import type { Request, Response } from 'express';
 
 import { UserController } from '../../controllers/user-controller/user-controller';
 
-
 export async function follow(req: Request, res: Response) {
     try {
         // create new user

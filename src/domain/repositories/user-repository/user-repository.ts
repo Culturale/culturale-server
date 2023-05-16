@@ -131,6 +131,30 @@ export class UserRepository {
     });
   }
 
+  public static async deleteUser(idUser: string): Promise<void> {
+    
+    await EventModel.updateMany(
+      { participants: idUser },
+      { $pull: { participants: idUser } }
+    );
+  
+    await UserModel.updateMany(
+      { followers: idUser },
+      { $pull: { followers: idUser } }
+    );
+  
+    await UserModel.updateMany(
+      { followeds: idUser },
+      { $pull: { followeds: idUser } }
+    );
+  
+    await ReviewModel.deleteMany({ authorId: idUser });
+
+    await UserModel.deleteOne({ _id: idUser });
+  
+  }
+  
+
   public static async existParam(
     param: string,
     tipusAtribut: string,

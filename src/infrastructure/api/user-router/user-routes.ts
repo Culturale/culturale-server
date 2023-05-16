@@ -1,7 +1,7 @@
 import express from 'express';
 
 import { UserController } from '~/application/controllers';
-import { logIn, follow} from '~/application/use-cases';
+import { logIn, follow, deleteUser} from '~/application/use-cases';
 import { unfollow } from '~/application/use-cases/unfollow-user/unfollow';
 import { createUserDto, editUserDTO, loginDto, followDto} from '~/infrastructure/dtos';
 import { authMiddleware } from '~/infrastructure/middlewares';
@@ -25,3 +25,5 @@ userRouter.get('/users/username/:id', UserController.getUserForUsername);
 userRouter.post('/users/newFollower', followDto, follow); //falta test ruta
 
 userRouter.delete('/users/deleteFollower', followDto, unfollow); //falta test ruta
+
+userRouter.delete('/users/deleteUser', deleteUser); 

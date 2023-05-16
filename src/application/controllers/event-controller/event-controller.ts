@@ -73,7 +73,18 @@ export class EventController {
     }
   }
   
-
+  public static async deleteReview (req: Request, res: Response): Promise<void> {
+      try {
+        const id: string = req.body.id;
+        await ReviewRepository.deleteReview(id);
+        res.status(200);
+      } catch (e) {
+        res.status(500);
+        res.json({
+          error: e,
+        });
+      }
+    }
 
   public static async reportReview (req: Request, res: Response): Promise<void> {
     try {
@@ -87,7 +98,7 @@ export class EventController {
 
     res.status(200);
       res.json({
-        message: 'User reported',
+        message: 'Review reported',
       });
     } catch (e) {
       res.status(500);

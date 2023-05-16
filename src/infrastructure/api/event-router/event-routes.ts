@@ -30,5 +30,9 @@ eventRouter.get('/events/categoria/:categoria', EventController.getEventbycatego
 
 eventRouter.post('/events/edit', editEventDTO, EventController.editEvent );
 
-eventRouter.post('/events/addReview', makeReviewDTO, makeReview );
+eventRouter.post('/events/addReview', makeReviewDTO, makeReview);
+
+eventRouter.get('/events/getReportedReviews', EventController.getReportedReviews);
+eventRouter.put('/events/reportReview', EventController.reportReview);
+
 eventRouter.post('/events/delete', EventController.deleteEvent );

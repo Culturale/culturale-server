@@ -1,11 +1,14 @@
 import type { Request, Response } from 'express';
 
-import type {
+import {
   IUser,
   IMessage,
   IEvent,
   EventProps,
   IChat,
+  IReview,
+  Review,
+  reviewProps,
 } from '~/domain/entities';
 import { Event } from '~/domain/entities/event';
 import {
@@ -13,6 +16,7 @@ import {
   ChatRepository,
   EventRepository,
   MessageRepository,
+  ReviewRepository,
 } from '~/domain/repositories';
 import type {
   CreateEventDto,
@@ -53,6 +57,47 @@ export class EventController {
       });
     }
   }
+
+  public static async getReportedReviews(req: Request, res: Response): Promise<void> {
+    try {
+      const events: IReview[] = await ReviewRepository.getReportedValoracio();
+      res.status(200);
+      res.json({
+        events,
+      });
+    } catch (e) {
+      res.status(500);
+      res.json({
+        error: e,
+      });
+    }
+  }
+  
+
+
+  public static async reportReview (req: Request, res: Response): Promise<void> {
+    try {
+    const idReview = req.body.idReview; //user_id del user que queremos bloquear
+    const reviewReported: IReview = await ReviewRepository.findValoracioById(idReview);
+    const castedReview = new Review(reviewReported as reviewProps);
+
+   castedReview.report = castedReview.report + 1;
+
+    await ReviewRepository.editarReview(castedReview);
+
+    res.status(200);
+      res.json({
+        message: 'User reported',
+      });
+    } catch (e) {
+      res.status(500);
+      res.json({
+        error: e,
+      });
+    }
+  }
+
+
 
   public static async editEvent(req: Request, res: Response): Promise<void> {
     try {

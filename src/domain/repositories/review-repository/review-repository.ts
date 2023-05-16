@@ -1,6 +1,6 @@
 import type { ObjectId } from 'mongodb';
 
-import { IReview, Review } from '~/domain/entities/review';
+import type { IReview } from '~/domain/entities/review';
 import { ReviewModel } from '~/domain/entities/review';
 
 export class ReviewRepository {
@@ -21,15 +21,16 @@ export class ReviewRepository {
     return ReviewModel.findById(id);
   }
 
+  public static async editarReview(newReview: IReview): Promise<void> {
+    await ReviewModel.findByIdAndUpdate(newReview._id, {
+      ...newReview,
+    });
+  }
+
   public static async getReportedValoracio(): Promise<IReview[]> {
     const reviewDocs = await ReviewModel.find({ report: { $gt: 0 } });
     return reviewDocs.map(doc => {
       const review = doc.toObject() as IReview;
-      delete review._id;
-      delete review.authorId;
-      delete review.eventId;
-      delete review.puntuation;
-      delete review.report;
       return review;
     });
   }

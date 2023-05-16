@@ -1,7 +1,7 @@
 import type { Request, Response } from 'express';
 
 import type { IEvent } from '~/domain/entities/event';
-import type { IReview } from '~/domain/entities/review';
+import { IReview } from '~/domain/entities/review';
 import type { UserProps } from '~/domain/entities/user';
 import { User } from '~/domain/entities/user';
 import { EventRepository, UserRepository } from '~/domain/repositories';
@@ -45,6 +45,7 @@ export async function makeReview(req: Request, res: Response): Promise<void> {
       res.status(200).json({
         message: 'Valoracion añadida correctamente',
         newValoracioDTO,
+        val : event.valoracions[0]
       });
       return;
     } else {

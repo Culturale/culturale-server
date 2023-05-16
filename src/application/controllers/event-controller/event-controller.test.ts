@@ -5,9 +5,13 @@ import { request as expressRequest } from 'express';
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import mongoose from 'mongoose';
 
+
+import { makeReview } from '~/application/use-cases/makeEventReview';
+
 import { UserController } from '../user-controller';
 
 import { EventController } from './event-controller';
+
 
 dotenv.config();
 
@@ -117,6 +121,123 @@ describe('Event Controller', function () {
     await EventController.createEvent(req, res);
     return eventId;
   };
+
+  const createTestUser = async (req: Request): Promise<string> => {
+    const res = {} as unknown as Response;
+    let userId: string;
+  
+    res.json = jest.fn().mockImplementation((data: any) => {
+      userId = data.user.id;
+    });
+    res.status = jest.fn().mockReturnValue(res);
+    res.setHeader = jest.fn();
+  
+    await UserController.createUser(req, res);
+    return userId;
+  };
+
+  const createTestReview = async (req: Request): Promise<string> => {
+    const res = {} as unknown as Response;
+    let valId: string;
+  
+    res.json = jest.fn().mockImplementation((data: any) => {
+      valId = data.val.id;
+    });
+    res.status = jest.fn().mockReturnValue(res);
+    res.setHeader = jest.fn();
+  
+    await makeReview(req, res);
+    return valId;
+  };
+  
+
+  describe('report and eliminate review', function () {
+    let eventId: string;
+    let userId: string;
+    let reviewId: string;
+  
+    const expressRequest: Request = {} as Request;
+    const resMessage = {} as unknown as Response;
+    resMessage.json = jest.fn();
+    resMessage.status = jest.fn(() => resMessage);
+    resMessage.setHeader = jest.fn();
+  
+    beforeEach(async function () {
+      const reqEvent: Request = expressRequest;
+      reqEvent.body = {
+        codi: 12348173050,
+        denominacio: 'test-event',
+        descripcio: 'test-description',
+        dataIni: new Date(1),
+        dataFi: new Date(2),
+        horari: '2h',
+        adress: 'Passeig de Gràcia',
+        url: 'https://test-url.com',
+      };
+      // Crear el evento y guardar su id en la variable eventId
+      eventId = await createTestEvent(reqEvent);
+  
+      const reqUser: Request = expressRequest;
+      reqUser.body = {
+        username: 'Maci02',
+        name: 'Joel',
+        password: '1234',
+        email: 'joel@joel.com',
+        profilePicture: 'calamardo.png',
+        phoneNumber: '666555444',
+        usertype: 'usuario',
+      };
+  
+      userId = await createTestUser(reqUser);
+
+      const req: Request = expressRequest;
+      req.body = {
+        authorId: userId,
+        eventId: eventId,
+        puntuation: 5,
+        comment: '10/ 10, recomanable',
+      };
+      // Crear la valoración y guardar su id en la variable reviewId
+      reviewId = await createTestReview(req);
+    });
+  
+    it('reports the review', async function () {
+      const req : Request = JSON.parse(JSON.stringify(expressRequest));
+      req.body = { idReview: reviewId };
+      const res = {} as unknown as Response;
+      res.json = jest.fn();
+      res.status = jest.fn(() => res);
+      res.setHeader = jest.fn();
+      await EventController.reportReview(req, res);
+  
+      expect(res.status).toBeCalledWith(200);
+    });
+
+    it('deletes the review', async function () {
+      const req : Request = JSON.parse(JSON.stringify(expressRequest));
+      req.body = { idReview: reviewId };
+      const res = {} as unknown as Response;
+      res.json = jest.fn();
+      res.status = jest.fn(() => res);
+      res.setHeader = jest.fn();
+      await EventController.deleteReview(req, res);
+  
+      expect(res.status).toBeCalledWith(200);
+      
+    });
+    it('gets reported events', async function () {
+      const req: Request = JSON.parse(JSON.stringify(expressRequest));
+      const res = {} as unknown as Response;
+      res.json = jest.fn();
+      res.status = jest.fn(() => res);
+      res.setHeader = jest.fn();
+  
+      await EventController.getReportedReviews(req, res);
+      expect(res.status).toBeCalledWith(200);
+    });
+  });
+  
+  
 
   describe('add message event', function () {
     let eventId: string;

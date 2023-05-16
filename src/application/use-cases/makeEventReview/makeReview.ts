@@ -1,7 +1,7 @@
 import type { Request, Response } from 'express';
 
 import type { IEvent } from '~/domain/entities/event';
-import { IReview } from '~/domain/entities/review';
+import type { IReview } from '~/domain/entities/review';
 import type { UserProps } from '~/domain/entities/user';
 import { User } from '~/domain/entities/user';
 import { EventRepository, UserRepository } from '~/domain/repositories';

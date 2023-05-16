@@ -1,15 +1,15 @@
 import type { Request, Response } from 'express';
 
-import {
+import type {
   IUser,
   IMessage,
   IEvent,
   EventProps,
   IChat,
   IReview,
-  Review,
   reviewProps,
 } from '~/domain/entities';
+import { Review } from '~/domain/entities';
 import { Event } from '~/domain/entities/event';
 import {
   UserRepository,

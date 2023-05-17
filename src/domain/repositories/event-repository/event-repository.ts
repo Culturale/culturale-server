@@ -7,10 +7,10 @@ import type { CreateEventDto } from '~/infrastructure';
 import type { MongoId } from '~/types/types';
 
 interface EventFilters {
-  denominacio?: string;
+  denominacio?: { $regex: string, $options: 'i' };
   descripcio?: string;
-  dataIni?: Date;
-  dataFi?: Date;
+  dataIni?: { $gte: Date };
+  dataFi?: { $lte: Date };
   horari?: string;
   price?: string;
 }

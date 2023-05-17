@@ -21,7 +21,7 @@ import type {
 } from '~/infrastructure';
 
 interface EventFilters {
-  denominacio?: string;
+  denominacio?: { $regex: string, $options: 'i' };
   descripcio?: string;
   dataIni?: { $gte: Date };
   dataFi?: { $lte: Date };
@@ -71,7 +71,7 @@ export class EventController {
   
     // Asigna los valores de los parámetros de consulta al filtro
     if (denominacio) {
-      filter.denominacio = denominacio as string;
+      filter.denominacio = { $regex: denominacio as string, $options: 'i' };
     }
     if (descripcio) {
       filter.descripcio = descripcio as string;

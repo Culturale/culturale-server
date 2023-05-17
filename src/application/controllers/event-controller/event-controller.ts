@@ -22,7 +22,7 @@ import type {
 
 interface EventFilters {
   denominacio?: { $regex: string, $options: 'i' };
-  descripcio?: string;
+  descripcio?: { $regex: string, $options: 'i' };
   dataIni?: { $gte: Date };
   dataFi?: { $lte: Date };
   horari?: string;
@@ -74,7 +74,7 @@ export class EventController {
       filter.denominacio = { $regex: denominacio as string, $options: 'i' };
     }
     if (descripcio) {
-      filter.descripcio = descripcio as string;
+      filter.descripcio = { $regex: descripcio as string, $options: 'i' };
     }
     if (dataIni) {
       filter.dataIni = { $gte: new Date(dataIni as string) };

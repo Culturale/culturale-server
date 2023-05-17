@@ -8,7 +8,7 @@ import type { MongoId } from '~/types/types';
 
 interface EventFilters {
   denominacio?: { $regex: string, $options: 'i' };
-  descripcio?: string;
+  descripcio?:  { $regex: string, $options: 'i' };
   dataIni?: { $gte: Date };
   dataFi?: { $lte: Date };
   horari?: string;

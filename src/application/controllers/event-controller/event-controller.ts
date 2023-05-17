@@ -26,7 +26,7 @@ interface EventFilters {
   dataIni?: { $gte: Date };
   dataFi?: { $lte: Date };
   horari?: string;
-  price?: string;
+  price?: { $lte: string};
 }
 
 export class EventController {
@@ -86,17 +86,22 @@ export class EventController {
       filter.horari = horari as string;
     }
     if (price) {
-      filter.price = price as string;
+      filter.price = { $lte: price as string };
     }
   
     try {
       // Filtra los eventos según los parámetros proporcionados
-      const eventosFiltrados: IEvent[] = await EventRepository.find(filter);
+      const events: IEvent[] = await EventRepository.find(filter);
   
       // Envía los eventos filtrados como respuesta
-      res.status(200).json({ eventosFiltrados });
-    } catch (error) {
-      res.status(500).json({ error: 'Error al obtener los eventos' });
+      res.json({
+        events,
+      });
+    }  catch (e) {
+      res.status(500);
+      res.json({
+        error: e,
+      });
     }
   }
 

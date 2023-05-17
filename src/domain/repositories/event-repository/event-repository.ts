@@ -12,7 +12,7 @@ interface EventFilters {
   dataIni?: { $gte: Date };
   dataFi?: { $lte: Date };
   horari?: string;
-  price?: string;
+  price?: { $lte: string};
 }
 
 export class EventRepository {

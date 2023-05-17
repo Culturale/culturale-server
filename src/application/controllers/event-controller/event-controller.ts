@@ -20,6 +20,15 @@ import type {
   EditEventDTO,
 } from '~/infrastructure';
 
+interface EventFilters {
+  denominacio?: string;
+  descripcio?: string;
+  dataIni?: Date;
+  dataFi?: Date;
+  horari?: string;
+  price?: string;
+}
+
 export class EventController {
   public static async createEvent(req: Request, res: Response): Promise<void> {
     try {
@@ -51,6 +60,43 @@ export class EventController {
       res.json({
         error: e,
       });
+    }
+  }
+  
+  public static async getEventsByFilters(req: Request, res: Response): Promise<void> {
+    const filter: EventFilters = {};
+  
+    // Obtén los valores de los parámetros de consulta
+    const { denominacio, descripcio, dataIni, dataFi, horari, price } = req.query;
+  
+    // Asigna los valores de los parámetros de consulta al filtro
+    if (denominacio) {
+      filter.denominacio = denominacio as string;
+    }
+    if (descripcio) {
+      filter.descripcio = descripcio as string;
+    }
+    if (dataIni) {
+      filter.dataIni = new Date(dataIni as string);
+    }
+    if (dataFi) {
+      filter.dataFi = new Date(dataFi as string);
+    }
+    if (horari) {
+      filter.horari = horari as string;
+    }
+    if (price) {
+      filter.price = price as string;
+    }
+  
+    try {
+      // Filtra los eventos según los parámetros proporcionados
+      const eventosFiltrados: IEvent[] = await EventRepository.find(filter);
+  
+      // Envía los eventos filtrados como respuesta
+      res.status(200).json({ eventosFiltrados });
+    } catch (error) {
+      res.status(500).json({ error: 'Error al obtener los eventos' });
     }
   }
 
@@ -249,10 +295,10 @@ export class EventController {
     res: Response,
   ): Promise<void> {
     try {
-      const event: IEvent[] = await EventRepository.getEventbydenominacio(
+      const events: IEvent[] = await EventRepository.getEventbydenominacio(
         req.params.denominacio,
       );
-      if (event.length == 0) {
+      if (events.length == 0) {
         res.status(404);
         res.json({
           error: 'No event with that denomination found',
@@ -260,7 +306,7 @@ export class EventController {
       }
       res.status(200);
       res.json({
-        event,
+        events,
       });
     } catch (e) {
       res.status(500);

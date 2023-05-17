@@ -6,6 +6,15 @@ import { EventModel, Event } from '~/domain/entities/event';
 import type { CreateEventDto } from '~/infrastructure';
 import type { MongoId } from '~/types/types';
 
+interface EventFilters {
+  denominacio?: string;
+  descripcio?: string;
+  dataIni?: Date;
+  dataFi?: Date;
+  horari?: string;
+  price?: string;
+}
+
 export class EventRepository {
   public static async addEvent(
     event: CreateEventDto,
@@ -22,6 +31,27 @@ export class EventRepository {
 
   public static async getAllEvents(): Promise<IEvent[]> {
     const eventDocument = await EventModel.find()
+      .populate({
+        path: 'participants',
+        model: 'User',
+      })
+      .populate({
+        path: 'valoracions',
+        model: 'Review',
+      });
+
+      const events: IEvent[] = [];
+
+      for (const doc of eventDocument) {
+        const event = new Event(doc);
+        events.push(event);
+      }
+      
+      return events;
+  }
+
+  public static async find(filter: EventFilters): Promise<IEvent[]> {
+    const eventDocument = await EventModel.find(filter)
       .populate({
         path: 'participants',
         model: 'User',
@@ -92,7 +122,24 @@ export class EventRepository {
   }
 
   public static async getEventbydenominacio(name: String): Promise<IEvent[]> {
-    return await EventModel.find({ denominacio: name });
+    const eventDocument = await EventModel.find({ denominacio: name })
+    .populate({
+      path: 'participants',
+      model: 'User',
+    })
+    .populate({
+      path: 'valoracions',
+      model: 'Review',
+    });
+
+    const events: IEvent[] = [];
+
+    for (const doc of eventDocument) {
+      const event = new Event(doc);
+      events.push(event);
+    }
+    
+    return events;
   }
 
   public static async getEventbydataIni(data: Date): Promise<IEvent[]> {

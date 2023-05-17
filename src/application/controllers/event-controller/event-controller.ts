@@ -23,8 +23,8 @@ import type {
 interface EventFilters {
   denominacio?: string;
   descripcio?: string;
-  dataIni?: Date;
-  dataFi?: Date;
+  dataIni?: { $gte: Date };
+  dataFi?: { $lte: Date };
   horari?: string;
   price?: string;
 }
@@ -77,10 +77,10 @@ export class EventController {
       filter.descripcio = descripcio as string;
     }
     if (dataIni) {
-      filter.dataIni = new Date(dataIni as string);
+      filter.dataIni = { $gte: new Date(dataIni as string) };
     }
     if (dataFi) {
-      filter.dataFi = new Date(dataFi as string);
+      filter.dataFi = { $lte: new Date(dataFi as string) };
     }
     if (horari) {
       filter.horari = horari as string;

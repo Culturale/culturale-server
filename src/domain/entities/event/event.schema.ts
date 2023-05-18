@@ -4,7 +4,7 @@ import type { IEvent } from './event.interface';
 
 const EventSchema = new Schema({
   adress: { required: true, type: String },
-  chat: { required: true, type: Schema.Types.ObjectId, ref: 'Chat' },
+  chat: { required: false, type: Schema.Types.ObjectId, ref: 'Chat' },
   codi: { required: true, type: Number },
   dataFi: { required: true, type: Date },
   dataIni: { required: true, type: Date },

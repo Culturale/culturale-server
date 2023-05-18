@@ -13,7 +13,7 @@ export type EventProps = {
   descripcio: string;
   dataIni: Date;
   dataFi: Date;
-  horari?: string;
+  horari: string;
   adress: string;
   lat?: number;
   long?: number;

@@ -11,14 +11,14 @@ export interface IEvent {
   descripcio: string;
   dataIni: Date;
   dataFi: Date;
-  horari?: string;
+  horari: string;
   adress: string;
   lat?: number;
   long?: number;
   price?: string;
   url?: string;
   photo?: string;
-  chat: IChat;
+  chat?: IChat;
   valoracions?: IReview[];
 
   updateValoracions: (newValoracio: IReview) => void;

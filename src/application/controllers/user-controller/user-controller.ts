@@ -4,7 +4,7 @@ import type { Request, Response } from 'express';
 import type { IUser, UserProps } from '~/domain/entities/user';
 import { User } from '~/domain/entities/user';
 import { UserRepository } from '~/domain/repositories/user-repository/user-repository';
-import { ChangePasswordDto } from '~/infrastructure';
+import type { ChangePasswordDto } from '~/infrastructure';
 
 export class UserController {
   public static async createUser(req: Request, res: Response): Promise<void> {

@@ -6,7 +6,6 @@ import { UserModel } from '~/domain/entities/user';
 
 export async function logIn(req: Request, res: Response): Promise<void> {
   res.setHeader('Content-Type', 'application/json');
-
   try {
     const user = await UserModel.findOne({ username: req.body.username });
     if (user) {
@@ -16,7 +15,7 @@ export async function logIn(req: Request, res: Response): Promise<void> {
       );
       if (isPasswordCorrect) {
         const token = jwt.sign({ username: user.username }, process.env.SECRET);
-        res.status(200).json({ token });
+        res.status(200).json({ token: token, user: user});
       } else {
         res.status(400).json({ error: 'Incorrect password' });
       }

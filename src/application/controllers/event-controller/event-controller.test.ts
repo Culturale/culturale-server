@@ -1,5 +1,6 @@
 import * as dotenv from 'dotenv';
-import type { Request, Response } from 'express';
+import type { Request} from 'express';
+import type { Response } from 'express';
 import { request as expressRequest } from 'express';
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import mongoose from 'mongoose';
@@ -31,7 +32,11 @@ describe('Event Controller', function () {
         dataFi: new Date(2),
         horari: '2h',
         adress: 'Passeig de Gràcia',
+        lat: 123.456,
+        long: 789.012,
+        price: '12 €',
         url: 'https://test-url.com',
+        photo: 'test-photo.jpg',
     };
     const res = {} as unknown as Response;
     res.json = jest.fn();
@@ -54,7 +59,11 @@ describe('Event Controller', function () {
           dataFi: new Date(2),
           horari: '2h',
           adress: 'Passeig de Gràcia',
+          lat: 123.456,
+          long: 789.012,
+          price: '12 €',
           url: 'https://test-url.com',
+          photo: 'test-photo.jpg',
         }),
       });
     });
@@ -84,33 +93,82 @@ describe('Event Controller', function () {
             dataFi: new Date(2),
             horari: '2h',
             adress: 'Passeig de Gràcia',
+            lat: 123.456,
+            long: 789.012,
+            price: '12 €',
             url: 'https://test-url.com',
+            photo: 'test-photo.jpg',
           }),
         ],
       });
     });
   });
-  describe('add message event', function () { 
+
+  const createTestEvent = async (req: Request): Promise<string> => {
+    const res = {} as unknown as Response;
+    let eventId: string;
+  
+    res.json = jest.fn().mockImplementation((data: any) => {
+      eventId = data.event.id;
+    });
+    res.status = jest.fn().mockReturnValue(res);
+    res.setHeader = jest.fn();
+  
+    await EventController.createEvent(req, res);
+    return eventId;
+  };
+
+  describe('add message event', function () {
+    let eventId: string;
+    
     const expressRequest: Request = {} as Request;
     const reqMessage: Request = JSON.parse(JSON.stringify(expressRequest));
     reqMessage.body = {
-        codi: 12348173050,
-        userId: 'user1',
-        content: 'hola',
-        date: new Date(2),
+      userId: 'user1',
+      content: 'hola',
+      date: new Date(2),
+      codi: eventId,
     };
-    const resMessage = {} as unknown as Response;
-    resMessage.json = jest.fn();
-    resMessage.status = jest.fn(() => resMessage);
-    resMessage.setHeader = jest.fn();
-    
+    //quitar
+    const res = {} as unknown as Response;
+    res.json = jest.fn();
+    res.status = jest.fn(() => res);
+    res.setHeader = jest.fn();
+  
     beforeEach(async function () {
-        await EventController.addMessageEvent(reqMessage, resMessage);
+      const req: Request = expressRequest;
+      req.body = {
+        codi: 12348173050,
+        denominacio: 'test-event',
+        descripcio: 'test-description',
+        dataIni: new Date(1),
+        dataFi: new Date(2),
+        horari: '2h',
+        adress: 'Passeig de Gràcia',
+        lat: 123.456,
+        long: 789.012,
+        price: '12 €',
+        url: 'https://test-url.com',
+        photo: 'test-photo.jpg',
+      };
+      // Crear el evento y guardar su id en la variable eventId
+      eventId = await createTestEvent(req);
+      
     });
-
-    it('returns the message sent it', function () {
-      expect(resMessage.status).toBeCalledWith(200);
-      expect(resMessage.json).toBeCalledWith(expect.objectContaining({
+  
+    it('returns the correct payload', async function () {
+      // Crear el mensaje de chat para el evento creado anteriormente
+      reqMessage.body = { id: eventId, userId: 'user1',
+      content: 'hola',
+      date: new Date(2)};
+      const chatRes = {} as unknown as Response;
+      chatRes.json = jest.fn();
+      chatRes.status = jest.fn(() => chatRes);
+      chatRes.setHeader = jest.fn();
+      await EventController.addMessageEvent(reqMessage, chatRes);
+  
+      expect(chatRes.status).toBeCalledWith(200);
+      expect(chatRes.json).toBeCalledWith(expect.objectContaining({
         message: 'chat sent it',
         messages: expect.objectContaining({
           userId: 'user1',
@@ -122,6 +180,10 @@ describe('Event Controller', function () {
   });
 
   describe('add participant event', function () { 
+    let id: mongoose.Types.ObjectId;
+    let eventid: string;
+
+    
     const expressRequest: Request = {} as Request;
     const reqUser: Request = JSON.parse(JSON.stringify(expressRequest));
     reqUser.body = {
@@ -137,29 +199,143 @@ describe('Event Controller', function () {
     resUser.json = jest.fn();
     resUser.status = jest.fn(() => resUser);
     resUser.setHeader = jest.fn();
-
-    const reqAddPar: Request = JSON.parse(JSON.stringify(expressRequest));
-    reqAddPar.body = {
-        codi: 12348173050,
-        username: 'test-username',
-    };
-    const resAddPar = {} as unknown as Response;
-    resAddPar.json = jest.fn();
-    resAddPar.status = jest.fn(() => resAddPar);
-    resAddPar.setHeader = jest.fn();
     
     beforeEach(async function () {
+      const req: Request = expressRequest;
+      req.body = {
+        codi: 12348173050,
+        denominacio: 'test-event',
+        descripcio: 'test-description',
+        dataIni: new Date(1),
+        dataFi: new Date(2),
+        horari: '2h',
+        adress: 'Passeig de Gràcia',
+        lat: 123.456,
+        long: 789.012,
+        price: '12 €',
+        url: 'https://test-url.com',
+        photo: 'test-photo.jpg',
+      };
+      // Crear el evento y guardar su id en la variable eventId
+      eventid =  await createTestEvent(req);
+      id = new mongoose.Types.ObjectId(eventid);
       await UserController.createUser(reqUser, resUser);
-      await EventController.addParticipant(reqAddPar, resAddPar);
     });
 
-    it('returns the participants', function () {
+    it('returns the participants', async function () {
+      const reqAddPar: Request = JSON.parse(JSON.stringify(expressRequest));
+      reqAddPar.body = {
+          id: id,
+          username: 'test-username',
+      };
+      
+      const resAddPar = {} as unknown as Response;
+      resAddPar.json = jest.fn();
+      resAddPar.status = jest.fn(() => resAddPar);
+      resAddPar.setHeader = jest.fn();
+      await EventController.addParticipant(reqAddPar, resAddPar);
       expect(resAddPar.status).toBeCalledWith(200);
       expect(resAddPar.json).toBeCalledWith(expect.objectContaining({
         message: 'Participante añadido correctamente',
       }));
     }); 
   });
+  
+
+
+
+
+  describe('delete participant event', function () {
+    let id: mongoose.Types.ObjectId;
+    let eventid: string;
+  
+    const expressRequest: Request = {} as Request;
+  
+    const reqUser: Request = JSON.parse(JSON.stringify(expressRequest));
+    reqUser.body = {
+      email: 'email@example.com',
+      password: 'test-password',
+      username: 'test-username',
+      name: 'test-name',
+      profilePicture: 'test-imageurl',
+      phoneNumber: '000000000',
+      usertype: 'usuario',
+    };
+  
+    const resUser = {} as unknown as Response;
+    resUser.json = jest.fn();
+    resUser.status = jest.fn(() => resUser);
+    resUser.setHeader = jest.fn();
+
+    
+    beforeEach(async function () {
+      const req: Request = expressRequest;
+      req.body = {
+        codi: 12348173050,
+        denominacio: 'test-event',
+        descripcio: 'test-description',
+        dataIni: new Date(1),
+        dataFi: new Date(2),
+        horari: '2h',
+        adress: 'Passeig de Gràcia',
+        lat: 123.456,
+        long: 789.012,
+        price: '12 €',
+        url: 'https://test-url.com',
+        photo: 'test-photo.jpg',
+      };
+      eventid =  await createTestEvent(req);
+      id = new mongoose.Types.ObjectId(eventid);
+      await UserController.createUser(reqUser, resUser);
+  
+      await UserController.createUser(reqUser, resUser);
+    });
+  
+    it('deletes the participant from the event', async function () {
+            
+      const reqAddPar: Request = {} as Request;
+      reqAddPar.body = {
+          id: id,
+          username: 'test-username',
+      };
+
+      const resAddPar = {} as unknown as Response;
+      resAddPar.json = jest.fn();
+      resAddPar.status = jest.fn(() => resAddPar);
+      resAddPar.setHeader = jest.fn();
+
+      // Añadir el participante al evento
+      await EventController.addParticipant(reqAddPar, resAddPar);
+      expect(resAddPar.status).toBeCalledWith(200);
+      expect(resAddPar.json).toBeCalledWith(
+          expect.objectContaining({
+              message: 'Participante añadido correctamente',
+          })
+      );
+
+      const reqDelPar: Request = {} as Request;
+      reqDelPar.body = {
+          id: id,
+          username: 'test-username',
+      };
+
+      const resDelPar = {} as unknown as Response;
+      resDelPar.json = jest.fn();
+      resDelPar.status = jest.fn(() => resDelPar);
+      resDelPar.setHeader = jest.fn();
+
+      // Eliminar el participante del evento
+      await EventController.deleteParticipant(reqDelPar, resDelPar);
+      expect(resDelPar.status).toBeCalledWith(200);
+      expect(resDelPar.json).toBeCalledWith(
+          expect.objectContaining({
+              message: 'Participante eliminado correctamente',
+          })
+      );
+    });
+  });
+  
+  
   describe('deleteEvent', function () {
     const expressRequest: Request = {} as Request;
     const req: Request = JSON.parse(JSON.stringify(expressRequest));
@@ -180,7 +356,11 @@ describe('Event Controller', function () {
         dataFi: new Date(2),
         horari: '2h',
         adress: 'Passeig de Gràcia',
+        lat: 123.456,
+        long: 789.012,
+        price: '12 €',
         url: 'https://test-url.com',
+        photo: 'test-photo.jpg',
     };
     const resCreate = {} as unknown as Response;
     resCreate.json = jest.fn();

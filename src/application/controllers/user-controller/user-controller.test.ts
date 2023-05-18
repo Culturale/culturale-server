@@ -4,10 +4,10 @@ import type { Request, Response } from 'express';
 import { request as expressRequest } from 'express';
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import mongoose from 'mongoose';
-//import { UserModel } from '~/domain/entities/user';
+
+import { UserRepository } from '~/domain/repositories/user-repository/user-repository';
 
 import { UserController } from './user-controller';
-
 
 dotenv.config();
 
@@ -88,46 +88,46 @@ describe('User Controller', function () {
     });
   });
 
-describe('EditPerfil', function () {
-  const createReq: Request = expressRequest;
-  createReq.body = {
-    email: 'email@example.com',
-    password: 'test-password',
-    username: 'test-username',
-    name: 'test-name',
-    profilePicture: 'test-imageurl',
-    phoneNumber: '000000000',
-    usertype: 'usuario',
-  };
-  const createRes = {} as unknown as Response;
-  createRes.json = jest.fn();
-  createRes.status = jest.fn(() => createRes);
-  createRes.setHeader = jest.fn();
-
-  beforeEach(async function () {
-    await UserController.createUser(createReq, createRes);
-  });
-
-  it('Edits the atributes of an user', async function () {
-    const editReq: Request = expressRequest;
-    editReq.body = {
-      password: 'test-password1',
+  describe('EditPerfil', function () {
+    const createReq: Request = expressRequest;
+    createReq.body = {
+      email: 'email@example.com',
+      password: 'test-password',
       username: 'test-username',
-      name: 'test-name1',
-      email: 'email1@example.com',
-      profilePicture: 'test-imageurl1',
-      phoneNumber: '111111111',
+      name: 'test-name',
+      profilePicture: 'test-imageurl',
+      phoneNumber: '000000000',
+      usertype: 'usuario',
     };
-    const editRes = {} as unknown as Response;
-    editRes.json = jest.fn();
-    editRes.status = jest.fn(() => editRes);
-    editRes.setHeader = jest.fn();
+    const createRes = {} as unknown as Response;
+    createRes.json = jest.fn();
+    createRes.status = jest.fn(() => createRes);
+    createRes.setHeader = jest.fn();
 
-     await UserController.editUser(editReq, editRes);
-    expect(editRes.status).toBeCalledWith(200);
-    expect(editRes.json).toBeCalledWith({
-      message:'Usuario editado correctamente',
-      user:{
+    beforeEach(async function () {
+      await UserController.createUser(createReq, createRes);
+    });
+
+    it('Edits the atributes of an user', async function () {
+      const editReq: Request = expressRequest;
+      editReq.body = {
+        password: 'test-password1',
+        username: 'test-username',
+        name: 'test-name1',
+        email: 'email1@example.com',
+        profilePicture: 'test-imageurl1',
+        phoneNumber: '111111111',
+      };
+      const editRes = {} as unknown as Response;
+      editRes.json = jest.fn();
+      editRes.status = jest.fn(() => editRes);
+      editRes.setHeader = jest.fn();
+
+      await UserController.editUser(editReq, editRes);
+      expect(editRes.status).toBeCalledWith(200);
+      expect(editRes.json).toBeCalledWith({
+        message: 'Usuario editado correctamente',
+        user: expect.objectContaining({
           email: 'email1@example.com',
           password: 'test-password1',
           username: 'test-username',
@@ -136,153 +136,182 @@ describe('EditPerfil', function () {
           phoneNumber: '111111111',
           usertype: 'usuario',
           followers: [],
-          followeds:[],
-          id: undefined,
-        },
+          reviews: [],
+          followeds: [],
+          eventSub: [],
+        }),
+      });
+    });
+
+    it('Returns error when no username exists', async function () {
+      const editReq: Request = expressRequest;
+      editReq.body = {
+        password: 'test-password1',
+        username: 'non-existing-username',
+        name: 'test-name1',
+        email: 'email1@example.com',
+      };
+      const editRes = {} as unknown as Response;
+      editRes.json = jest.fn();
+      editRes.status = jest.fn(() => editRes);
+      editRes.setHeader = jest.fn();
+
+      await UserController.editUser(editReq, editRes);
+
+      expect(editRes.status).toBeCalledWith(404);
+      expect(editRes.json).toBeCalledWith({
+        message: 'El usuario indicado no existe',
+      });
     });
   });
 
-  it('Returns error when no username exists', async function () {
-    const editReq: Request = expressRequest;
-    editReq.body = {
-      password: 'test-password1',
-      username: 'non-existing-username',
-      name: 'test-name1',
-      email: 'email1@example.com',
-    };
-    const editRes = {} as unknown as Response;
-    editRes.json = jest.fn();
-    editRes.status = jest.fn(() => editRes);
-    editRes.setHeader = jest.fn();
-
-     await UserController.editUser(editReq, editRes);
+  describe('deleteUser', function () {
+    const req1: Request = expressRequest;
+    req1.params = {id: '0'};
   
-    expect(editRes.status).toBeCalledWith(404);
-    expect(editRes.json).toBeCalledWith({
-      message:'El usuario indicado no existe',
+    const res1 = {} as unknown as Response;
+    res1.json = jest.fn();
+    res1.status = jest.fn(() => res1);
+    res1.setHeader = jest.fn();
+  
+    // Esta parte depende del funcionamiento de "createUser"
+    const userUsername = 'test-username';
+    const req2: Request = expressRequest;
+    req2.body = {
+      email: 'email@example.com',
+      password: 'test-password',
+      username: userUsername,
+      name: 'test-name',
+      profilePicture: 'test-imageurl',
+      phoneNumber: '000000000',
+      usertype: 'usuario',
+    };
+  
+    const res2 = {} as unknown as Response;
+    res2.json = jest.fn();
+    res2.status = jest.fn(() => res2);
+    res2.setHeader = jest.fn();
+  
+    const req3: Request = expressRequest;
+    const res3 = {} as unknown as Response;
+    res3.json = jest.fn();
+    res3.status = jest.fn(() => res3);
+    res3.setHeader = jest.fn();
+  
+    const req4: Request = expressRequest;
+    const res4 = {} as unknown as Response;
+    res4.json = jest.fn();
+    res4.status = jest.fn(() => res4);
+    res4.setHeader = jest.fn();
+  
+  
+  
+  
+    beforeAll(async function () {
+      // Prerequisito primer test
+      await UserController.deleteUser(req1, res1);
+  
+      // Prerequisito segundo test
+      // Creamos el usuario que posteriormente será eliminado
+      await UserController.createUser(req2, res2);
+  
+      // Buscamos al usuario que será eliminado
+      await UserController.getAllUsers(req3, res3);
+      const obj = (res3.json as jest.Mock).mock.calls[(res3.json as jest.Mock).mock.calls.length - 1][0];
+      const userId: string = obj.users[0]._id;
+      //console.log('ID: ' + userId);
+  
+      // Eliminamos el usuario que acabamos de crear
+      req4.params = {id: userId};
+      await UserController.deleteUser(req4, res4);
+  
+    });
+  
+    it('Dont exist user', function () {
+      expect(res1.status).toBeCalledWith(500);
+      expect(res1.json).toBeCalledWith({
+        error: 'Cannot find user with that id'
+      });
+    });
+  
+    it('User deleted correctly', function () {
+      expect(res4.status).toBeCalledWith(200);
+      expect(res4.json).toBeCalledWith({
+        message: 'User deleted',
+        username: userUsername
+      });
+    });
+  
+  });
+
+  describe('getUserForUsername', function () {
+    const expressRequest: Request = {} as Request;
+
+    const req: Request = expressRequest;
+    req.params = { id: 'test-username' };
+    const res = {} as unknown as Response;
+    res.json = jest.fn();
+    res.status = jest.fn(() => res);
+    res.setHeader = jest.fn();
+    const badReq: Request = JSON.parse(JSON.stringify(expressRequest));
+    badReq.params = { id: 'non-existing-username' };
+    const badRes = {} as unknown as Response;
+    badRes.json = jest.fn();
+    badRes.status = jest.fn(() => badRes);
+    badRes.setHeader = jest.fn();
+
+    beforeEach(async function () {
+      await UserController.getUserForUsername(req, res);
+      await UserController.getUserForUsername(badReq, badRes);
+    });
+
+    it('returns the info user when it does exists', function () {
+      expect(res.status).toBeCalledWith(200);
+      expect(res.json).toBeCalledWith({
+        message: 'Usuario encontrado',
+        user: expect.objectContaining({
+          email: 'email1@example.com',
+          password: 'test-password1',
+          username: 'test-username',
+          name: 'test-name1',
+          profilePicture: 'test-imageurl1',
+          phoneNumber: '111111111',
+          usertype: 'usuario',
+          followers: [],
+          followeds: [],
+          reviews: [],
+          eventSub: [],
+        }),
+      });
+    });
+
+    it('returns 404 when username does not exists', function () {
+      expect(badRes.status).toBeCalledWith(404);
+      expect(badRes.json).toBeCalledWith({
+        message: 'Usuario no encontrado',
+      });
     });
   });
-});
 
-describe('deleteUser', function () {
-  const req1: Request = expressRequest;
-  req1.params = {id: '0'};
+  describe('add follower user', function () {
+    const expressRequest: Request = {} as Request;
+    const reqUser: Request = JSON.parse(JSON.stringify(expressRequest));
+    reqUser.body = {
+      //usaurio añadido en la lista
+      email: 'email@example.com',
+      password: 'test-password',
+      username: 'test-username-follower',
+      name: 'test-name',
+      profilePicture: 'test-imageurl',
+      phoneNumber: '000000000',
+      usertype: 'usuario',
+    };
+    const resUser = {} as unknown as Response;
+    resUser.json = jest.fn();
+    resUser.status = jest.fn(() => resUser);
+    resUser.setHeader = jest.fn();
 
-  const res1 = {} as unknown as Response;
-  res1.json = jest.fn();
-  res1.status = jest.fn(() => res1);
-  res1.setHeader = jest.fn();
-
-  // Esta parte depende del funcionamiento de "createUser"
-  const userUsername = 'test-username';
-  const req2: Request = expressRequest;
-  req2.body = {
-    email: 'email@example.com',
-    password: 'test-password',
-    username: userUsername,
-    name: 'test-name',
-    profilePicture: 'test-imageurl',
-    phoneNumber: '000000000',
-    usertype: 'usuario',
-  };
-
-  const res2 = {} as unknown as Response;
-  res2.json = jest.fn();
-  res2.status = jest.fn(() => res2);
-  res2.setHeader = jest.fn();
-
-  const req3: Request = expressRequest;
-  const res3 = {} as unknown as Response;
-  res3.json = jest.fn();
-  res3.status = jest.fn(() => res3);
-  res3.setHeader = jest.fn();
-
-  const req4: Request = expressRequest;
-  const res4 = {} as unknown as Response;
-  res4.json = jest.fn();
-  res4.status = jest.fn(() => res4);
-  res4.setHeader = jest.fn();
-
-
-
-
-  beforeAll(async function () {
-    // Prerequisito primer test
-    await UserController.deleteUser(req1, res1);
-
-    // Prerequisito segundo test
-    // Creamos el usuario que posteriormente será eliminado
-    await UserController.createUser(req2, res2);
-
-    // Buscamos al usuario que será eliminado
-    await UserController.getAllUsers(req3, res3);
-    const obj = (res3.json as jest.Mock).mock.calls[(res3.json as jest.Mock).mock.calls.length - 1][0];
-    const userId: string = obj.users[0]._id;
-    //console.log('ID: ' + userId);
-
-    // Eliminamos el usuario que acabamos de crear
-    req4.params = {id: userId};
-    await UserController.deleteUser(req4, res4);
-
-  });
-
-  it('Dont exist user', function () {
-    expect(res1.status).toBeCalledWith(500);
-    expect(res1.json).toBeCalledWith({
-      error: 'Cannot find user with that id'
-    });
-  });
-
-  it('User deleted correctly', function () {
-    expect(res4.status).toBeCalledWith(200);
-    expect(res4.json).toBeCalledWith({
-      message: 'User deleted',
-      username: userUsername
-    });
-  });
-
-});
-
-
-describe('getUserForUsername', function () {
-  const req: Request = expressRequest;
-  const res = {} as unknown as Response;
-  res.json = jest.fn();
-  res.status = jest.fn(() => res);
-  res.setHeader = jest.fn();
-
-  beforeEach(async function () {
-    await UserController.getUserForUsername(req, res);
-  });
-
-  it('returns 404 when username does not exists', function () {
-    expect(res.status).toBeCalledWith(404);
-    expect(res.json).toBeCalledWith({
-      message: 'Usuario no encontrado'
-    });
-  });
-});
-
-
-
-describe('add follower user', function () { 
-  const expressRequest: Request = {} as Request;
-  const reqUser: Request = JSON.parse(JSON.stringify(expressRequest));
-  reqUser.body = { //usaurio añadido en la lista
-    email: 'email@example.com',
-    password: 'test-password',
-    username: 'test-username-follower',
-    name: 'test-name',
-    profilePicture: 'test-imageurl',
-    phoneNumber: '000000000',
-    usertype: 'usuario',
-  };
-  const resUser = {} as unknown as Response;
-  resUser.json = jest.fn();
-  resUser.status = jest.fn(() => resUser);
-  resUser.setHeader = jest.fn();
-
-  const reqAddFoll: Request = JSON.parse(JSON.stringify(expressRequest));
+    const reqAddFoll: Request = JSON.parse(JSON.stringify(expressRequest));
     reqAddFoll.body = {
       username: 'test-username', //usuaio al cual se le añade un nuevo follower
       follower: 'test-username-follower', //nuevo segidor añadido a ls lista
@@ -291,21 +320,106 @@ describe('add follower user', function () {
     resAddFoll.json = jest.fn();
     resAddFoll.status = jest.fn(() => resAddFoll);
     resAddFoll.setHeader = jest.fn();
-  
-  
-  beforeEach(async function () {
-    await UserController.createUser(reqUser, resUser);
-    await UserController.addFollower(reqAddFoll, resAddFoll);
+
+    beforeEach(async function () {
+      await UserController.createUser(reqUser, resUser);
+      await UserController.addFollower(reqAddFoll, resAddFoll);
+    });
+
+    it('returns the followers', function () {
+      expect(resAddFoll.status).toBeCalledWith(200);
+      expect(resAddFoll.json).toBeCalledWith(
+        expect.objectContaining({
+          message: 'Follower i followed añadido correctamente',
+        }),
+      );
+    });
   });
 
-  it('returns the followers', function () {
-    expect(resAddFoll.status).toBeCalledWith(200);
-    expect(resAddFoll.json).toBeCalledWith(expect.objectContaining({
-      message: 'Follower i followed añadido correctamente',
-    }));
-  }); 
+  describe('Unfollow user', function () {
+    // Crear usuario 1 que sigue a usuario 2
+    const expressRequest: Request = {} as Request;
+    const reqUser: Request = JSON.parse(JSON.stringify(expressRequest));
+    reqUser.body = {
+      //usaurio añadido en la lista
+      name: 'User1',
+      username: 'user1',
+      email: 'user1@example.com',
+      password: 'password1',
+      phoneNumber: '123456789',
+      profilePicture: 'https://example.com/user1.jpg',
+      usertype: 'usuario',
+    };
+    const expressRequest2: Request = {} as Request;
+    const reqUser2: Request = JSON.parse(JSON.stringify(expressRequest2));
+    reqUser2.body = {
+      //usaurio añadido en la lista
+      name: 'User2',
+      username: 'user2',
+      email: 'user2@example.com',
+      password: 'password2',
+      phoneNumber: '987654321',
+      profilePicture: 'https://example.com/user2.jpg',
+      usertype: 'usuario',
+    };
+
+    const resUser2 = {} as unknown as Response;
+    resUser2.json = jest.fn();
+    resUser2.status = jest.fn(() => resUser2);
+    resUser2.setHeader = jest.fn();
+
+    const resUser = {} as unknown as Response;
+    resUser.json = jest.fn();
+    resUser.status = jest.fn(() => resUser);
+    resUser.setHeader = jest.fn();
+
+    const reqAddFoll: Request = JSON.parse(JSON.stringify(expressRequest));
+    reqAddFoll.body = {
+      username: 'user1', //usuaio al cual se le añade un nuevo follower
+      follower: 'user2', //nuevo segidor añadido a ls lista
+    };
+    const resAddFoll = {} as unknown as Response;
+    resAddFoll.json = jest.fn();
+    resAddFoll.status = jest.fn(() => resAddFoll);
+    resAddFoll.setHeader = jest.fn();
+
+    beforeEach(async function () {
+      await UserController.createUser(reqUser, resUser);
+      await UserController.createUser(reqUser2, resUser2);
+      await UserController.addFollower(reqAddFoll, resAddFoll);
+    });
+
+    it('should unfollow user2', async function () {
+      // Llamar a Unfollow con los parámetros correspondientes
+      const req: Request = {
+        body: { username: 'user2', follower: 'user1' },
+      } as Request;
+      const res: Response = {} as Response;
+      res.json = jest.fn();
+      res.status = jest.fn(() => res);
+
+      await UserController.Unfollow(req, res);
+
+      // Comprobar que user1 ya no sigue a user2
+      const updatedUser1 = await UserRepository.findByUsername('user1');
+      expect(updatedUser1.followeds).toHaveLength(0);
+
+      // Comprobar que user2 ya no es seguido por user1
+      const updatedUser2 = await UserRepository.findByUsername('user2');
+      if (updatedUser2) {
+        expect(updatedUser2.followers).toHaveLength(0);
+      } else {
+        throw new Error('User not found');
+      }
+
+      // Comprobar la respuesta de la función
+      expect(res.status).toHaveBeenCalledWith(200);
+      expect(res.json).toHaveBeenCalledWith(
+        expect.objectContaining({
+          message: 'Follower y followed eliminados correctamente',
+          followers: [],
+        }),
+      );
+    });
+  });
 });
-
-
-});
-

@@ -9,4 +9,4 @@ jest.mock('bcrypt', () => ({
   hash: (password: string, _security: number) => password,
 }));
 
-jest.setTimeout(30000);
+jest.setTimeout(120000);

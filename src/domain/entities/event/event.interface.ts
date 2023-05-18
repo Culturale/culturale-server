@@ -1,6 +1,7 @@
-import type { IChat } from '~/domain/entities/chat/chat.interface';
 import type { MongoId } from '~/types/types';
 
+import type { IChat } from '../chat';
+import type { IReview } from '../review';
 import type { IUser } from '../user';
 
 export interface IEvent {
@@ -11,10 +12,18 @@ export interface IEvent {
   dataIni: Date;
   dataFi: Date;
   horari?: string;
-  adress?: string;
-  url: string;
+  adress: string;
+  lat?: number;
+  long?: number;
+  price?: string;
+  url?: string;
+  photo?: string;
   chat: IChat;
-  participants: IUser[];
+  valoracions?: IReview[];
 
-  updateParticipant: (newParticipant: IUser) => void;
+  updateValoracions: (newValoracio: IReview) => void;
+  participants?: IUser[];
+
+  addParticipant: (newParticipant: IUser) => void;
+  deleteParticipant: (participant: IUser) => void;
 }

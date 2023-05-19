@@ -7,6 +7,7 @@ import { routes } from '~/infrastructure';
 dotenv.config();
 
 const app = express();
+const cors = require('cors');
 
 //middleware
 app.use(
@@ -15,7 +16,12 @@ app.use(
   }),
 );
 app.use(express.json());
+app.use(cors({
+  origin: '*'
+}));
 app.use('/', routes);
+
+
 
 const { DB_USER, DB_PASSWORD, DB_HOST, DB_PORT, DB_NAME } = process.env;
 

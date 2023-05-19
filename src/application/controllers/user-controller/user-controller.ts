@@ -149,7 +149,6 @@ export class UserController {
       await UserRepository.deleteUser(id);
       res.status(200);
     } catch (e) {
-      res.status(500);
       res.json({
         error: e,
       });

@@ -3,7 +3,7 @@ import { validate } from 'class-validator';
 import type { NextFunction, Request, Response } from 'express';
 
 
-const usertypes = ['usuario', 'empresa'] as const;
+const usertypes = ['usuario', 'empresa', 'ADMIN'] as const;
 
 export class CreateUserDto {
     @IsString()

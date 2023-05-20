@@ -7,7 +7,7 @@ import type { IUser } from '../user';
 import type { IEvent } from './event.interface';
 
 export type EventProps = {
-  id?: MongoId;
+  _id?: MongoId;
   codi: number;
   denominacio: string;
   descripcio: string;
@@ -26,7 +26,7 @@ export type EventProps = {
 };
 
 export class Event implements IEvent {
-  public id: MongoId;
+  public _id: MongoId;
   public codi: number;
   public denominacio: string;
   public descripcio: string;
@@ -45,7 +45,7 @@ export class Event implements IEvent {
 
   constructor(props: EventProps) {
     const {
-      id,
+      _id,
       codi,
       denominacio,
       descripcio,
@@ -62,7 +62,7 @@ export class Event implements IEvent {
       chat,
       participants,
     } = props;
-    this.id = id;
+    this._id = _id;
     this.codi = codi;
     this.denominacio = denominacio;
     this.descripcio = descripcio;
@@ -79,6 +79,7 @@ export class Event implements IEvent {
     this.participants = participants || [];
     this.valoracions = valoracions || [];
   }
+
   public addParticipant(newParticipant: IUser): void {
     const newParticipants = [...this.participants, newParticipant];
     this.participants = newParticipants;
@@ -100,5 +101,9 @@ export class Event implements IEvent {
   public updateValoracions(newValoracio: IReview): void {
     const newValoracions = [...this.valoracions, newValoracio];
     this.valoracions = newValoracions;
+  }
+
+  public get id(): string {
+    return this._id.toString();
   }
 }

@@ -109,7 +109,6 @@ export class UserController {
     res: Response,
   ): Promise<void> {
     try {
-      console.log('change password use case');
       const items: ChangePasswordDto = req.body;
       const current_password: string = items.current_password;
       const new_password: string = items.new_password;

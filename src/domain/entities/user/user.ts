@@ -6,7 +6,7 @@ import type { IReview } from '../review';
 import type { IUser } from './user.interface';
 
 export type UserProps = {
-  id?: MongoId;
+  _id?: MongoId;
   username: string;
   name: string;
   password: string;
@@ -22,7 +22,7 @@ export type UserProps = {
 };
 
 export class User implements IUser {
-  public id: MongoId;
+  public _id: MongoId;
   public username: string;
   public name: string;
   public password: string;
@@ -38,7 +38,7 @@ export class User implements IUser {
 
   constructor(props: UserProps) {
     const {
-      id,
+      _id,
       username,
       name,
       password,
@@ -52,7 +52,7 @@ export class User implements IUser {
       reviews,
       report,
     } = props;
-    this.id = id;
+    this._id = _id;
     this.username = username;
     this.name = name;
     this.password = password;
@@ -67,7 +67,9 @@ export class User implements IUser {
     this.report = report;
   }
 
-  
+  public get id(): string {
+    return this._id.toString();
+  }
 
   public updateEventSub(newEvent: IEvent): void {
     if (!this.eventSub.find((eventSub) => eventSub.id === newEvent.id)) {
@@ -87,6 +89,7 @@ export class User implements IUser {
     const reviews = [...this.reviews, newReview];
     this.reviews = reviews;
   }
+
   public updateFollowers(newFollower: IUser): void {
     if (!this.followers.find((follower) => follower.id === newFollower.id)) {
       const newFollowers = [...this.followers, newFollower];

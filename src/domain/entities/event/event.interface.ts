@@ -5,7 +5,7 @@ import type { IReview } from '../review';
 import type { IUser } from '../user';
 
 export interface IEvent {
-  id: MongoId;
+  _id: MongoId;
   codi: number;
   denominacio: string;
   descripcio: string;
@@ -20,10 +20,11 @@ export interface IEvent {
   photo?: string;
   chat: IChat;
   valoracions?: IReview[];
-
-  updateValoracions: (newValoracio: IReview) => void;
   participants?: IUser[];
 
+  updateValoracions: (newValoracio: IReview) => void;
   addParticipant: (newParticipant: IUser) => void;
   deleteParticipant: (participant: IUser) => void;
+
+  readonly id: string;
 }

@@ -29,7 +29,7 @@ export class EventController {
     try {
       const eventDTO: CreateEventDto = req.body;
       const chat: IChat = await ChatRepository.createEmptyChat();
-      const event = await EventRepository.addEvent(eventDTO, chat.id);
+      const event = await EventRepository.addEvent(eventDTO, chat._id);
       res.status(200);
       res.json({
         message: 'event created',
@@ -43,7 +43,10 @@ export class EventController {
     }
   }
 
-  public static async getAllEvents(req: Request, res: Response): Promise<void> {
+  public static async getAllEvents(
+    _req: Request,
+    res: Response,
+  ): Promise<void> {
     try {
       const events: IEvent[] = await EventRepository.getAllEvents();
       res.status(200);

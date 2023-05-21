@@ -6,6 +6,21 @@ import type { IUser } from '../user';
 
 import type { IEvent } from './event.interface';
 
+export type Categoria =
+  | 'agenda:categories/activitats-virtuals'
+  | 'agenda:categories/exposicions'
+  | 'agenda:categories/concerts'
+  | 'agenda:categories/teatre'
+  | 'agenda:categories/festivals-i-mostres'
+  | 'agenda:categories/rutes-i-visites'
+  | 'agenda:categories/infantil'
+  | 'agenda:categories/festes'
+  | 'agenda:categories/conferencies'
+  | 'agenda:categories/fires-i-mercats'
+  | 'agenda:categories/dansa'
+  | 'agenda:categories/cicles';
+
+
 export type EventProps = {
   _id?: MongoId;
   codi: number;
@@ -23,6 +38,7 @@ export type EventProps = {
   chat?: IChat;
   participants?: IUser[];
   valoracions?: IReview[];
+  categoria: Categoria;
 };
 
 export class Event implements IEvent {
@@ -42,6 +58,7 @@ export class Event implements IEvent {
   public chat: IChat;
   public participants: IUser[];
   public valoracions: IReview[];
+  public categoria: Categoria;
 
   constructor(props: EventProps) {
     const {
@@ -61,6 +78,7 @@ export class Event implements IEvent {
       photo,
       chat,
       participants,
+      categoria,
     } = props;
     this._id = _id;
     this.codi = codi;
@@ -78,6 +96,7 @@ export class Event implements IEvent {
     this.chat = chat;
     this.participants = participants || [];
     this.valoracions = valoracions || [];
+    this.categoria = categoria;
   }
 
   public addParticipant(newParticipant: IUser): void {

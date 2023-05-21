@@ -83,6 +83,7 @@ export class EventController {
         url: editEventDto.url || event.url,
         photo: editEventDto.photo || event.photo,
         chat: event.chat,
+        categoria: editEventDto.categoria || event.categoria,
       };
       const newEvent = new Event(newEventProps);
       await EventRepository.editarEvent(newEvent);

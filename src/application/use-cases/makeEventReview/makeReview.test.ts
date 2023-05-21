@@ -32,6 +32,7 @@ describe('Make Review use case', function () {
         horari: '2h',
         adress: 'Passeig de Gràcia',
         url: 'https://test-url.com',
+        categoria: 'agenda:categories/festes',
     };
     const res = {} as unknown as Response;
     res.json = jest.fn();
@@ -55,6 +56,7 @@ describe('Make Review use case', function () {
           horari: '2h',
           adress: 'Passeig de Gràcia',
           url: 'https://test-url.com',
+          categoria: 'agenda:categories/festes',
         }),
       });
     });
@@ -108,6 +110,7 @@ describe('Make Review use case', function () {
         horari: '2h',
         adress: 'Passeig de Gràcia',
         url: 'https://test-url.com',
+        categoria: 'agenda:categories/festes',
       };
       // Crear el evento y guardar su id en la variable eventId
       eventId = await createTestEvent(reqEvent);
@@ -175,6 +178,7 @@ describe('Make Review use case', function () {
         horari: '2h',
         adress: 'Passeig de Gràcia',
         url: 'https://test-url.com',
+        categoria: 'agenda:categories/festes',
       };
       // Crear el evento y guardar su id en la variable eventId
       eventId = await createTestEvent(req);

@@ -4,11 +4,15 @@ import type { MongoId } from '~/types/types';
 import type { IChat } from './chat.interface';
 
 export class Chat implements IChat {
-  public id: MongoId;
+  public _id: MongoId;
   public messages?: IMessage[];
 
-  constructor(id: MongoId, messages: IMessage[]) {
-    this.id = id;
+  constructor(_id: MongoId, messages: IMessage[]) {
+    this._id = _id;
     this.messages = messages;
+  }
+
+  public get id(): string {
+    return this._id.toString();
   }
 }

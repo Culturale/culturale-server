@@ -8,10 +8,14 @@ export class Message implements IMessage {
   public userId: string;
   public date: Date;
 
-  constructor(id: MongoId, content: string, userId: string, date: Date) {
-    this._id = id;
+  constructor(_id: MongoId, content: string, userId: string, date: Date) {
+    this._id = _id;
     this.content = content;
     this.userId = userId;
     this.date = date;
+  }
+
+  public get id(): string {
+    return this._id.toString();
   }
 }

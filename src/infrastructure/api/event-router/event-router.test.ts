@@ -32,6 +32,7 @@ describe('Event Routes', function () {
           price: '12 €',
           url: 'https://test-url.com',
           photo: 'test-photo.jpg',
+          categoria: 'agenda:categories/festes',
         });
       expect(res.statusCode).toBe(200);
     });
@@ -61,6 +62,7 @@ describe('Event Routes', function () {
           price: '12 €',
           url: 'https://test-url.com',
           photo: 'test-photo.jpg',
+          categoria: 'agenda:categories/festes',
         });
     });
 
@@ -102,6 +104,7 @@ describe('Event Routes', function () {
           price: '12 €',
           url: 'https://test-url.com',
           photo: 'test-photo.jpg',
+          categoria: 'agenda:categories/festes',
         });
       const eventId = await createRes.body.event._id;
       const res = await request(app)
@@ -145,6 +148,7 @@ describe('Event Routes', function () {
           price: '12 €',
           url: 'https://test-url.com',
           photo: 'test-photo.jpg',
+          categoria: 'agenda:categories/festes',
         });
       const eventId = await createRes.body.event._id;
       const res = await request(app).post('/events/edit').send({
@@ -172,6 +176,7 @@ describe('Event Routes', function () {
           price: '12 €',
           url: 'https://test-url.com',
           photo: 'test-photo.jpg',
+          categoria: 'agenda:categories/festes',
         });
 
       const res = await request(app).post('/events/edit').send({
@@ -200,6 +205,7 @@ describe('Event Routes', function () {
           price: '12 €',
           url: 'https://test-url.com',
           photo: 'test-photo.jpg',
+          categoria: 'agenda:categories/festes',
         });
       const eventId = await createRes.body.event._id;
       await request(app)
@@ -234,6 +240,7 @@ describe('Event Routes', function () {
           price: '12 €',
           url: 'https://test-url.com',
           photo: 'test-photo.jpg',
+          categoria: 'agenda:categories/festes',
         });
       eventId = await createRes.body.event._id;
       await request(app).post('/users/create').send({
@@ -338,6 +345,7 @@ describe('Event Routes', function () {
           price: '12 €',
           url: 'https://test-url.com',
           photo: 'test-photo.jpg',
+          categoria: 'agenda:categories/festes',
         });
       eventId = await createRes.body.event._id;
       await request(app).post('/users/create').send({

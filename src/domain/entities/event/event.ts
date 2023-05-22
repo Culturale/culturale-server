@@ -6,8 +6,23 @@ import type { IUser } from '../user';
 
 import type { IEvent } from './event.interface';
 
+export type Categoria =
+  | 'agenda:categories/activitats-virtuals'
+  | 'agenda:categories/exposicions'
+  | 'agenda:categories/concerts'
+  | 'agenda:categories/teatre'
+  | 'agenda:categories/festivals-i-mostres'
+  | 'agenda:categories/rutes-i-visites'
+  | 'agenda:categories/infantil'
+  | 'agenda:categories/festes'
+  | 'agenda:categories/conferencies'
+  | 'agenda:categories/fires-i-mercats'
+  | 'agenda:categories/dansa'
+  | 'agenda:categories/cicles';
+
+
 export type EventProps = {
-  id?: MongoId;
+  _id?: MongoId;
   codi: number;
   denominacio: string;
   descripcio: string;
@@ -24,10 +39,11 @@ export type EventProps = {
   participants?: IUser[];
   assistents?: IUser[];
   valoracions?: IReview[];
+  categoria: Categoria;
 };
 
 export class Event implements IEvent {
-  public id: MongoId;
+  public _id: MongoId;
   public codi: number;
   public denominacio: string;
   public descripcio: string;
@@ -44,10 +60,11 @@ export class Event implements IEvent {
   public participants: IUser[];
   public assistents: IUser[];
   public valoracions: IReview[];
+  public categoria: Categoria;
 
   constructor(props: EventProps) {
     const {
-      id,
+      _id,
       codi,
       denominacio,
       descripcio,
@@ -64,8 +81,9 @@ export class Event implements IEvent {
       chat,
       participants,
       assistents,
+      categoria,
     } = props;
-    this.id = id;
+    this._id = _id;
     this.codi = codi;
     this.denominacio = denominacio;
     this.descripcio = descripcio;
@@ -82,7 +100,9 @@ export class Event implements IEvent {
     this.participants = participants || [];
     this.assistents = assistents || [];
     this.valoracions = valoracions || [];
+    this.categoria = categoria;
   }
+
   public addParticipant(newParticipant: IUser): void {
     const newParticipants = [...this.participants, newParticipant];
     this.participants = newParticipants;
@@ -114,5 +134,9 @@ export class Event implements IEvent {
   public updateValoracions(newValoracio: IReview): void {
     const newValoracions = [...this.valoracions, newValoracio];
     this.valoracions = newValoracions;
+  }
+
+  public get id(): string {
+    return this._id.toString();
   }
 }

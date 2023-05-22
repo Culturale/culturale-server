@@ -1,6 +1,7 @@
 import express from 'express';
 
 import { EventController } from '~/application';
+import { checkin } from '~/application/use-cases/check-in';
 import { makeReview } from '~/application/use-cases/makeEventReview';
 import { createEventDto, editEventDTO, addParticipantDto, addAssistentDto} from '~/infrastructure/dtos';
 import { makeReviewDTO } from '~/infrastructure/dtos/make-review.dto';
@@ -13,7 +14,7 @@ eventRouter.post('/events/newMessage', EventController.addMessageEvent);
 
 eventRouter.post('/events/newParticipant', addParticipantDto, EventController.addParticipant);
 
-eventRouter.post('/events/newAssistent', addAssistentDto, EventController.addAssistent);
+eventRouter.post('/events/newAssistent', addAssistentDto, checkin);
 
 eventRouter.delete('/events/deleteParticipant', EventController.deleteParticipant);
 

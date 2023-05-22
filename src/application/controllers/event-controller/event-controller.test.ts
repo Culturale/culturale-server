@@ -140,7 +140,7 @@ describe('Event Controller', function () {
     let valId: string;
   
     res.json = jest.fn().mockImplementation((data: any) => {
-      valId = data.val.id;
+      valId = data.val._id;
     });
     res.status = jest.fn().mockReturnValue(res);
     res.setHeader = jest.fn();

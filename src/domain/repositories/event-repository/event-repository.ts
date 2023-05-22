@@ -52,7 +52,7 @@ export class EventRepository {
 
   public static async find(filter: EventFilters): Promise<IEvent[]> {
     const eventDocument = await EventModel.find(filter)
-      .populate({
+      .populate({ 
         path: 'participants',
         model: 'User',
       })

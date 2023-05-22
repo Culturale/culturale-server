@@ -175,7 +175,7 @@ describe('User Controller', function () {
     res1.setHeader = jest.fn();
   
     // Esta parte depende del funcionamiento de "createUser"
-    const userUsername = 'test-username';
+    const userUsername = 'test-eliminarUsuari';
     const req2: Request = expressRequest;
     req2.body = {
       email: 'email@example.com',
@@ -193,6 +193,7 @@ describe('User Controller', function () {
     res2.setHeader = jest.fn();
   
     const req3: Request = expressRequest;
+    req3.params = {id: userUsername};
     const res3 = {} as unknown as Response;
     res3.json = jest.fn();
     res3.status = jest.fn(() => res3);
@@ -216,9 +217,9 @@ describe('User Controller', function () {
       await UserController.createUser(req2, res2);
   
       // Buscamos al usuario que será eliminado
-      await UserController.getAllUsers(req3, res3);
+      await UserController.getUserForUsername(req3, res3);
       const obj = (res3.json as jest.Mock).mock.calls[(res3.json as jest.Mock).mock.calls.length - 1][0];
-      const userId: string = obj.users[0]._id;
+      const userId: string = obj.user.id;
       //console.log('ID: ' + userId);
   
       // Eliminamos el usuario que acabamos de crear

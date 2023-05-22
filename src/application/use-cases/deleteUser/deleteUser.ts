@@ -9,7 +9,7 @@ export async function deleteUser(req: Request, res: Response) {
         await UserController.deleteUser(req, res);
 
         res.status(200).json({
-            message: 'User deleted successfully',
+            message: 'User delete successfully',
         });
     } catch (e) {
         res.status(500).json({

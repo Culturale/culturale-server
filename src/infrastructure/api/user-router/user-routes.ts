@@ -12,20 +12,20 @@ userRouter.post('/users/create', createUserDto, UserController.createUser);
 
 userRouter.get('/users', authMiddleware, UserController.getAllUsers);
 
-userRouter.get('/users/reported', authMiddleware, UserController.getReportedUsers);
+userRouter.get('/users/reported', UserController.getReportedUsers);
 
-userRouter.put('/users/reportUser', authMiddleware, UserController.ReportUser);
+userRouter.put('/users/reportUser', UserController.ReportUser);
 
 userRouter.post('/users/login', loginDto, logIn);
 
 userRouter.post('/users/edit', editUserDTO, UserController.editUser); //falta test ruta
 
-userRouter.get('/users/username/:id',  UserController.getUserForUsername);
+userRouter.get('/users/username/:id', UserController.getUserForUsername);
 
 userRouter.post('/users/newFollower', followDto, follow); //falta test ruta
 
 userRouter.delete('/users/deleteFollower', followDto, unfollow); //falta test ruta
 
-userRouter.patch('/users/:id/changePassword', authMiddleware, changePasswordDto, UserController.changePassword);
+userRouter.patch('/users/:id/changePassword', changePasswordDto, UserController.changePassword);
 
-userRouter.delete('/users/deleteUser', authMiddleware, deleteUser); 
+userRouter.delete('/users/deleteUser', deleteUser); 

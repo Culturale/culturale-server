@@ -20,8 +20,8 @@ env:
   PROJECT_ID: ${{ secrets.GKE_PROJECT }}
   GKE_CLUSTER: culturale-cluster
   GKE_ZONE: europe-southwest1-a
-  DEPLOYMENT_NAME: culturale-server-v${{env.RELEASE_VERSION}}
-  IMAGE: culturale/culturale-api:${{env.RELEASE_VERSION}}
+  DEPLOYMENT_NAME: culturale-server
+  IMAGE: culturale/culturale-api
 
 jobs:
   setup-build-publish-deploy:

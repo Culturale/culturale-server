@@ -271,12 +271,12 @@ describe('User Controller', function () {
       expect(res.json).toBeCalledWith({
         message: 'Usuario encontrado',
         user: expect.objectContaining({
-          email: 'email1@example.com',
-          password: 'test-password1',
+          email: 'email@example.com',
+          password: 'test-password',
           username: 'test-username',
-          name: 'test-name1',
-          profilePicture: 'test-imageurl1',
-          phoneNumber: '111111111',
+          name: 'test-name',
+          profilePicture: 'test-imageurl',
+          phoneNumber: '000000000',
           usertype: 'usuario',
           followers: [],
           followeds: [],

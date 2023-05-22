@@ -4,7 +4,7 @@ import type { IEvent } from '../event';
 import type { IReview } from '../review';
 
 export interface IUser {
-  id: MongoId;
+  _id: MongoId;
   username: string;
   name: string;
   password: string;
@@ -24,4 +24,6 @@ export interface IUser {
   updateFolloweds: (newFollowed: IUser) => void;
   deleteFollowers: (follower: IUser) => void;
   deleteFolloweds: (followed: IUser) => void;
+
+  readonly id: string;
 }

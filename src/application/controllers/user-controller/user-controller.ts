@@ -122,30 +122,40 @@ export class UserController {
     }
   }
 
-  public static async changePassword(req: Request, res: Response): Promise<void> {
+  public static async changePassword(
+    req: Request,
+    res: Response,
+  ): Promise<void> {
     try {
       const items: ChangePasswordDto = req.body;
       const current_password: string = items.current_password;
       const new_password: string = items.new_password;
       const user_id: string = req.params.id;
+      const user = await UserRepository.findById(user_id);
 
-      const user: IUser = await UserRepository.findById(user_id);
-      
       if (!user) {
         // Caso usuario no existe:
-        res.status(404).json({ message: 'El usuario con ID: \'' +user_id + '\' no existe'});
-      } else if (!await bcrypt.compare(current_password, user.password)) {
+        res
+          .status(404)
+          .json({ message: "El usuario con ID: '" + user_id + "' no existe" });
+      } else if (!(await bcrypt.compare(current_password, user.password))) {
         // Caso la contrasena actual pasada por parametro no coincide con la contrasena del usuario:
-        res.status(400).json({ message: 'Contraseña actual no coincide con la del usuario' });
+        res.status(400).json({
+          message: 'Contraseña actual no coincide con la del usuario',
+        });
       } else if (current_password == new_password) {
         // Caso la contrasena actual y la nueva son la misma:
-        res.status(400).json({ message: 'La nueva contraseña es igual a la actual' });
+        res
+          .status(400)
+          .json({ message: 'La nueva contraseña es igual a la actual' });
       } else {
         // Caso existe usuario, la contrasena actual coincide con la del usuario y la contrasena nueva es diferente a la actual:
-        user.password = await bcrypt.hash(new_password, 10) as string;
+        user.password = (await bcrypt.hash(new_password, 10)) as string;
         await UserRepository.editarUsuari(user);
-        
-        res.status(200).json({ message: 'Contraseña modificada correctamente' });
+
+        res
+          .status(200)
+          .json({ message: 'Contraseña modificada correctamente' });
       }
     } catch (e) {
       res.status(500);

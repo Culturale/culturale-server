@@ -6,6 +6,7 @@ import type { IUser } from '../user';
 
 import type { IEvent } from './event.interface';
 
+
 export type Categoria =
   | 'agenda:categories/activitats-virtuals'
   | 'agenda:categories/exposicions'
@@ -39,6 +40,7 @@ export type EventProps = {
   participants?: IUser[];
   valoracions?: IReview[];
   categoria: Categoria;
+  qrCode?: string;
 };
 
 export class Event implements IEvent {
@@ -59,6 +61,7 @@ export class Event implements IEvent {
   public participants: IUser[];
   public valoracions: IReview[];
   public categoria: Categoria;
+  public qrCode: string;
 
   constructor(props: EventProps) {
     const {
@@ -79,6 +82,7 @@ export class Event implements IEvent {
       chat,
       participants,
       categoria,
+      qrCode,
     } = props;
     this._id = _id;
     this.codi = codi;
@@ -97,6 +101,7 @@ export class Event implements IEvent {
     this.participants = participants || [];
     this.valoracions = valoracions || [];
     this.categoria = categoria;
+    this.qrCode = qrCode;
   }
 
   public addParticipant(newParticipant: IUser): void {
@@ -110,6 +115,10 @@ export class Event implements IEvent {
     );
 
     this.participants = updatedParticipants;
+  }
+
+  public addQrCode(newQrCode: string): void {
+    this.qrCode = newQrCode;
   }
 
   public get participantsUsernames(): string[] {

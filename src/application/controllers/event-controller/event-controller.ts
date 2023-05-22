@@ -20,6 +20,8 @@ import type {
   EditEventDTO,
 } from '~/infrastructure';
 
+import qrcode from 'qrcode';
+
 export class EventController {
   public static async createEvent(req: Request, res: Response): Promise<void> {
     try {
@@ -351,4 +353,25 @@ export class EventController {
       });
     }
   }
+
+  public static async shareEvent(req: Request, res: Response): Promise<void> {
+    try {
+      const id = req.params.id;
+      const event: IEvent = await EventRepository.findEvent(id);
+
+      const qrCodeUrl = await qrcode.toDataURL(id);
+
+      const castedEvent = new Event(event as EventProps);
+      castedEvent.addQrCode(qrCodeUrl);
+
+      await EventRepository.editarEvent(castedEvent);
+
+      res.status(200).json({qrCodeUrl});
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Error al generar el código QR' });
+    }
+  }
+
 }

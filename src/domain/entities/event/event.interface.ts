@@ -36,6 +36,7 @@ export interface IEvent {
   valoracions?: IReview[];
   participants?: IUser[];
   categoria: CategoriaEnum;
+  qrCode?: string;
 
   updateValoracions: (newValoracio: IReview) => void;
   addParticipant: (newParticipant: IUser) => void;

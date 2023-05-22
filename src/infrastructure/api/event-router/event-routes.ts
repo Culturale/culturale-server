@@ -32,3 +32,5 @@ eventRouter.post('/events/edit', editEventDTO, EventController.editEvent );
 
 eventRouter.post('/events/addReview', makeReviewDTO, makeReview );
 eventRouter.post('/events/delete', EventController.deleteEvent );
+
+eventRouter.post('/events/:id/share', EventController.shareEvent);

@@ -2,8 +2,10 @@ import express from 'express';
 
 import { UserController } from '~/application/controllers';
 import { logIn, follow} from '~/application/use-cases';
+import { sync } from '~/application/use-cases/sync-contacts/sync';
 import { unfollow } from '~/application/use-cases/unfollow-user/unfollow';
-import { createUserDto, editUserDTO, loginDto, followDto, changePasswordDto} from '~/infrastructure/dtos';
+import { createUserDto, editUserDTO, loginDto, followDto, changePasswordDto, syncContactDto} from '~/infrastructure/dtos';
+
 import { authMiddleware } from '~/infrastructure/middlewares';
 
 export const userRouter = express.Router();
@@ -19,6 +21,8 @@ userRouter.post('/users/edit', editUserDTO, UserController.editUser); //falta te
 userRouter.get('/users/username/:id', UserController.getUserForUsername);
 
 userRouter.post('/users/newFollower', followDto, follow); //falta test ruta
+
+userRouter.post('/users/:id/syncContacts', syncContactDto, sync);
 
 userRouter.delete('/users/deleteFollower', followDto, unfollow); //falta test ruta
 

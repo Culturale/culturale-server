@@ -92,18 +92,35 @@ export class UserRepository {
     return null;
   }
 
+  public static async findByPhone(telf: string): Promise<IUser> {
+    try {
+
+      const userDoc = await UserModel.findOne({ phoneNumber: telf });
+      if (userDoc) {
+        const user: IUser = new User(userDoc);
+        console.log(user);
+        return user;
+      }
+    }catch(error) {
+      console.error(error);
+    }
+      return null;
+  }
+
   public static async editarUsuari(newUser: IUser): Promise<void> {
     const followers = newUser.followers.map((follower) => follower.id);
-    const followeds = newUser.followeds.map((followed) => followed.id);
+    const followeds = newUser.followeds.map((followed) =>  followed.id);
     const eventSub = newUser.eventSub.map((event) => event.id);
     const reviews = newUser.reviews.map((review) => review._id);
-
+    const contacts = newUser.contacts.map((contact) => contact._id);
+    
     await UserModel.findByIdAndUpdate(newUser.id, {
       ...newUser,
       followers,
       followeds,
       eventSub,
       reviews,
+      contacts,
     });
   }
 

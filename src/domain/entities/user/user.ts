@@ -18,6 +18,7 @@ export type UserProps = {
   followeds?: IUser[];
   eventSub?: IEvent[];
   reviews?: IReview[];
+  preferits?: IEvent[];
 };
 
 export class User implements IUser {
@@ -33,6 +34,7 @@ export class User implements IUser {
   public followeds: IUser[];
   public eventSub: IEvent[];
   public reviews: IReview[];
+  public preferits: IEvent[];
 
   constructor(props: UserProps) {
     const {
@@ -48,6 +50,7 @@ export class User implements IUser {
       followeds,
       eventSub,
       reviews,
+      preferits,
     } = props;
     this._id = _id;
     this.username = username;
@@ -61,6 +64,7 @@ export class User implements IUser {
     this.followeds = followeds || [];
     this.eventSub = eventSub || [];
     this.reviews = reviews || [];
+    this.preferits = preferits || [];
   }
 
   public get id(): string {
@@ -113,9 +117,17 @@ export class User implements IUser {
     );
     this.followeds = updatedFolloweds;
   }
+  public updateEventPref(newEvent: IEvent): void {
+    if (!this.preferits.find((preferits) => preferits.id !== newEvent.id)) {
+      const newEvents = [...this.preferits, newEvent];
+      this.preferits = newEvents;
+    }
+  }
 
   public get followersUsernames(): string[] {
     const ids = this.followers.map((follower) => follower.username);
     return ids;
   }
+
+  
 }

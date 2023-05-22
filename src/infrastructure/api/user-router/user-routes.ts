@@ -25,4 +25,6 @@ userRouter.delete('/users/deleteFollower', followDto, unfollow); //falta test ru
 
 userRouter.post('/users/addFavourite', addFavouriteDto, like); //falta test tot
 
+userRouter.delete('/users/deleteFavourite', UserController.deleteFavourite); //falta test tot
+
 userRouter.patch('/users/:id/changePassword', changePasswordDto, UserController.changePassword);

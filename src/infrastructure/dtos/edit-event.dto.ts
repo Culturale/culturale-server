@@ -104,6 +104,7 @@ export async function editEventDTO(
   DTO.url = req.body.url;
   DTO.photo = req.body.photo;
   DTO.categoria = req.body.categoria;
+  
 
   const errors = await validate(DTO);
   if (errors.length) {

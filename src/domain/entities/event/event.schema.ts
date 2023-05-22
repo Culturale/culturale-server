@@ -43,6 +43,7 @@ const EventSchema = new Schema({
   price: { required: false, type: String },
   photo: { required: false, type: String },
   categoria: { required: true, type: String, enum: Object.values(CategoriaEnum) },
+  qrCode: { required: false, type: String },
 });
 
 const EventModel = model<IEvent>('Event', EventSchema);

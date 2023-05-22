@@ -35,6 +35,7 @@
   },
   "dependencies": {
     "@types/bcrypt": "^5.0.0",
+    "@types/qrcode": "^1.5.0",
     "bcrypt": "^5.1.0",
     "class-validator": "^0.14.0",
     "dotenv": "^16.0.3",
@@ -43,6 +44,7 @@
     "mongodb": "^5.1.0",
     "mongodb-memory-server": "^8.12.1",
     "mongoose": "^7.0.1",
+    "qrcode": "^1.5.3",
     "supertest": "^6.3.3"
   }
 }

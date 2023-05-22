@@ -68,11 +68,13 @@ export class EventRepository {
       (participant) => participant.id,
     );
     const valoracions = newEvent.valoracions.map((valoracio) => valoracio._id);
+    const qrCode = newEvent.qrCode;
 
     await EventModel.findByIdAndUpdate(newEvent.id, {
       ...newEvent,
       participants,
       valoracions,
+      qrCode,
     });
   }
 

@@ -5,7 +5,6 @@ import {
   Max,
   IsNumber,
   Min,
-  IsOptional,
   IsIn,
 } from 'class-validator';
 import { validate } from 'class-validator';
@@ -37,29 +36,31 @@ export class CreateEventDto {
   dataFi: Date;
 
   @IsString()
+  @IsNotEmpty()
   horari: string;
 
   @IsString()
+  @IsNotEmpty()
   adress: string;
 
   @IsNumber()
-  @IsOptional()
+  @IsNotEmpty()
   lat: number;
 
   @IsNumber()
-  @IsOptional()
+  @IsNotEmpty()
   long: number;
 
   @IsString()
-  @IsOptional()
+  @IsNotEmpty()
   price: string;
 
   @IsString()
-  @IsOptional()
+  @IsNotEmpty()
   url: string;
 
   @IsString()
-  @IsOptional()
+  @IsNotEmpty()
   photo: string;
 
   @IsString()

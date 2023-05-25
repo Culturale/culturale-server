@@ -6,9 +6,12 @@ import {
   IsNumber,
   Min,
   IsOptional,
+  IsIn,
 } from 'class-validator';
 import { validate } from 'class-validator';
 import type { NextFunction, Request, Response } from 'express';
+
+import type{ Categoria } from '~/domain/entities/event';
 
 export class CreateEventDto {
   @IsNotEmpty()
@@ -59,6 +62,23 @@ export class CreateEventDto {
   @IsOptional()
   photo: string;
 
+  @IsString()
+  @IsIn([
+    'agenda:categories/activitats-virtuals',
+    'agenda:categories/exposicions',
+    'agenda:categories/concerts',
+    'agenda:categories/teatre',
+    'agenda:categories/festivals-i-mostres',
+    'agenda:categories/rutes-i-visites',
+    'agenda:categories/infantil',
+    'agenda:categories/festes',
+    'agenda:categories/conferencies',
+    'agenda:categories/fires-i-mercats',
+    'agenda:categories/dansa',
+    'agenda:categories/cicles',
+  ])
+  categoria: Categoria;
+
 }
 
 export async function createEventDto(
@@ -79,6 +99,7 @@ export async function createEventDto(
   DTO.price = req.body.price;
   DTO.url = req.body.url;
   DTO.photo = req.body.photo;
+  DTO.categoria = req.body.categoria;
 
   const errors = await validate(DTO);
   if (errors.length) {

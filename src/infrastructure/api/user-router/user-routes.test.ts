@@ -42,7 +42,7 @@ describe('User Routes', function () {
   });
 
   describe('GET /users/username', function () {
-    it ('if the payload is correct it returns the user with the given username', async function () {
+    it('if the payload is correct it returns the user with the given username', async function () {
       const res = await request(app).get('/users/username/test-username').send({
         username: 'test-username',
       });
@@ -53,10 +53,12 @@ describe('User Routes', function () {
     });
 
     it('if the username does not exist it returns an error', async function () {
-      const res = await request(app).get('/users/username/non-existing-user').send({
-        username: 'non-existent-username',
-      });
-  
+      const res = await request(app)
+        .get('/users/username/non-existing-user')
+        .send({
+          username: 'non-existent-username',
+        });
+
       expect(res.statusCode).toBe(404);
       expect(res.body.message).toBe('Usuario no encontrado');
     });
@@ -88,7 +90,7 @@ describe('User Routes', function () {
 
   describe('PATCH /users/id/:id/edit/changePassword', function () {
     const user_name = 'username-test';
-    
+
     let user_id: string;
 
     beforeEach(async function () {
@@ -103,45 +105,57 @@ describe('User Routes', function () {
       });
 
       const res = await request(app).get('/users/username/' + user_name);
-      user_id = res.body.user.id;
+      user_id = res.body.user._id;
     });
 
     it('The user with that ID doesnt exist', async function () {
       const id = '000000000000000000000000';
-      const res = await request(app).patch('/users/' + id + '/changePassword').send({
-        current_password: 'fake',
-        new_password: 'fake'
-      });
+      const res = await request(app)
+        .patch('/users/' + id + '/changePassword')
+        .send({
+          current_password: 'fake',
+          new_password: 'fake',
+        });
 
       expect(res.statusCode).toBe(404);
-      expect(res.body.message).toBe('El usuario con ID: \'' +id + '\' no existe');
+      expect(res.body.message).toBe(
+        "El usuario con ID: '" + id + "' no existe",
+      );
     });
 
     it('Correct user but wrong current password', async function () {
-      const res = await request(app).patch('/users/' + user_id + '/changePassword').send({
-        current_password: 'fake',
-        new_password: 'fake'
-      });
+      const res = await request(app)
+        .patch('/users/' + user_id + '/changePassword')
+        .send({
+          current_password: 'fake',
+          new_password: 'fake',
+        });
 
       expect(res.statusCode).toBe(400);
-      expect(res.body.message).toBe('Contraseña actual no coincide con la del usuario');
+      expect(res.body.message).toBe(
+        'Contraseña actual no coincide con la del usuario',
+      );
     });
 
     it('Correct user, correct password but new password is equal to current password', async function () {
-      const res = await request(app).patch('/users/' + user_id + '/changePassword').send({
-        current_password: 'test-password',
-        new_password: 'test-password'
-      });
+      const res = await request(app)
+        .patch('/users/' + user_id + '/changePassword')
+        .send({
+          current_password: 'test-password',
+          new_password: 'test-password',
+        });
 
       expect(res.statusCode).toBe(400);
       expect(res.body.message).toBe('La nueva contraseña es igual a la actual');
     });
 
     it('Correct user, correct password and different new password', async function () {
-      const res = await request(app).patch('/users/' + user_id + '/changePassword').send({
-        current_password: 'test-password',
-        new_password: 'test'
-      });
+      const res = await request(app)
+        .patch('/users/' + user_id + '/changePassword')
+        .send({
+          current_password: 'test-password',
+          new_password: 'test',
+        });
 
       expect(res.statusCode).toBe(200);
       expect(res.body.message).toBe('Contraseña modificada correctamente');
@@ -149,10 +163,12 @@ describe('User Routes', function () {
 
     it('Is not an ID', async function () {
       const id = '0';
-      const res = await request(app).patch('/users/' + id + '/changePassword').send({
-        current_password: 'fake',
-        new_password: 'fake'
-      });
+      const res = await request(app)
+        .patch('/users/' + id + '/changePassword')
+        .send({
+          current_password: 'fake',
+          new_password: 'fake',
+        });
 
       expect(res.statusCode).toBe(500);
     });

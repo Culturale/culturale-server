@@ -4,6 +4,7 @@ import {
   IsDate,
   Max,
   IsNumber,
+  IsOptional,
   Min,
   IsIn,
 } from 'class-validator';
@@ -52,15 +53,15 @@ export class CreateEventDto {
   long: number;
 
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   price: string;
 
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   url: string;
 
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   photo: string;
 
   @IsString()

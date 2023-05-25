@@ -32,9 +32,9 @@ export type EventProps = {
   adress: string;
   lat: number;
   long: number;
-  price: string;
-  url: string;
-  photo: string;
+  price?: string;
+  url?: string;
+  photo?: string;
   chat?: IChat;
   participants?: IUser[];
   valoracions?: IReview[];

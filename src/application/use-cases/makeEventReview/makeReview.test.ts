@@ -32,6 +32,8 @@ describe('Make Review use case', function () {
         horari: '2h',
         adress: 'Passeig de Gràcia',
         url: 'https://test-url.com',
+        lat: 0,
+        long: 0,
         categoria: 'agenda:categories/festes',
     };
     const res = {} as unknown as Response;
@@ -56,6 +58,8 @@ describe('Make Review use case', function () {
           horari: '2h',
           adress: 'Passeig de Gràcia',
           url: 'https://test-url.com',
+          lat: 0,
+          long: 0,
           categoria: 'agenda:categories/festes',
         }),
       });
@@ -110,6 +114,8 @@ describe('Make Review use case', function () {
         horari: '2h',
         adress: 'Passeig de Gràcia',
         url: 'https://test-url.com',
+        lat: 0,
+        long: 0,
         categoria: 'agenda:categories/festes',
       };
       // Crear el evento y guardar su id en la variable eventId
@@ -178,6 +184,8 @@ describe('Make Review use case', function () {
         horari: '2h',
         adress: 'Passeig de Gràcia',
         url: 'https://test-url.com',
+        lat: 0,
+        long: 0,
         categoria: 'agenda:categories/festes',
       };
       // Crear el evento y guardar su id en la variable eventId

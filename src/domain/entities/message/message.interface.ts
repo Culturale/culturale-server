@@ -5,4 +5,6 @@ export interface IMessage {
   content: string;
   userId: string;
   date: Date;
+
+  readonly id: string;
 }

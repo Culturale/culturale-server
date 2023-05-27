@@ -6,9 +6,23 @@ import { EventModel, Event } from '~/domain/entities/event';
 import type { CreateEventDto } from '~/infrastructure';
 import type { MongoId } from '~/types/types';
 
+type CategoriaEnum =
+  | 'agenda:categories/activitats-virtuals'
+  | 'agenda:categories/exposicions'
+  | 'agenda:categories/concerts'
+  | 'agenda:categories/teatre'
+  | 'agenda:categories/festivals-i-mostres'
+  | 'agenda:categories/rutes-i-visites'
+  | 'agenda:categories/infantil'
+  | 'agenda:categories/festes'
+  | 'agenda:categories/conferencies'
+  | 'agenda:categories/fires-i-mercats'
+  | 'agenda:categories/dansa'
+  | 'agenda:categories/cicles';
+
 interface EventFilters {
   denominacio?: { $regex: string, $options: 'i' };
-  descripcio?:  { $regex: string, $options: 'i' };
+  categoria?:  { $eq: CategoriaEnum};
   dataIni?: { $gte: Date };
   dataFi?: { $lte: Date };
   horari?: string;

@@ -22,12 +22,26 @@ import type {
 
 interface EventFilters {
   denominacio?: { $regex: string, $options: 'i' };
-  descripcio?: { $regex: string, $options: 'i' };
+  categoria?: { $eq: CategoriaEnum};
   dataIni?: { $gte: Date };
   dataFi?: { $lte: Date };
   horari?: string;
   price?: { $lte: string};
 }
+
+type CategoriaEnum =
+  | 'agenda:categories/activitats-virtuals'
+  | 'agenda:categories/exposicions'
+  | 'agenda:categories/concerts'
+  | 'agenda:categories/teatre'
+  | 'agenda:categories/festivals-i-mostres'
+  | 'agenda:categories/rutes-i-visites'
+  | 'agenda:categories/infantil'
+  | 'agenda:categories/festes'
+  | 'agenda:categories/conferencies'
+  | 'agenda:categories/fires-i-mercats'
+  | 'agenda:categories/dansa'
+  | 'agenda:categories/cicles';
 
 export class EventController {
   public static async createEvent(req: Request, res: Response): Promise<void> {
@@ -66,18 +80,20 @@ export class EventController {
     }
   }
   
+
+
   public static async getEventsByFilters(req: Request, res: Response): Promise<void> {
     const filter: EventFilters = {};
   
     // Obtén los valores de los parámetros de consulta
-    const { denominacio, descripcio, dataIni, dataFi, horari, price } = req.query;
+    const {denominacio, categoria, dataIni, dataFi, horari, price } = req.query;
   
     // Asigna los valores de los parámetros de consulta al filtro
     if (denominacio) {
       filter.denominacio = { $regex: denominacio as string, $options: 'i' };
     }
-    if (descripcio) {
-      filter.descripcio = { $regex: descripcio as string, $options: 'i' };
+    if (categoria) {
+      filter.categoria = { $eq: categoria as CategoriaEnum};
     }
     if (dataIni) {
       filter.dataIni = { $gte: new Date(dataIni as string) };

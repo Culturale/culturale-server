@@ -20,12 +20,35 @@ import type {
   EditEventDTO,
 } from '~/infrastructure';
 
+interface EventFilters {
+  denominacio?: { $regex: string, $options: 'i' };
+  categoria?: { $eq: CategoriaEnum};
+  dataIni?: { $gte: Date };
+  dataFi?: { $lte: Date };
+  horari?: string;
+  price?: { $lte: string};
+}
+
+type CategoriaEnum =
+  | 'agenda:categories/activitats-virtuals'
+  | 'agenda:categories/exposicions'
+  | 'agenda:categories/concerts'
+  | 'agenda:categories/teatre'
+  | 'agenda:categories/festivals-i-mostres'
+  | 'agenda:categories/rutes-i-visites'
+  | 'agenda:categories/infantil'
+  | 'agenda:categories/festes'
+  | 'agenda:categories/conferencies'
+  | 'agenda:categories/fires-i-mercats'
+  | 'agenda:categories/dansa'
+  | 'agenda:categories/cicles';
+
 export class EventController {
   public static async createEvent(req: Request, res: Response): Promise<void> {
     try {
       const eventDTO: CreateEventDto = req.body;
       const chat: IChat = await ChatRepository.createEmptyChat();
-      const event = await EventRepository.addEvent(eventDTO, chat.id);
+      const event = await EventRepository.addEvent(eventDTO, chat._id);
       res.status(200);
       res.json({
         message: 'event created',
@@ -39,7 +62,10 @@ export class EventController {
     }
   }
 
-  public static async getAllEvents(req: Request, res: Response): Promise<void> {
+  public static async getAllEvents(
+    _req: Request,
+    res: Response,
+  ): Promise<void> {
     try {
       const events: IEvent[] = await EventRepository.getAllEvents();
       res.status(200);
@@ -47,6 +73,50 @@ export class EventController {
         events,
       });
     } catch (e) {
+      res.status(500);
+      res.json({
+        error: e,
+      });
+    }
+  }
+  
+
+
+  public static async getEventsByFilters(req: Request, res: Response): Promise<void> {
+    const filter: EventFilters = {};
+  
+    // Obtén los valores de los parámetros de consulta
+    const {denominacio, categoria, dataIni, dataFi, horari, price } = req.query;
+  
+    // Asigna los valores de los parámetros de consulta al filtro
+    if (denominacio) {
+      filter.denominacio = { $regex: denominacio as string, $options: 'i' };
+    }
+    if (categoria) {
+      filter.categoria = { $eq: categoria as CategoriaEnum};
+    }
+    if (dataIni) {
+      filter.dataIni = { $gte: new Date(dataIni as string) };
+    }
+    if (dataFi) {
+      filter.dataFi = { $lte: new Date(dataFi as string) };
+    }
+    if (horari) {
+      filter.horari = horari as string;
+    }
+    if (price) {
+      filter.price = { $lte: price as string };
+    }
+  
+    try {
+      // Filtra los eventos según los parámetros proporcionados
+      const events: IEvent[] = await EventRepository.find(filter);
+  
+      // Envía los eventos filtrados como respuesta
+      res.json({
+        events,
+      });
+    }  catch (e) {
       res.status(500);
       res.json({
         error: e,
@@ -80,6 +150,7 @@ export class EventController {
         url: editEventDto.url || event.url,
         photo: editEventDto.photo || event.photo,
         chat: event.chat,
+        categoria: editEventDto.categoria || event.categoria,
       };
       const newEvent = new Event(newEventProps);
       await EventRepository.editarEvent(newEvent);
@@ -249,10 +320,10 @@ export class EventController {
     res: Response,
   ): Promise<void> {
     try {
-      const event: IEvent[] = await EventRepository.getEventbydenominacio(
+      const events: IEvent[] = await EventRepository.getEventbydenominacio(
         req.params.denominacio,
       );
-      if (event.length == 0) {
+      if (events.length == 0) {
         res.status(404);
         res.json({
           error: 'No event with that denomination found',
@@ -260,7 +331,7 @@ export class EventController {
       }
       res.status(200);
       res.json({
-        event,
+        events,
       });
     } catch (e) {
       res.status(500);

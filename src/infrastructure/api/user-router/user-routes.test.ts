@@ -86,6 +86,53 @@ describe('User Routes', function () {
       expect(res.statusCode).toBe(200);
       expect(res.body.token).toBeTruthy();
     });
+
+    describe('PUT /users/reportUser', function () {
+      beforeEach(async function () {
+      await request(app).post('/users/create').send({
+        email: 'email@example.com',
+        password: 'test-password',
+        username: 'test-username',
+        name: 'test-name',
+        profilePicture: 'test-imageurl',
+        phoneNumber: '000000000',
+        usertype: 'usuario',
+      });
+    });
+
+      it('reports the user with the given username', async function () {
+    
+        const res = await request(app)
+          .put('/users/reportUser')
+          .send({
+            username: 'test-username',
+          });
+    
+        expect(res.statusCode).toBe(200);
+        expect(res.body.message).toBe('User reported');
+        // Verifica si el usuario ha sido reportado correctamente en la base de datos o en la lógica de negocio
+      });
+
+      it('delete the user reported', async function () {
+    
+        const res = await request(app)
+          .delete('/users/deleteUser')
+          .send({
+            username: 'test-username',
+          });
+    
+        expect(res.statusCode).toBe(200);
+        expect(res.body.message).toBe('User delete successfully');
+      
+      });
+      it('give all the users reported', async function () {
+    
+        const res = await request(app)
+          .get('/users/reported');
+        
+        expect(res.statusCode).toBe(200);
+      });
+    });
   });
 
   describe('PATCH /users/id/:id/edit/changePassword', function () {

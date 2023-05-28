@@ -148,8 +148,7 @@ describe('Make Review use case', function () {
      reviewRes.json = jest.fn();
      reviewRes.status = jest.fn(() => reviewRes);
      reviewRes.setHeader = jest.fn();
-      await makeReview(reqMessage, reviewRes);
-  
+     await makeReview(reqMessage, reviewRes);
       expect(reviewRes.status).toBeCalledWith(200);
       expect(reviewRes.json).toBeCalledWith(expect.objectContaining({
         message: 'Valoracion añadida correctamente',

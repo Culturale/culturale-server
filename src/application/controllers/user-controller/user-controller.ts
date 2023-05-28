@@ -40,6 +40,45 @@ export class UserController {
     }
   }
 
+  public static async getReportedUsers(_req: Request, res: Response): Promise<void> {
+    try {
+      const users: IUser[] = await UserRepository.getReportedUsers();
+      res.status(200);
+      res.json({
+        users,
+      });
+    } catch (e) {
+      res.status(500);
+      res.json({
+        error: e,
+      });
+    }
+  }
+
+  //el test de este es el editar user
+  public static async ReportUser(req: Request, res: Response): Promise<void> {
+    try {
+    const username= req.body.username; //user_id del user que queremos bloquear
+    const userReported: IUser = await UserRepository.findByUsername(username);
+    const castedUser = new User(userReported as UserProps);
+
+   castedUser.report = castedUser.report + 1;
+
+    await UserRepository.editarUsuari(castedUser);
+
+    res.status(200);
+      res.json({
+        message: 'User reported',
+      });
+    } catch (e) {
+      res.status(500);
+      res.json({
+        error: e,
+      });
+    }
+  }
+
+
   public static async getUserForUsername(
     req: Request,
     res: Response,
@@ -83,6 +122,7 @@ export class UserController {
           email: req.body.email || oldUser.email,
           profilePicture: req.body.profilePicture || oldUser.profilePicture,
           phoneNumber: req.body.phoneNumber || oldUser.phoneNumber,
+          report: req.body.report || oldUser.report,
           usertype: oldUser.usertype,
           followers: oldUser.followers,
           followeds: oldUser.followeds,
@@ -141,6 +181,18 @@ export class UserController {
       }
     } catch (e) {
       res.status(500);
+      res.json({
+        error: e,
+      });
+    }
+  }
+
+  public static async deleteUser (req: Request, res: Response): Promise<void> {
+    try {
+      const id: string = req.body.id;
+      await UserRepository.deleteUser(id);
+      res.status(200);
+    } catch (e) {
       res.json({
         error: e,
       });

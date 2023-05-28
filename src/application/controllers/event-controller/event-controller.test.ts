@@ -6,8 +6,6 @@ import { MongoMemoryServer } from 'mongodb-memory-server';
 import mongoose from 'mongoose';
 
 
-import { makeReview } from '~/application/use-cases/makeEventReview';
-
 import { UserController } from '../user-controller';
 
 import { EventController } from './event-controller';
@@ -121,19 +119,6 @@ describe('Event Controller', function () {
     return eventId;
   };
 
-  const createTestUser = async (req: Request): Promise<string> => {
-    const res = {} as unknown as Response;
-    let userId: string;
-  
-    res.json = jest.fn().mockImplementation((data: any) => {
-      userId = data.user.id;
-    });
-    res.status = jest.fn().mockReturnValue(res);
-    res.setHeader = jest.fn();
-  
-    await UserController.createUser(req, res);
-    return userId;
-  };
 
   
   describe('add message event', function () {

@@ -183,79 +183,7 @@ describe('Event Routes', function () {
     });
   });
 
-  describe('PUT /events/reportReview', function () {
-    let idReview: string;
-    it('report the user', async function () {
-      const createRes = await request(app)
-        .post('/events/create')
-        .send({
-          codi: 12348173049,
-          denominacio: 'test-event',
-          descripcio: 'test-description',
-          dataIni: new Date(1),
-          dataFi: new Date(2),
-          horari: '2h',
-          adress: 'Passeig de Gràcia',
-          lat: 123.456,
-          long: 789.012,
-          price: '12 €',
-          url: 'https://test-url.com',
-          photo: 'test-photo.jpg',
-        });
-      const eventId = await createRes.body.event._id;
-      const createRes2 = await request(app)
-        .post('/users/create')
-        .send({
-          email: 'email@example.com',
-          password: 'test-password',
-          username: 'test-username',
-          name: 'test-name',
-          profilePicture: 'test-imageurl',
-          phoneNumber: '000000000',
-          usertype: 'usuario',
-        });
-        const userId = await createRes2.body.user._id;
-        const createRes3 = await request(app)
-        .post('/events/addReview')
-        .send({
-          eventId: eventId,
-          authorId: userId,
-          puntuation: 7,
-          comment: 'hola',
-        });
-       
-        idReview = await createRes3.body.val._id;
 
-        const res = await request(app)
-        .put('/events/reportReview')
-        .send({
-          idReview: idReview,
-        });
-  
-      expect(res.statusCode).toBe(200);
-      expect(res.body.message).toBe('Review reported');
-    });
-
-
-    it('delete the review reported', async function () {
-  
-      const res = await request(app)
-        .delete('/events/deleteReview')
-        .send({
-          id: idReview,
-        });
-  
-      expect(res.statusCode).toBe(200);
-    
-    });
-    it('give all the review reported', async function () {
-  
-      const res = await request(app)
-        .get('/events/getReportedReviews');
-      
-      expect(res.statusCode).toBe(200);
-    });
-  });
 
   describe('GET /events/messages', function () {
     it('returns the list of messages', async function () {

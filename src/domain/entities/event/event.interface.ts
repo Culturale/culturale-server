@@ -32,9 +32,9 @@ export interface IEvent {
   price?: string;
   url?: string;
   photo?: string;
-  chat?: IChat;
-  valoracions?: IReview[];
-  participants?: IUser[];
+  chat: IChat;
+  valoracions: IReview[];
+  participants: IUser[];
   categoria: CategoriaEnum;
 
   updateValoracions: (newValoracio: IReview) => void;

@@ -204,6 +204,7 @@ export class EventController {
     ): Promise<void> {
       try {
         const addAssistentDto: AddAssistentDto = req.body;
+        addAssistentDto.id = req.params.id;
         const { id, username } = addAssistentDto;
 
         const event: IEvent = await EventRepository.findEvent(id);

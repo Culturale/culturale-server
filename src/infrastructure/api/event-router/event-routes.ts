@@ -14,7 +14,7 @@ eventRouter.post('/events/newMessage', EventController.addMessageEvent);
 
 eventRouter.post('/events/newParticipant', addParticipantDto, EventController.addParticipant);
 
-eventRouter.post('/events/newAssistent', addAssistentDto, checkin);
+eventRouter.post('/events/:id/newAssistent', addAssistentDto, checkin);
 
 eventRouter.delete('/events/deleteParticipant', EventController.deleteParticipant);
 

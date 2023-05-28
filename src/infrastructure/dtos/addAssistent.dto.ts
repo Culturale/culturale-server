@@ -25,7 +25,7 @@ export async function addAssistentDto(
   next: NextFunction,
 ) {
   const DTO = new AddAssistentDto();
-  DTO.id = req.body.id;
+  DTO.id = req.params.id;
   DTO.username = req.body.username;
   DTO.user_lat = req.body.user_lat;
   DTO.user_long = req.body.user_long;

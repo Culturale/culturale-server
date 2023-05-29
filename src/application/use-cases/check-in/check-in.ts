@@ -1,6 +1,5 @@
 import type { Request, Response } from 'express';
 
-//import { EventController } from '~/application/controllers';
 import { IEvent, IUser } from '~/domain/entities';
 import { EventRepository, UserRepository } from '~/domain/repositories';
 import { AddAssistentDto } from '~/infrastructure';

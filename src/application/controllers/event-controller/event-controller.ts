@@ -17,8 +17,7 @@ import {
 import type {
   CreateEventDto,
   AddParticipantDto,
-  EditEventDTO,
-  //AddAssistentDto,
+  EditEventDTO
 } from '~/infrastructure';
 
 export class EventController {
@@ -197,29 +196,6 @@ export class EventController {
       });
     }
   }
-
-  /*public static async addAssistent(
-      event: IEvent,
-      user: IUser
-    ): Promise<void> {
-      try {
-
-        event.addAssistent(user);
-
-
-        await EventRepository.editarEvent(event);
-
-        res.status(200);
-        res.json({
-          message: 'Asistente añadido correctamente',
-        });
-      } catch (error) {
-        res.status(500);
-        res.json({
-          error,
-        });
-      }
-    }*/
 
   public static async deleteParticipant(
     req: Request,

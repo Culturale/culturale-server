@@ -9,6 +9,7 @@
     "build": "tsc",
     "lint": "eslint src --ext .js,.ts,.tsx",
     "lint:no-cycles": "eslint src --ext .js,.ts,.tsx --rule 'import/no-cycle: 2'",
+    "lint:fix": "eslint src --ext .js,.ts,.tsx --fix",
     "test": "jest --no-cache  --detectOpenHandles --runInBand --forceExit",
     "startDev": "ts-node src/server.ts",
     "start": "node -r ./tsconfig-paths-bootstrap.js ./dist/src/server.js"

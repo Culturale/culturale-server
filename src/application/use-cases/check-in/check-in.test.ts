@@ -7,6 +7,7 @@ import {
   EventController,
   UserController 
 } from '~/application/controllers';
+
 import { checkin } from './check-in';
 
 dotenv.config();

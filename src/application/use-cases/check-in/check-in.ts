@@ -1,8 +1,8 @@
 import type { Request, Response } from 'express';
 
-import { IEvent, IUser } from '~/domain/entities';
+import type { IEvent, IUser } from '~/domain/entities';
 import { EventRepository, UserRepository } from '~/domain/repositories';
-import { AddAssistentDto } from '~/infrastructure';
+import type { AddAssistentDto } from '~/infrastructure';
 
 const MAX_DISTANCIA: number = 200;
 

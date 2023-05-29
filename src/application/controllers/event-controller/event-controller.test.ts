@@ -250,7 +250,7 @@ describe('Event Controller', function () {
     });
   });
 
-  describe('add assistent event', function () {
+  /*describe('add assistent event', function () {
       let id: mongoose.Types.ObjectId;
       let eventid: string;
 
@@ -310,7 +310,7 @@ describe('Event Controller', function () {
           message: 'Asistente añadido correctamente',
         }));
       });
-    });
+    });*/
   
 
 

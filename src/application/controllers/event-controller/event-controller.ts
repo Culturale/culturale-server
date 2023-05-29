@@ -18,7 +18,7 @@ import type {
   CreateEventDto,
   AddParticipantDto,
   EditEventDTO,
-  AddAssistentDto,
+  //AddAssistentDto,
 } from '~/infrastructure';
 
 export class EventController {
@@ -198,25 +198,11 @@ export class EventController {
     }
   }
 
-  public static async addAssistent(
-      req: Request,
-      res: Response,
+  /*public static async addAssistent(
+      event: IEvent,
+      user: IUser
     ): Promise<void> {
       try {
-        const addAssistentDto: AddAssistentDto = req.body;
-        addAssistentDto.id = req.params.id;
-        const { id, username } = addAssistentDto;
-
-        const event: IEvent = await EventRepository.findEvent(id);
-        const user: IUser = await UserRepository.findByUsername(username);
-
-        if (!event || !user) {
-          res.status(404);
-          res.json({
-            message: 'user or event not found',
-          });
-          return;
-        }
 
         event.addAssistent(user);
 
@@ -233,7 +219,7 @@ export class EventController {
           error,
         });
       }
-    }
+    }*/
 
   public static async deleteParticipant(
     req: Request,

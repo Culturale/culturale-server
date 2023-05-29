@@ -1,8 +1,11 @@
+import jwt from 'jsonwebtoken';
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import mongoose from 'mongoose';
 import request from 'supertest';
 
 import { app } from '~/server';
+
+//import { authMiddleware } from './middlewares';
 
 describe('User Routes', function () {
   beforeAll(async function () {
@@ -90,10 +93,11 @@ describe('User Routes', function () {
 
   describe('PATCH /users/id/:id/edit/changePassword', function () {
     const user_name = 'username-test';
-
     let user_id: string;
-
+    let token: string;
+  
     beforeEach(async function () {
+      // Crea un usuario y obtén su ID
       await request(app).post('/users/create').send({
         email: 'email@example.com',
         password: 'test-password',
@@ -103,77 +107,84 @@ describe('User Routes', function () {
         phoneNumber: '000000000',
         usertype: 'usuario',
       });
-
+  
       const res = await request(app).get('/users/username/' + user_name);
       user_id = res.body.user._id;
+  
+      // Genera un token válido para la autenticación
+      token = jwt.sign({ userId: user_id }, process.env.SECRET);
     });
-
+  
     it('The user with that ID doesnt exist', async function () {
       const id = '000000000000000000000000';
       const res = await request(app)
         .patch('/users/' + id + '/changePassword')
+        .set('Authorization', 'Bearer ' + token) // Agregar el encabezado de autorización con el token
         .send({
           current_password: 'fake',
           new_password: 'fake',
         });
-
+  
       expect(res.statusCode).toBe(404);
       expect(res.body.message).toBe(
         "El usuario con ID: '" + id + "' no existe",
       );
     });
-
+  
     it('Correct user but wrong current password', async function () {
       const res = await request(app)
         .patch('/users/' + user_id + '/changePassword')
+        .set('Authorization', 'Bearer ' + token) // Agregar el encabezado de autorización con el token
         .send({
           current_password: 'fake',
           new_password: 'fake',
         });
-
+  
       expect(res.statusCode).toBe(400);
       expect(res.body.message).toBe(
         'Contraseña actual no coincide con la del usuario',
       );
     });
-
+  
     it('Correct user, correct password but new password is equal to current password', async function () {
       const res = await request(app)
         .patch('/users/' + user_id + '/changePassword')
+        .set('Authorization', 'Bearer ' + token) // Agregar el encabezado de autorización con el token
         .send({
           current_password: 'test-password',
           new_password: 'test-password',
         });
-
+  
       expect(res.statusCode).toBe(400);
       expect(res.body.message).toBe('La nueva contraseña es igual a la actual');
     });
-
+  
     it('Correct user, correct password and different new password', async function () {
       const res = await request(app)
         .patch('/users/' + user_id + '/changePassword')
+        .set('Authorization', 'Bearer ' + token) // Agregar el encabezado de autorización con el token
         .send({
           current_password: 'test-password',
           new_password: 'test',
         });
-
+  
       expect(res.statusCode).toBe(200);
       expect(res.body.message).toBe('Contraseña modificada correctamente');
     });
-
+  
     it('Is not an ID', async function () {
       const id = '0';
       const res = await request(app)
         .patch('/users/' + id + '/changePassword')
+        .set('Authorization', 'Bearer ' + token) // Agregar el encabezado de autorización con el token
         .send({
           current_password: 'fake',
           new_password: 'fake',
         });
-
+  
       expect(res.statusCode).toBe(500);
     });
   });
-
   describe('The requests that require authorization', function () {
     const authHeaders = {
       Authorization: '',

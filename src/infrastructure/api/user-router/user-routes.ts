@@ -14,12 +14,12 @@ userRouter.get('/users', authMiddleware, UserController.getAllUsers);
 
 userRouter.post('/users/login', loginDto, logIn);
 
-userRouter.post('/users/edit', editUserDTO, UserController.editUser); //falta test ruta
+userRouter.post('/users/edit', authMiddleware, editUserDTO, UserController.editUser); //falta test ruta
 
 userRouter.get('/users/username/:id', UserController.getUserForUsername);
 
-userRouter.post('/users/newFollower', followDto, follow); //falta test ruta
+userRouter.post('/users/newFollower', authMiddleware, followDto, follow); //falta test ruta
 
-userRouter.delete('/users/deleteFollower', followDto, unfollow); //falta test ruta
+userRouter.delete('/users/deleteFollower', authMiddleware, followDto, unfollow); //falta test ruta
 
-userRouter.patch('/users/:id/changePassword', changePasswordDto, UserController.changePassword);
+userRouter.patch('/users/:id/changePassword', authMiddleware, changePasswordDto, UserController.changePassword);

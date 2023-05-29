@@ -3,7 +3,10 @@ import type { Request, Response } from 'express';
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import mongoose from 'mongoose';
 
-import { EventController, UserController } from '~/application/controllers';
+import {
+  EventController,
+  UserController 
+} from '~/application/controllers';
 import { checkin } from './check-in';
 
 dotenv.config();
@@ -157,7 +160,7 @@ describe('Check in use case', function () {
   });
 
   it('Case user can check in', async function() {
-    const newUsername: string = 'test-username2';
+    const newUsername = 'test-username2';
     const reqUser2: Request = JSON.parse(JSON.stringify(expressRequest));
     reqUser2.body = {
       email: 'email@example.com',
@@ -197,7 +200,7 @@ describe('Check in use case', function () {
   });
 
   it('Case user cant check in two times in the same event', async function() {
-    const newUsername: string = 'test-username3';
+    const newUsername = 'test-username3';
     const reqUser2: Request = JSON.parse(JSON.stringify(expressRequest));
     reqUser2.body = {
       email: 'email@example.com',

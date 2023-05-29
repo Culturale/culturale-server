@@ -4,7 +4,7 @@ import type { IEvent, IUser } from '~/domain/entities';
 import { EventRepository, UserRepository } from '~/domain/repositories';
 import type { AddAssistentDto } from '~/infrastructure';
 
-const MAX_DISTANCIA: number = 200;
+const MAX_DISTANCIA = 200;
 
 
 function calcularDistancias(lat1: number, lon1: number, lat2: number, lon2: number): number {

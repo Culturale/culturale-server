@@ -383,8 +383,8 @@ describe('User Controller', function () {
 
     const reqAddFoll: Request = JSON.parse(JSON.stringify(expressRequest));
     reqAddFoll.body = {
-      username: 'user1', //usuaio al cual se le añade un nuevo follower
-      follower: 'user2', //nuevo segidor añadido a ls lista
+      username: 'user2', //usuaio al cual se le añade un nuevo follower
+      follower: 'user1', //nuevo segidor añadido a ls lista
     };
     const resAddFoll = {} as unknown as Response;
     resAddFoll.json = jest.fn();

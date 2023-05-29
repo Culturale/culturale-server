@@ -290,11 +290,12 @@ describe('Event Routes', function () {
             dataFi: new Date(2),
             horari: '2h',
             adress: 'Passeig de Gràcia',
+            url: 'https://test-url.com',
             lat: 123.456,
             long: 789.012,
             price: '12 €',
-            url: 'https://test-url.com',
             photo: 'test-photo.jpg',
+            categoria: 'agenda:categories/teatre'
           });
         eventId = await createRes.body.event._id;
         await request(app).post('/users/create').send({
@@ -309,9 +310,10 @@ describe('Event Routes', function () {
       });
 
       it('if the payload is correct it adds the assistent', async function () {
-        const res = await request(app).post('/events/newAssistent').send({
-          id: eventId,
+        const res = await request(app).post('/events/' + eventId + '/newAssistent').send({
           username: 'test-username',
+          user_lat: 123.456,
+          user_long: 789.012
         });
 
         expect(res.statusCode).toBe(200);
@@ -319,13 +321,14 @@ describe('Event Routes', function () {
       });
 
       it('if the payload is incorrect it sends the error', async function () {
-        const res = await request(app).post('/events/newAssistent').send({
-          id: '645ac0f30679a1fcb116d440',
-          username: 'test-username',
+        const res = await request(app).post('/events/645ac0f30679a1fcb116d440/newAssistent').send({
+          username: 'test-username2',
+          user_lat: 123.456,
+          user_long: 789.012
         });
 
         expect(res.statusCode).toBe(404);
-        expect(res.body.message).toBe('user or event not found');
+        expect(res.body.message).toBe('Usuario o evento no encontrado');
       });
     });
 

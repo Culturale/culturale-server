@@ -215,6 +215,7 @@ export class UserController {
       const castedUser = new User(newUser as UserProps);
       castedUser.updateFolloweds(newFollower); //los que te siguen a ti -> se añade newFollower como seguidor en el perfil de newUser
       const castedUser2 = new User(newFollower as UserProps);
+      
       castedUser2.updateFollowers(newUser); //los que tu sigues -> se añade newUser como nueva persona seguida en el perfil de newFollower
 
       await UserRepository.editarUsuari(castedUser);

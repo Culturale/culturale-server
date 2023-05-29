@@ -11,6 +11,7 @@ User {
   "password": "test-password",
   "phoneNumber": "test-phone",
   "profilePicture": "test-profilePicture",
+  "report": 0,
   "reviews": [],
   "username": "test-username",
   "usertype": "test-type",

@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Event Review can be created 1`] = `
+Review {
+  "_id": undefined,
+  "authorId": "645b9cf103aaad67d81d288a",
+  "comment": "comment-test",
+  "eventId": "645b9ce003aaad67d81d2887",
+  "puntuation": 7,
+  "report": 0,
+}
+`;

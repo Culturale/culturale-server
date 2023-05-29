@@ -40,6 +40,45 @@ export class UserController {
     }
   }
 
+  public static async getReportedUsers(_req: Request, res: Response): Promise<void> {
+    try {
+      const users: IUser[] = await UserRepository.getReportedUsers();
+      res.status(200);
+      res.json({
+        users,
+      });
+    } catch (e) {
+      res.status(500);
+      res.json({
+        error: e,
+      });
+    }
+  }
+
+  //el test de este es el editar user
+  public static async ReportUser(req: Request, res: Response): Promise<void> {
+    try {
+    const username= req.body.username; //user_id del user que queremos bloquear
+    const userReported: IUser = await UserRepository.findByUsername(username);
+    const castedUser = new User(userReported as UserProps);
+
+   castedUser.report = castedUser.report + 1;
+
+    await UserRepository.editarUsuari(castedUser);
+
+    res.status(200);
+      res.json({
+        message: 'User reported',
+      });
+    } catch (e) {
+      res.status(500);
+      res.json({
+        error: e,
+      });
+    }
+  }
+
+
   public static async getUserForUsername(
     req: Request,
     res: Response,
@@ -83,6 +122,7 @@ export class UserController {
           email: req.body.email || oldUser.email,
           profilePicture: req.body.profilePicture || oldUser.profilePicture,
           phoneNumber: req.body.phoneNumber || oldUser.phoneNumber,
+          report: req.body.report || oldUser.report,
           usertype: oldUser.usertype,
           followers: oldUser.followers,
           followeds: oldUser.followeds,
@@ -147,6 +187,18 @@ export class UserController {
     }
   }
 
+  public static async deleteUser (req: Request, res: Response): Promise<void> {
+    try {
+      const id: string = req.body.id;
+      await UserRepository.deleteUser(id);
+      res.status(200);
+    } catch (e) {
+      res.json({
+        error: e,
+      });
+    }
+  }
+
   public static async addFollower(req: Request, res: Response): Promise<void> {
     try {
       const username = req.body.username;
@@ -161,9 +213,9 @@ export class UserController {
         });
       }
       const castedUser = new User(newUser as UserProps);
-      castedUser.updateFollowers(newFollower); //los que te siguen a ti -> se añade newFollower como seguidor en el perfil de newUser
+      castedUser.updateFolloweds(newFollower); //los que te siguen a ti -> se añade newFollower como seguidor en el perfil de newUser
       const castedUser2 = new User(newFollower as UserProps);
-      castedUser2.updateFolloweds(newUser); //los que tu sigues -> se añade newUser como nueva persona seguida en el perfil de newFollower
+      castedUser2.updateFollowers(newUser); //los que tu sigues -> se añade newUser como nueva persona seguida en el perfil de newFollower
 
       await UserRepository.editarUsuari(castedUser);
       await UserRepository.editarUsuari(castedUser2);

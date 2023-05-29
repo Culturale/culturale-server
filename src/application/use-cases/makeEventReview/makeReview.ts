@@ -45,6 +45,7 @@ export async function makeReview(req: Request, res: Response): Promise<void> {
       res.status(200).json({
         message: 'Valoracion añadida correctamente',
         newValoracioDTO,
+        val : event.valoracions[0]
       });
       return;
     } else {

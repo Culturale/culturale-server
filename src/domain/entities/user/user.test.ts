@@ -8,7 +8,7 @@ describe('User Entity', function () {
 
 
   beforeEach(function () {
-    const userProps: CreateUserDto  = {username: 'test-username', name: 'test-name' , password: 'test-password', email: 'test-email', profilePicture:'test-profilePicture', phoneNumber: 'test-phone', usertype: 'test-type'};
+    const userProps: CreateUserDto  = {username: 'test-username', name: 'test-name' , password: 'test-password', email: 'test-email', profilePicture:'test-profilePicture', phoneNumber: 'test-phone', usertype: 'test-type', report: 0};
     instance = new User(
       userProps,
     );

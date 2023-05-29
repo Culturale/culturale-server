@@ -40,6 +40,30 @@ export class UserRepository {
     return users;
   }
 
+  public static async getReportedUsers(): Promise<IUser[]> {
+    const userDocs = await UserModel.find( { report: { $gt: 0 } }  )
+      .populate({
+        path: 'eventSub',
+        model: EventModel,
+      })
+      .populate({
+        path: 'followers',
+        model: 'User',
+      })
+      .populate({
+        path: 'followeds',
+        model: 'User',
+      });
+    const users: IUser[] = [];
+  
+    for (const doc of userDocs) {
+      const user = new User(doc);
+      users.push(user);
+    }
+  
+    return users;
+  }  
+
   public static async findById(userId: string): Promise<IUser> {
     const userDoc = await UserModel.findById(userId)
       .populate({
@@ -106,6 +130,30 @@ export class UserRepository {
       reviews,
     });
   }
+
+  public static async deleteUser(idUser: string): Promise<void> {
+    
+    await EventModel.updateMany(
+      { participants: idUser },
+      { $pull: { participants: idUser } }
+    );
+  
+    await UserModel.updateMany(
+      { followers: idUser },
+      { $pull: { followers: idUser } }
+    );
+  
+    await UserModel.updateMany(
+      { followeds: idUser },
+      { $pull: { followeds: idUser } }
+    );
+  
+    await ReviewModel.deleteMany({ authorId: idUser });
+
+    await UserModel.deleteOne({ _id: idUser });
+  
+  }
+  
 
   public static async existParam(
     param: string,

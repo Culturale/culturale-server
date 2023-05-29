@@ -4,14 +4,14 @@ import {
   IsDate,
   Max,
   IsNumber,
-  Min,
   IsOptional,
+  Min,
   IsIn,
 } from 'class-validator';
 import { validate } from 'class-validator';
 import type { NextFunction, Request, Response } from 'express';
 
-import type{ Categoria } from '~/domain/entities/event';
+import type { Categoria } from '~/domain/entities/event';
 
 export class CreateEventDto {
   @IsNotEmpty()
@@ -37,15 +37,19 @@ export class CreateEventDto {
   dataFi: Date;
 
   @IsString()
+  @IsNotEmpty()
   horari: string;
 
   @IsString()
+  @IsNotEmpty()
   adress: string;
 
   @IsNumber()
+  @IsNotEmpty()
   lat: number;
 
   @IsNumber()
+  @IsNotEmpty()
   long: number;
 
   @IsString()
@@ -53,7 +57,7 @@ export class CreateEventDto {
   price: string;
 
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   url: string;
 
   @IsString()
@@ -61,6 +65,7 @@ export class CreateEventDto {
   photo: string;
 
   @IsString()
+  @IsNotEmpty()
   @IsIn([
     'agenda:categories/activitats-virtuals',
     'agenda:categories/exposicions',
@@ -76,13 +81,12 @@ export class CreateEventDto {
     'agenda:categories/cicles',
   ])
   categoria: Categoria;
-
 }
 
 export async function createEventDto(
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) {
   const DTO = new CreateEventDto();
   DTO.codi = req.body.codi;

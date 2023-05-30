@@ -34,7 +34,7 @@ export class UserRepository {
       .populate({
         path: 'preferits',
         model: EventModel,
-      });;
+      });
     const users: IUser[] = [];
 
     for (const doc of userDocs) {

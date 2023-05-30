@@ -37,6 +37,7 @@ describe('Event Controller', function () {
       price: '12 €',
       url: 'https://test-url.com',
       photo: 'test-photo.jpg',
+      categoria: 'agenda:categories/festes',
     };
     const res = {} as unknown as Response;
     res.json = jest.fn();
@@ -64,6 +65,7 @@ describe('Event Controller', function () {
           price: '12 €',
           url: 'https://test-url.com',
           photo: 'test-photo.jpg',
+          categoria: 'agenda:categories/festes',
         }),
       });
     });
@@ -97,6 +99,7 @@ describe('Event Controller', function () {
             price: '12 €',
             url: 'https://test-url.com',
             photo: 'test-photo.jpg',
+            categoria: 'agenda:categories/festes',
           }),
         ],
       });
@@ -149,6 +152,7 @@ describe('Event Controller', function () {
         price: '12 €',
         url: 'https://test-url.com',
         photo: 'test-photo.jpg',
+        categoria: 'agenda:categories/festes',
       };
       // Crear el evento y guardar su id en la variable eventId
       eventId = await createTestEvent(req);
@@ -217,6 +221,7 @@ describe('Event Controller', function () {
         price: '12 €',
         url: 'https://test-url.com',
         photo: 'test-photo.jpg',
+        categoria: 'agenda:categories/festes',
       };
       // Crear el evento y guardar su id en la variable eventId
       eventid = await createTestEvent(req);
@@ -282,6 +287,7 @@ describe('Event Controller', function () {
         price: '12 €',
         url: 'https://test-url.com',
         photo: 'test-photo.jpg',
+        categoria: 'agenda:categories/festes',
       };
       eventid = await createTestEvent(req);
       id = new mongoose.Types.ObjectId(eventid);
@@ -358,6 +364,7 @@ describe('Event Controller', function () {
       price: '12 €',
       url: 'https://test-url.com',
       photo: 'test-photo.jpg',
+      categoria: 'agenda:categories/festes',
     };
     const resCreate = {} as unknown as Response;
     resCreate.json = jest.fn();

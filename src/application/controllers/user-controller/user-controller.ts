@@ -1,11 +1,11 @@
 import bcrypt from 'bcrypt';
 import type { Request, Response } from 'express';
 
+import type { IEvent } from '~/domain/entities';
 import type { IUser, UserProps } from '~/domain/entities/user';
-import { IEvent } from '~/domain/entities';
 import { User } from '~/domain/entities/user';
-import { UserRepository } from '~/domain/repositories/user-repository/user-repository';
 import { EventRepository } from '~/domain/repositories';
+import { UserRepository } from '~/domain/repositories/user-repository/user-repository';
 import type { ChangePasswordDto, AddFavouriteDto } from '~/infrastructure';
 
 export class UserController {

@@ -1,10 +1,12 @@
 import bcrypt from 'bcrypt';
 import type { Request, Response } from 'express';
 
+import type { IEvent } from '~/domain/entities';
 import type { IUser, UserProps } from '~/domain/entities/user';
 import { User } from '~/domain/entities/user';
+import { EventRepository } from '~/domain/repositories';
 import { UserRepository } from '~/domain/repositories/user-repository/user-repository';
-import type { ChangePasswordDto } from '~/infrastructure';
+import type { ChangePasswordDto, AddFavouriteDto } from '~/infrastructure';
 
 export class UserController {
   public static async createUser(req: Request, res: Response): Promise<void> {
@@ -279,6 +281,43 @@ export class UserController {
       res.status(500);
       res.json({
         error: e,
+      });
+    }
+  }
+
+
+  public static async addFavourite(
+    req: Request,
+    res: Response,
+  ): Promise<void> {
+    try {
+      const addFavouriteDto: AddFavouriteDto = req.body;
+      const { id, username } = addFavouriteDto;
+
+      const event: IEvent = await EventRepository.findEvent(id);
+      const user: IUser = await UserRepository.findByUsername(username);
+
+      if (!event || !user) {
+        res.status(404);
+        res.json({
+          message: 'user or event not found',
+        });
+        return;
+      }
+
+
+      user.updateEventPref(event);
+
+      await UserRepository.editarUsuari(user);
+
+      res.status(200);
+      res.json({
+        message: 'Evento añadido a favoritos correctamente',
+      });
+    } catch (error) {
+      res.status(500);
+      res.json({
+        error,
       });
     }
   }

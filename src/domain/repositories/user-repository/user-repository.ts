@@ -14,6 +14,7 @@ export class UserRepository {
       followers: [],
       followeds: [],
       eventSub: [],
+      preferits: [],
     });
     return newUser;
   }
@@ -31,6 +32,10 @@ export class UserRepository {
       .populate({
         path: 'followeds',
         model: 'User',
+      })
+      .populate({
+        path: 'preferits',
+        model: EventModel,
       });
     const users: IUser[] = [];
 
@@ -83,6 +88,10 @@ export class UserRepository {
       .populate({
         path: 'followers',
         model: 'User',
+      })
+      .populate({
+        path: 'preferits',
+        model: 'Event',
       });
 
     if (userDoc) {
@@ -109,6 +118,9 @@ export class UserRepository {
       .populate({
         path: 'followers',
         model: 'User',
+      }).populate({
+        path: 'preferits',
+        model: 'Event',
       });
 
     if (userDoc) {
@@ -123,6 +135,7 @@ export class UserRepository {
     const followeds = newUser.followeds.map((followed) => followed.id);
     const eventSub = newUser.eventSub.map((event) => event.id);
     const reviews = newUser.reviews.map((review) => review._id);
+    const preferits = newUser.preferits.map((event) => event.id);
 
     await UserModel.findByIdAndUpdate(newUser.id, {
       ...newUser,
@@ -130,6 +143,7 @@ export class UserRepository {
       followeds,
       eventSub,
       reviews,
+      preferits,
     });
   }
 

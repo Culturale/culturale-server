@@ -89,30 +89,13 @@ export class EventRepository {
 
   
   public static async getEventsWithinMapArea(lat1: number, lon1: number, lat2: number, lon2: number): Promise<IEvent[]> {
-    const lat3 = lat1;
-    const lon3 = lon2;
-    const lat4 = lat2;
-    const lon4 = lon1;
-  
-    const polygon = {
-      type: 'Polygon',
-      coordinates: [
-        [
-          [lon1, lat1],
-          [lon2, lat2],
-          [lon3, lat3],
-          [lon4, lat4],
-          [lon1, lat1]
-        ]
-      ]
-    };
-  
+    console.log(typeof lat1, lat1);
+    console.log(typeof lon1, lon1);
+    console.log(typeof lat2, lat2);
+    console.log(typeof lon2, lon2);
     const eventDocuments = await EventModel.find({
-      location: {
-        $geoWithin: {
-          $geometry: polygon
-        }
-      }
+      lat: { $gte: lat1, $lte: lat2 },
+      long: { $gte: lon1, $lte: lon2 }
     })
       .populate({
         path: 'participants',
@@ -129,9 +112,10 @@ export class EventRepository {
       const event = new Event(doc);
       events.push(event);
     }
-  
+    console.log(events);
     return events;
   }
+  
   
 
   public static async find(filter: EventFilters): Promise<IEvent[]> {

@@ -19,7 +19,7 @@ eventRouter.get('/events/:id/messages', EventController.getAllMessages);
 eventRouter.get('/events', EventController.getAllEvents);
 
 eventRouter.get('/events/50', EventController.getEventsPag);
-eventRouter.get('/events/mapa/:lat1/:lon1/:lat2/:lon2', EventController.getEventsMapa);
+eventRouter.get('/events/mapa', EventController.getEventsMapa);
 
 
 //GET /events/filters

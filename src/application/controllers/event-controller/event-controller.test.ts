@@ -5,9 +5,11 @@ import { request as expressRequest } from 'express';
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import mongoose from 'mongoose';
 
+
 import { UserController } from '../user-controller';
 
 import { EventController } from './event-controller';
+
 
 dotenv.config();
 
@@ -120,6 +122,8 @@ describe('Event Controller', function () {
     return eventId;
   };
 
+
+  
   describe('add message event', function () {
     let eventId: string;
 

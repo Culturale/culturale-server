@@ -1,6 +1,7 @@
 import express from 'express';
 
 import { EventController } from '~/application';
+import { deleteReview } from '~/application/use-cases/deleteReview';
 import { makeReview } from '~/application/use-cases/makeEventReview';
 import { createEventDto, editEventDTO, addParticipantDto} from '~/infrastructure/dtos';
 import { makeReviewDTO } from '~/infrastructure/dtos/make-review.dto';
@@ -32,5 +33,10 @@ eventRouter.get('/events/categoria/:categoria', EventController.getEventbycatego
 
 eventRouter.post('/events/edit', editEventDTO, EventController.editEvent );
 
-eventRouter.post('/events/addReview', makeReviewDTO, makeReview );
+eventRouter.post('/events/addReview', makeReviewDTO, makeReview);
+
+eventRouter.get('/events/getReportedReviews', EventController.getReportedReviews);
+eventRouter.put('/events/reportReview', EventController.reportReview);
+eventRouter.delete('/events/deleteReview', deleteReview); 
+
 eventRouter.post('/events/delete', EventController.deleteEvent );

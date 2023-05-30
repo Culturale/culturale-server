@@ -12,6 +12,7 @@ User {
   "phoneNumber": "test-phone",
   "preferits": [],
   "profilePicture": "test-profilePicture",
+  "report": 0,
   "reviews": [],
   "username": "test-username",
   "usertype": "test-type",

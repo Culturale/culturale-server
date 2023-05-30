@@ -35,10 +35,13 @@ export interface IEvent {
   chat: IChat;
   valoracions: IReview[];
   participants: IUser[];
+  assistents?: IUser[];
   categoria: CategoriaEnum;
 
   updateValoracions: (newValoracio: IReview) => void;
+
   addParticipant: (newParticipant: IUser) => void;
+  addAssistent: (newAssistent: IUser) => void;
   deleteParticipant: (participant: IUser) => void;
 
   readonly id: string;

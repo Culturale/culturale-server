@@ -7,5 +7,6 @@ export * from './create-message.dto';
 export * from './login.dto';
 export * from './follow.dto';
 export * from './addParticipant.dto';
+export * from './addAssistent.dto';
 export * from './changePassword.dto';
 export * from './addFavourite.dto';

@@ -277,6 +277,61 @@ describe('Event Routes', function () {
     });
   });
 
+  describe('POST /events/newAssistent', function () {
+      let eventId: string;
+      beforeEach(async function () {
+        const createRes = await request(app)
+          .post('/events/create')
+          .send({
+            codi: 12348173049,
+            denominacio: 'test-event',
+            descripcio: 'test-description',
+            dataIni: new Date(1),
+            dataFi: new Date(2),
+            horari: '2h',
+            adress: 'Passeig de Gràcia',
+            url: 'https://test-url.com',
+            lat: 123.456,
+            long: 789.012,
+            price: '12 €',
+            photo: 'test-photo.jpg',
+            categoria: 'agenda:categories/teatre'
+          });
+        eventId = await createRes.body.event._id;
+        await request(app).post('/users/create').send({
+          email: 'email@example.com',
+          password: 'test-password',
+          username: 'test-username',
+          name: 'test-name',
+          profilePicture: 'test-imageurl',
+          phoneNumber: '000000000',
+          usertype: 'usuario',
+        });
+      });
+
+      it('if the payload is correct it adds the assistent', async function () {
+        const res = await request(app).post('/events/' + eventId + '/newAssistent').send({
+          username: 'test-username',
+          user_lat: 123.456,
+          user_long: 789.012
+        });
+
+        expect(res.statusCode).toBe(200);
+        expect(res.body.message).toBe('Asistente añadido correctamente');
+      });
+
+      it('if the payload is incorrect it sends the error', async function () {
+        const res = await request(app).post('/events/645ac0f30679a1fcb116d440/newAssistent').send({
+          username: 'test-username2',
+          user_lat: 123.456,
+          user_long: 789.012
+        });
+
+        expect(res.statusCode).toBe(404);
+        expect(res.body.message).toBe('Usuario o evento no encontrado');
+      });
+    });
+
   describe('DELETE /events/deleteParticipant', function () {
     let eventId: string;
     beforeEach(async function () {

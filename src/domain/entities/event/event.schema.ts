@@ -38,6 +38,11 @@ const EventSchema = new Schema({
     type: [Schema.Types.ObjectId],
     model: 'User',
   },
+  assistents: {
+    required: false,
+    type: [Schema.Types.ObjectId],
+    model: 'User',
+  },
   lat: { required: true, type: Number },
   long: { required: true, type: Number },
   price: { required: false, type: String },

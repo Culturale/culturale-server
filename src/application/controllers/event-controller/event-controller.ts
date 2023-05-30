@@ -22,7 +22,7 @@ import {
 import type {
   CreateEventDto,
   AddParticipantDto,
-  EditEventDTO,
+  EditEventDTO
 } from '~/infrastructure';
 
 interface EventFilters {

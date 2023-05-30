@@ -37,6 +37,7 @@ export type EventProps = {
   photo?: string;
   chat?: IChat;
   participants?: IUser[];
+  assistents?: IUser[];
   valoracions?: IReview[];
 };
 
@@ -56,6 +57,7 @@ export class Event implements IEvent {
   public photo?: string;
   public chat: IChat;
   public participants: IUser[];
+  public assistents: IUser[];
   public valoracions: IReview[];
   public categoria: Categoria;
 
@@ -77,6 +79,7 @@ export class Event implements IEvent {
       photo,
       chat,
       participants,
+      assistents,
       categoria,
     } = props;
     this._id = _id;
@@ -94,6 +97,7 @@ export class Event implements IEvent {
     this.photo = photo;
     this.chat = chat;
     this.participants = participants || [];
+    this.assistents = assistents || [];
     this.valoracions = valoracions || [];
     this.categoria = categoria;
   }
@@ -101,6 +105,11 @@ export class Event implements IEvent {
   public addParticipant(newParticipant: IUser): void {
     const newParticipants = [...this.participants, newParticipant];
     this.participants = newParticipants;
+  }
+
+  public addAssistent(newAssistent: IUser): void {
+    const newAssistents = [...this.assistents, newAssistent];
+    this.assistents = newAssistents;
   }
 
   public deleteParticipant(newParticipant: IUser): void {
@@ -115,6 +124,11 @@ export class Event implements IEvent {
     const ids = this.participants.map((participant) => participant.username);
     return ids;
   }
+
+  public get assistentsUsernames(): string[] {
+      const ids = this.assistents.map((assistent) => assistent.username);
+      return ids;
+    }
 
   public updateValoracions(newValoracio: IReview): void {
     const newValoracions = [...this.valoracions, newValoracio];

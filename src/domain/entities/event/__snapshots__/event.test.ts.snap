@@ -4,6 +4,7 @@ exports[`Event Entity can be created 1`] = `
 Event {
   "_id": undefined,
   "adress": "test-adress",
+  "assistents": [],
   "categoria": "agenda:categories/festes",
   "chat": undefined,
   "codi": 20211006023,

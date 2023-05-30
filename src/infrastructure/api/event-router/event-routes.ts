@@ -1,9 +1,10 @@
 import express from 'express';
 
 import { EventController } from '~/application';
+import { checkin } from '~/application/use-cases/check-in';
 import { deleteReview } from '~/application/use-cases/deleteReview';
 import { makeReview } from '~/application/use-cases/makeEventReview';
-import { createEventDto, editEventDTO, addParticipantDto} from '~/infrastructure/dtos';
+import { createEventDto, editEventDTO, addParticipantDto, addAssistentDto} from '~/infrastructure/dtos';
 import { makeReviewDTO } from '~/infrastructure/dtos/make-review.dto';
 
 export const eventRouter = express.Router();
@@ -13,6 +14,8 @@ eventRouter.post('/events/create', createEventDto, EventController.createEvent);
 eventRouter.post('/events/newMessage', EventController.addMessageEvent);
 
 eventRouter.post('/events/newParticipant', addParticipantDto, EventController.addParticipant);
+
+eventRouter.post('/events/:id/newAssistent', addAssistentDto, checkin);
 
 eventRouter.delete('/events/deleteParticipant', EventController.deleteParticipant);
 

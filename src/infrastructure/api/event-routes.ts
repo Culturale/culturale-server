@@ -17,8 +17,5 @@ eventRouter.get('/test-event', (req: Request, res: Response) => {
 eventRouter.post('/events/create', createEventDto, EventController.createEvent);
 
 eventRouter.get('/events', EventController.getAllEvents);
-eventRouter.get('/events/50', EventController.getEventsPag);
-eventRouter.get('/events/mapa', EventController.getEventsMapa);
-
 
 eventRouter.post('/events/delete', EventController.deleteEvent );

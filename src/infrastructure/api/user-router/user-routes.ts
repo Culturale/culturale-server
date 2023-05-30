@@ -1,9 +1,8 @@
 import express from 'express';
 
 import { UserController } from '~/application/controllers';
-import { logIn, follow} from '~/application/use-cases';
-import { like } from '~/application/use-cases/like-event/like';
 import { logIn, follow, deleteUser} from '~/application/use-cases';
+import { like } from '~/application/use-cases/like-event/like';
 import { unfollow } from '~/application/use-cases/unfollow-user/unfollow';
 import { createUserDto, editUserDTO, loginDto, followDto, changePasswordDto, addFavouriteDto} from '~/infrastructure/dtos';
 import { authMiddleware } from '~/infrastructure/middlewares';

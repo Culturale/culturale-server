@@ -107,16 +107,22 @@ export class EventController {
   
   public static async getEventsMapa(req: Request, res: Response): Promise<void> {
     try {
-      const { lat1, lon1, lat2, lon2 } = req.body;
+      const { lat1, lon1, lat2, lon2 } =  req.params;
   
       // Verificar que se hayan proporcionado las coordenadas
       if (!lat1 || !lon1 || !lat2 || !lon2) {
         res.status(400).json({ error: 'Falta información de coordenadas' });
         return;
       }
+
+      const lat11 = parseFloat(lat1);
+      const lon11 = parseFloat(lon1);
+      const lat22 = parseFloat(lat2);
+      const lon22 = parseFloat(lon2);
+
   
       // Obtener los eventos dentro del área del mapa
-      const events: IEvent[] = await EventRepository.getEventsWithinMapArea(lat1, lon1, lat2, lon2);
+      const events: IEvent[] = await EventRepository.getEventsWithinMapArea(lat11, lon11, lat22, lon22);
   
       // Ordenar los eventos por la cantidad de participantes de forma descendente
       events.sort((a, b) => b.participants.length - a.participants.length);

@@ -89,10 +89,6 @@ export class EventRepository {
 
   
   public static async getEventsWithinMapArea(lat1: number, lon1: number, lat2: number, lon2: number): Promise<IEvent[]> {
-    console.log(typeof lat1, lat1);
-    console.log(typeof lon1, lon1);
-    console.log(typeof lat2, lat2);
-    console.log(typeof lon2, lon2);
     const eventDocuments = await EventModel.find({
       lat: { $gte: lat1, $lte: lat2 },
       long: { $gte: lon1, $lte: lon2 }
@@ -112,7 +108,7 @@ export class EventRepository {
       const event = new Event(doc);
       events.push(event);
     }
-    console.log(events);
+ 
     return events;
   }
   

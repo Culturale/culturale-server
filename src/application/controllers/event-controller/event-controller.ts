@@ -124,11 +124,6 @@ export class EventController {
         return;
       }
 
-      console.log(typeof lat1, lat1);
-      console.log(typeof lon1, lon1);
-      console.log(typeof lat2, lat2);
-      console.log(typeof lon2, lon2);
-
 
       if (typeof lat1 !== 'number' || typeof lon1 !== 'number' || typeof lat2 !== 'number' || typeof lon2 !== 'number') {
         res.status(400).json({ error: 'Valores de coordenadas no válidos 2' });

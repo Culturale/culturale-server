@@ -91,7 +91,7 @@ export class EventController {
   ): Promise<void> {
     try {
       const page: number = parseInt(req.query.page as string) || 1;
-      const limit = 50;
+      const limit = 15;
       const skip: number = (page - 1) * limit;
   
       const events: IEvent[] = await EventRepository.getEventsPag(skip, limit);

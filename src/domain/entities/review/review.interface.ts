@@ -6,6 +6,6 @@ export interface IReview {
   eventId: string;
   puntuation: number;
   comment?: string;
-
+  report: number; 
   readonly id: string;
 }

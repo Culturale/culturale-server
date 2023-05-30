@@ -17,7 +17,10 @@ export interface IUser {
   eventSub?: IEvent[];
   reviews?: IReview[];
   preferits?: IEvent[];
+  report: number;
 
+
+  
   updateEventSub: (newEvent: IEvent) => void;
   deleteEventSub: (newEvent: IEvent) => void;
   updateValoracions: (review: IReview) => void;

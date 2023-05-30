@@ -32,6 +32,8 @@ describe('Make Review use case', function () {
         horari: '2h',
         adress: 'Passeig de Gràcia',
         url: 'https://test-url.com',
+        lat: 0,
+        long: 0,
         categoria: 'agenda:categories/festes',
     };
     const res = {} as unknown as Response;
@@ -56,6 +58,8 @@ describe('Make Review use case', function () {
           horari: '2h',
           adress: 'Passeig de Gràcia',
           url: 'https://test-url.com',
+          lat: 0,
+          long: 0,
           categoria: 'agenda:categories/festes',
         }),
       });
@@ -110,6 +114,8 @@ describe('Make Review use case', function () {
         horari: '2h',
         adress: 'Passeig de Gràcia',
         url: 'https://test-url.com',
+        lat: 0,
+        long: 0,
         categoria: 'agenda:categories/festes',
       };
       // Crear el evento y guardar su id en la variable eventId
@@ -142,8 +148,7 @@ describe('Make Review use case', function () {
      reviewRes.json = jest.fn();
      reviewRes.status = jest.fn(() => reviewRes);
      reviewRes.setHeader = jest.fn();
-      await makeReview(reqMessage, reviewRes);
-  
+     await makeReview(reqMessage, reviewRes);
       expect(reviewRes.status).toBeCalledWith(200);
       expect(reviewRes.json).toBeCalledWith(expect.objectContaining({
         message: 'Valoracion añadida correctamente',
@@ -178,6 +183,8 @@ describe('Make Review use case', function () {
         horari: '2h',
         adress: 'Passeig de Gràcia',
         url: 'https://test-url.com',
+        lat: 0,
+        long: 0,
         categoria: 'agenda:categories/festes',
       };
       // Crear el evento y guardar su id en la variable eventId

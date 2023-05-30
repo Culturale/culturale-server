@@ -1,0 +1,66 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: culturale-server
+  labels:
+    app: culturale
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: culturale
+  template:
+    metadata:
+      labels:
+        app: culturale
+    spec:
+      containers:
+        - name: culturale
+          image: culturale/culturale-api:latest
+          ports:
+          - containerPort: 3000
+          env:
+          - name: DB_HOST
+            valueFrom:
+              configMapKeyRef:
+                name: mongo-config
+                key: mongo-url
+          - name: DB_USER
+            valueFrom:
+              secretKeyRef:
+                name: mongo-secret
+                key: mongo-user
+          - name: DB_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: mongo-secret
+                key: mongo-password
+          - name: DB_NAME
+            valueFrom:
+              configMapKeyRef:
+                name: server-config
+                key: DB_NAME
+          - name: DB_PORT
+            valueFrom:
+              configMapKeyRef:
+                name: server-config
+                key: DB_PORT
+          - name: NODE_LOCAL_PORT
+            valueFrom:
+              configMapKeyRef:
+                name: server-config
+                key: NODE_LOCAL_PORT
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: culturale-service
+spec:
+  type: NodePort
+  selector:
+    app: culturale
+  ports:
+    - protocol: TCP
+      port: 3000
+      targetPort: 3000
+      nodePort:  30100

@@ -1,8 +1,8 @@
 import express from 'express';
 
 import { UserController } from '~/application/controllers';
-import { logIn, follow} from '~/application/use-cases';
 import { like } from '~/application/use-cases/like-event/like';
+import { logIn, follow, deleteUser} from '~/application/use-cases';
 import { unfollow } from '~/application/use-cases/unfollow-user/unfollow';
 import { createUserDto, editUserDTO, loginDto, followDto, changePasswordDto, addFavouriteDto} from '~/infrastructure/dtos';
 import { authMiddleware } from '~/infrastructure/middlewares';
@@ -12,6 +12,10 @@ export const userRouter = express.Router();
 userRouter.post('/users/create', createUserDto, UserController.createUser);
 
 userRouter.get('/users', authMiddleware, UserController.getAllUsers);
+
+userRouter.get('/users/reported', UserController.getReportedUsers);
+
+userRouter.put('/users/reportUser', UserController.ReportUser);
 
 userRouter.post('/users/login', loginDto, logIn);
 
@@ -26,3 +30,6 @@ userRouter.delete('/users/deleteFollower', followDto, unfollow); //falta test ru
 userRouter.post('/users/addFavourite', addFavouriteDto, like); //falta test tot
 
 userRouter.patch('/users/:id/changePassword', changePasswordDto, UserController.changePassword);
+
+userRouter.delete('/users/deleteUser', deleteUser); 
+

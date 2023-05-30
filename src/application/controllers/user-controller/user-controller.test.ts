@@ -139,9 +139,94 @@ describe('User Controller', function () {
           reviews: [],
           followeds: [],
           eventSub: [],
+          report: 0,
         }),
       });
     });
+
+    const createTestUser = async (req: Request): Promise<string> => {
+      const res = {} as unknown as Response;
+      let userId: string;
+    
+      res.json = jest.fn().mockImplementation((data: any) => {
+        userId = data.user.id;
+      });
+      res.status = jest.fn().mockReturnValue(res);
+      res.setHeader = jest.fn();
+    
+      await UserController.createUser(req, res);
+      return userId;
+    };
+
+    describe('report user', function () {
+     
+      let userId: string;
+    
+      const expressRequest: Request = {} as Request;
+      const resMessage = {} as unknown as Response;
+      resMessage.json = jest.fn();
+      resMessage.status = jest.fn(() => resMessage);
+      resMessage.setHeader = jest.fn();
+    
+      beforeEach(async function () {
+        const reqUser: Request = expressRequest;
+        reqUser.body = {
+          username: 'userToReport',
+          name: 'Test User',
+          password: '1234',
+          email: 'test@test.com',
+          profilePicture: 'test.png',
+          phoneNumber: '123456789',
+          usertype: 'usuario',
+        };
+    
+        userId = await createTestUser(reqUser);
+      });
+    
+      it('reports the user', async function () {
+        const req : Request = JSON.parse(JSON.stringify(expressRequest));
+        req.body = { username: 'userToReport' };
+        const res = {} as unknown as Response;
+        res.json = jest.fn();
+        res.status = jest.fn(() => res);
+        res.setHeader = jest.fn();
+    
+        await UserController.ReportUser(req, res);
+    
+      
+        expect(res.status).toBeCalledWith(200);
+        expect(res.json).toBeCalledWith({
+          message: 'User reported',
+        });
+      });
+
+      it('deletes the user', async function () {
+        const req : Request = JSON.parse(JSON.stringify(expressRequest));
+        req.body = { id: userId };
+        const res = {} as unknown as Response;
+        res.json = jest.fn();
+        res.status = jest.fn(() => res);
+        res.setHeader = jest.fn();
+    
+        await UserController.deleteUser(req, res);
+    
+      
+        expect(res.status).toBeCalledWith(200);
+      });
+      it('gets reported users', async function () {
+        const req: Request = JSON.parse(JSON.stringify(expressRequest));
+        const res = {} as unknown as Response;
+        res.json = jest.fn();
+        res.status = jest.fn(() => res);
+        res.setHeader = jest.fn();
+    
+        await UserController.getReportedUsers(req, res);
+        expect(res.status).toBeCalledWith(200);
+      });
+
+
+    });
+    
 
     it('Returns error when no username exists', async function () {
       const editReq: Request = expressRequest;
@@ -164,6 +249,7 @@ describe('User Controller', function () {
       });
     });
   });
+
 
   describe('getUserForUsername', function () {
     const expressRequest: Request = {} as Request;
@@ -202,6 +288,7 @@ describe('User Controller', function () {
           followeds: [],
           reviews: [],
           eventSub: [],
+          report: 0,
         }),
       });
     });
@@ -296,8 +383,8 @@ describe('User Controller', function () {
 
     const reqAddFoll: Request = JSON.parse(JSON.stringify(expressRequest));
     reqAddFoll.body = {
-      username: 'user1', //usuaio al cual se le añade un nuevo follower
-      follower: 'user2', //nuevo segidor añadido a ls lista
+      username: 'user2', //usuaio al cual se le añade un nuevo follower
+      follower: 'user1', //nuevo segidor añadido a ls lista
     };
     const resAddFoll = {} as unknown as Response;
     resAddFoll.json = jest.fn();

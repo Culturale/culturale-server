@@ -19,6 +19,8 @@ export type UserProps = {
   eventSub?: IEvent[];
   reviews?: IReview[];
   preferits?: IEvent[];
+  report?: number;
+
 };
 
 export class User implements IUser {
@@ -35,6 +37,8 @@ export class User implements IUser {
   public eventSub: IEvent[];
   public reviews: IReview[];
   public preferits: IEvent[];
+  public report: number;
+
 
   constructor(props: UserProps) {
     const {
@@ -51,6 +55,7 @@ export class User implements IUser {
       eventSub,
       reviews,
       preferits,
+      report,
     } = props;
     this._id = _id;
     this.username = username;
@@ -65,6 +70,8 @@ export class User implements IUser {
     this.eventSub = eventSub || [];
     this.reviews = reviews || [];
     this.preferits = preferits || [];
+    this.report = report;
+
   }
 
   public get id(): string {

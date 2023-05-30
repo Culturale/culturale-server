@@ -15,6 +15,8 @@ const UserSchema = new Schema({
   eventSub: [{ required: false, type: Schema.Types.ObjectId, model: 'Event' }],
   reviews: [{ required: false, type: Schema.Types.ObjectId, model: 'Review' }],
   preferits: [{required: false, type: Schema.Types.ObjectId, model: 'Event' }],
+  report: { required: true, type: Number, default: 0 },
+
 });
 
 const UserModel = model<IUser>('User', UserSchema);

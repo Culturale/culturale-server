@@ -20,6 +20,7 @@ export type UserProps = {
   reviews?: IReview[];
   preferits?: IEvent[];
   report?: number;
+
 };
 
 export class User implements IUser {
@@ -70,6 +71,7 @@ export class User implements IUser {
     this.reviews = reviews || [];
     this.preferits = preferits || [];
     this.report = report;
+
   }
 
   public get id(): string {
@@ -129,12 +131,14 @@ export class User implements IUser {
     }
   }
 
+
   public deleteFavourite(newEvent: IEvent): void {
     const updatedEvents = this.preferits.filter(
       (preferits) => preferits.id !== newEvent.id,
     );
     this.preferits = updatedEvents;
   }
+
 
   public get followersUsernames(): string[] {
     const ids = this.followers.map((follower) => follower.username);

@@ -67,8 +67,16 @@ describe('User Controller', function () {
     res.setHeader = jest.fn();
 
     beforeEach(async function () {
+      // Establecer los parámetros de búsqueda según los filtros que deseas probar
+      req.query = {
+        username: 'test-username',
+        name: 'test-name',
+        phoneNumber: '000000000',
+      };
+  
       await UserController.getAllUsers(req, res);
     });
+  
 
     it('returns all users', function () {
       expect(res.status).toBeCalledWith(200);

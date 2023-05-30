@@ -1,3 +1,5 @@
+import type { FilterQuery } from 'mongoose';
+
 import { ReviewModel } from '~/domain/entities';
 import { EventModel } from '~/domain/entities/event';
 import type { IUser } from '~/domain/entities/user';
@@ -17,8 +19,8 @@ export class UserRepository {
     return newUser;
   }
 
-  public static async getAllUsers(): Promise<IUser[]> {
-    const userDocs = await UserModel.find()
+  public static async getAllUsers(filter: FilterQuery<IUser> = {}): Promise<IUser[]> {
+    const userDocs = await UserModel.find(filter)
       .populate({
         path: 'eventSub',
         model: EventModel,

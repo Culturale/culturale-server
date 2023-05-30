@@ -64,6 +64,56 @@ export class EventRepository {
       return events;
   }
 
+  public static async getEventsPag(skip: number, limit: number): Promise<IEvent[]> {
+    const eventDocuments = await EventModel.find()
+      .populate({
+        path: 'participants',
+        model: 'User',
+      })
+      .populate({
+        path: 'valoracions',
+        model: 'Review',
+      })
+      .skip(skip)
+      .limit(limit);
+  
+    const events: IEvent[] = [];
+  
+    for (const doc of eventDocuments) {
+      const event = new Event(doc);
+      events.push(event);
+    }
+    
+    return events;
+  }
+
+  
+  public static async getEventsWithinMapArea(lat1: number, lon1: number, lat2: number, lon2: number): Promise<IEvent[]> {
+    const eventDocuments = await EventModel.find({
+      lat: { $gte: lat1, $lte: lat2 },
+      long: { $gte: lon1, $lte: lon2 }
+    })
+      .populate({
+        path: 'participants',
+        model: 'User',
+      })
+      .populate({
+        path: 'valoracions',
+        model: 'Review',
+      });
+  
+    const events: IEvent[] = [];
+  
+    for (const doc of eventDocuments) {
+      const event = new Event(doc);
+      events.push(event);
+    }
+ 
+    return events;
+  }
+  
+  
+
   public static async find(filter: EventFilters): Promise<IEvent[]> {
     const eventDocument = await EventModel.find(filter)
       .populate({ 

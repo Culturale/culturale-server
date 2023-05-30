@@ -18,7 +18,9 @@ eventRouter.delete('/events/deleteParticipant', EventController.deleteParticipan
 eventRouter.get('/events/:id/messages', EventController.getAllMessages);
 eventRouter.get('/events', EventController.getAllEvents);
 
-//GET /event/denominacio/:denominacio
+//GET /events/filters
+eventRouter.get('/events/filters', EventController.getEventsByFilters);
+
 eventRouter.get('/events/denominacio/:denominacio', EventController.getEventbydenominacio);
 
 //GET /event/dataIni/:dataIni

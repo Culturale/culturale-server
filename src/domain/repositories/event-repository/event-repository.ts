@@ -6,6 +6,29 @@ import { EventModel, Event } from '~/domain/entities/event';
 import type { CreateEventDto } from '~/infrastructure';
 import type { MongoId } from '~/types/types';
 
+type CategoriaEnum =
+  | 'agenda:categories/activitats-virtuals'
+  | 'agenda:categories/exposicions'
+  | 'agenda:categories/concerts'
+  | 'agenda:categories/teatre'
+  | 'agenda:categories/festivals-i-mostres'
+  | 'agenda:categories/rutes-i-visites'
+  | 'agenda:categories/infantil'
+  | 'agenda:categories/festes'
+  | 'agenda:categories/conferencies'
+  | 'agenda:categories/fires-i-mercats'
+  | 'agenda:categories/dansa'
+  | 'agenda:categories/cicles';
+
+interface EventFilters {
+  denominacio?: { $regex: string, $options: 'i' };
+  categoria?:  { $eq: CategoriaEnum};
+  dataIni?: { $gte: Date };
+  dataFi?: { $lte: Date };
+  horari?: string;
+  price?: { $lte: string};
+}
+
 export class EventRepository {
   public static async addEvent(
     event: CreateEventDto,
@@ -23,6 +46,27 @@ export class EventRepository {
   public static async getAllEvents(): Promise<IEvent[]> {
     const eventDocument = await EventModel.find()
       .populate({
+        path: 'participants',
+        model: 'User',
+      })
+      .populate({
+        path: 'valoracions',
+        model: 'Review',
+      });
+
+      const events: IEvent[] = [];
+
+      for (const doc of eventDocument) {
+        const event = new Event(doc);
+        events.push(event);
+      }
+      
+      return events;
+  }
+
+  public static async find(filter: EventFilters): Promise<IEvent[]> {
+    const eventDocument = await EventModel.find(filter)
+      .populate({ 
         path: 'participants',
         model: 'User',
       })
@@ -92,7 +136,24 @@ export class EventRepository {
   }
 
   public static async getEventbydenominacio(name: String): Promise<IEvent[]> {
-    return await EventModel.find({ denominacio: name });
+    const eventDocument = await EventModel.find({ denominacio: name })
+    .populate({
+      path: 'participants',
+      model: 'User',
+    })
+    .populate({
+      path: 'valoracions',
+      model: 'Review',
+    });
+
+    const events: IEvent[] = [];
+
+    for (const doc of eventDocument) {
+      const event = new Event(doc);
+      events.push(event);
+    }
+    
+    return events;
   }
 
   public static async getEventbydataIni(data: Date): Promise<IEvent[]> {

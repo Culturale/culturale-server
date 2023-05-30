@@ -64,6 +64,76 @@ export class EventRepository {
       return events;
   }
 
+  public static async getEventsPag(skip: number, limit: number): Promise<IEvent[]> {
+    const eventDocuments = await EventModel.find()
+      .populate({
+        path: 'participants',
+        model: 'User',
+      })
+      .populate({
+        path: 'valoracions',
+        model: 'Review',
+      })
+      .skip(skip)
+      .limit(limit);
+  
+    const events: IEvent[] = [];
+  
+    for (const doc of eventDocuments) {
+      const event = new Event(doc);
+      events.push(event);
+    }
+    
+    return events;
+  }
+
+  
+  public static async getEventsWithinMapArea(lat1: number, lon1: number, lat2: number, lon2: number): Promise<IEvent[]> {
+    const lat3 = lat1;
+    const lon3 = lon2;
+    const lat4 = lat2;
+    const lon4 = lon1;
+  
+    const polygon = {
+      type: 'Polygon',
+      coordinates: [
+        [
+          [lon1, lat1],
+          [lon2, lat2],
+          [lon3, lat3],
+          [lon4, lat4],
+          [lon1, lat1]
+        ]
+      ]
+    };
+  
+    const eventDocuments = await EventModel.find({
+      location: {
+        $geoWithin: {
+          $geometry: polygon
+        }
+      }
+    })
+      .populate({
+        path: 'participants',
+        model: 'User',
+      })
+      .populate({
+        path: 'valoracions',
+        model: 'Review',
+      });
+  
+    const events: IEvent[] = [];
+  
+    for (const doc of eventDocuments) {
+      const event = new Event(doc);
+      events.push(event);
+    }
+  
+    return events;
+  }
+  
+
   public static async find(filter: EventFilters): Promise<IEvent[]> {
     const eventDocument = await EventModel.find(filter)
       .populate({ 

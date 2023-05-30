@@ -1,4 +1,5 @@
 import type { Request, Response } from 'express';
+import shuffle from 'lodash/shuffle';
 
 import type {
   IUser,
@@ -77,6 +78,61 @@ export class EventController {
       res.json({
         error: e,
       });
+    }
+  }
+
+  public static async getEventsPag(
+    req: Request,
+    res: Response
+  ): Promise<void> {
+    try {
+      const page: number = parseInt(req.query.page as string) || 1;
+      const limit = 50;
+      const skip: number = (page - 1) * limit;
+  
+      const events: IEvent[] = await EventRepository.getEventsPag(skip, limit);
+  
+      res.status(200);
+      res.json({
+        events,
+      });
+    } catch (e) {
+      res.status(500);
+      res.json({
+        error: e,
+      });
+    }
+  }
+  
+  
+  public static async getEventsMapa(req: Request, res: Response): Promise<void> {
+    try {
+      const { lat1, lon1, lat2, lon2 } = req.body;
+  
+      // Verificar que se hayan proporcionado las coordenadas
+      if (!lat1 || !lon1 || !lat2 || !lon2) {
+        res.status(400).json({ error: 'Falta información de coordenadas' });
+        return;
+      }
+  
+      // Obtener los eventos dentro del área del mapa
+      const events: IEvent[] = await EventRepository.getEventsWithinMapArea(lat1, lon1, lat2, lon2);
+  
+      // Ordenar los eventos por la cantidad de participantes de forma descendente
+      events.sort((a, b) => b.participants.length - a.participants.length);
+  
+      const maxParticipants = events[0]?.participants.length;
+
+      // Filtrar los eventos con el número máximo de participantes
+      const maxParticipantEvents = events.filter(event => event.participants.length === maxParticipants);
+  
+      // Si hay más de 10 eventos con el mismo número de participantes, seleccionar aleatoriamente 10
+      const topEvents = maxParticipantEvents.length > 10 ? shuffle(maxParticipantEvents).slice(0, 10) : maxParticipantEvents;
+  
+  
+      res.status(200).json({ events: topEvents });
+    } catch (e) {
+      res.status(500).json({ error: e });
     }
   }
   

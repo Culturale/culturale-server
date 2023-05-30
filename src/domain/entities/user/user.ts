@@ -125,11 +125,12 @@ export class User implements IUser {
     this.followeds = updatedFolloweds;
   }
   public updateEventPref(newEvent: IEvent): void {
-    if (!this.preferits.find((preferits) => preferits.id !== newEvent.id)) {
+    if (!this.preferits.find((preferit) => preferit.id === newEvent.id)) {
       const newEvents = [...this.preferits, newEvent];
       this.preferits = newEvents;
     }
   }
+  
 
 
   public deleteFavourite(newEvent: IEvent): void {

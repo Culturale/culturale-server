@@ -25,16 +25,32 @@ export class UserController {
     }
   }
 
-  public static async getAllUsers(_req: Request, res: Response): Promise<void> {
+  public static async getAllUsers(req: Request, res: Response): Promise<void> {
     try {
-      const users: IUser[] = await UserRepository.getAllUsers();
-      res.status(200);
-      res.json({
+      const { username, name, phoneNumber } = req.query;
+
+      // Construir el filtro basado en los parámetros de búsqueda
+      const filtro: Partial<IUser> = {};
+
+      if (username) {
+        filtro.username = username.toString();
+      }
+
+      if (name) {
+        filtro.name = name.toString();
+      }
+
+      if (phoneNumber) {
+        filtro.phoneNumber = phoneNumber.toString();
+      }
+
+      const users: IUser[] = await UserRepository.getAllUsers(filtro);
+
+      res.status(200).json({
         users,
       });
     } catch (e) {
-      res.status(500);
-      res.json({
+      res.status(500).json({
         error: e,
       });
     }

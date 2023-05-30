@@ -321,4 +321,41 @@ export class UserController {
       });
     }
   }
+
+
+  public static async deleteFavourite(
+    req: Request,
+    res: Response,
+  ): Promise<void> {
+    try {
+      const codiEvent = req.body.id;
+      const username = req.body.username;
+      const event: IEvent = await EventRepository.findEvent(codiEvent);
+      const user: IUser = await UserRepository.findByUsername(username);
+      if (!event || !user) {
+        res.status(404);
+        res.json({
+          message: 'user or event not found',
+        });
+        return;
+      }
+
+      const castedUser = new User(user as UserProps);
+      castedUser.deleteFavourite(event);
+
+      await UserRepository.editarUsuari(castedUser);
+
+      res.status(200);
+      res.json({
+        message: 'Evente eliminado de favoritos correctamente',
+        preferits: user.preferits,
+      });
+    } catch (e) {
+      res.status(500);
+      res.json({
+        error: e,
+      });
+    }
+  }
+
 }

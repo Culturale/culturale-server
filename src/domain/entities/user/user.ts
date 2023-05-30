@@ -131,6 +131,15 @@ export class User implements IUser {
     }
   }
 
+
+  public deleteFavourite(newEvent: IEvent): void {
+    const updatedEvents = this.preferits.filter(
+      (preferits) => preferits.id !== newEvent.id,
+    );
+    this.preferits = updatedEvents;
+  }
+
+
   public get followersUsernames(): string[] {
     const ids = this.followers.map((follower) => follower.username);
     return ids;

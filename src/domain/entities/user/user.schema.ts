@@ -14,9 +14,9 @@ const UserSchema = new Schema({
   followeds: [{ required: false, type: Schema.Types.ObjectId, model: 'User' }],
   eventSub: [{ required: false, type: Schema.Types.ObjectId, model: 'Event' }],
   reviews: [{ required: false, type: Schema.Types.ObjectId, model: 'Review' }],
-  preferits: [{required: false, type: Schema.Types.ObjectId, model: 'Event' }],
+  preferits: [{ required: false, type: Schema.Types.ObjectId, model: 'Event' }],
   report: { required: true, type: Number, default: 0 },
-
+  stripeCustomerId: { required: false, type: String },
 });
 
 const UserModel = model<IUser>('User', UserSchema);

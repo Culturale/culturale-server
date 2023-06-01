@@ -18,9 +18,8 @@ export interface IUser {
   reviews?: IReview[];
   preferits?: IEvent[];
   report: number;
+  stripeCustomerId?: string;
 
-
-  
   updateEventSub: (newEvent: IEvent) => void;
   deleteEventSub: (newEvent: IEvent) => void;
   updateValoracions: (review: IReview) => void;
@@ -29,6 +28,7 @@ export interface IUser {
   deleteFollowers: (follower: IUser) => void;
   deleteFolloweds: (followed: IUser) => void;
   updateEventPref: (newEvent: IEvent) => void;
+  setStripeCustomerId: (id: string) => void;
 
   readonly id: string;
 }

@@ -6,14 +6,32 @@ import type { IUser, UserProps } from '~/domain/entities/user';
 import { User } from '~/domain/entities/user';
 import { EventRepository } from '~/domain/repositories';
 import { UserRepository } from '~/domain/repositories/user-repository/user-repository';
-import type { ChangePasswordDto, AddFavouriteDto } from '~/infrastructure';
+import type {
+  ChangePasswordDto,
+  AddFavouriteDto,
+  CreateUserDto,
+} from '~/infrastructure';
+import { StripeService } from '~/infrastructure/services';
 
 export class UserController {
   public static async createUser(req: Request, res: Response): Promise<void> {
     try {
-      const user: IUser = req.body;
-      user.password = await bcrypt.hash(req.body.password, 10);
-      const userCreated = await UserRepository.addUser(user);
+      const createUserDto: CreateUserDto = req.body;
+      createUserDto.password = await bcrypt.hash(req.body.password, 10);
+      const stripe = new StripeService();
+      const { email, name, phoneNumber } = createUserDto;
+
+      const stripeCustomerId = await stripe.createCustomer(
+        email,
+        name,
+        phoneNumber,
+      );
+
+      const userCreated = await UserRepository.addUser({
+        ...createUserDto,
+        stripeCustomerId,
+      });
+
       res.status(200);
       res.json({
         message: 'user created',
@@ -58,7 +76,10 @@ export class UserController {
     }
   }
 
-  public static async getReportedUsers(_req: Request, res: Response): Promise<void> {
+  public static async getReportedUsers(
+    _req: Request,
+    res: Response,
+  ): Promise<void> {
     try {
       const users: IUser[] = await UserRepository.getReportedUsers();
       res.status(200);
@@ -76,15 +97,15 @@ export class UserController {
   //el test de este es el editar user
   public static async ReportUser(req: Request, res: Response): Promise<void> {
     try {
-    const username= req.body.username; //user_id del user que queremos bloquear
-    const userReported: IUser = await UserRepository.findByUsername(username);
-    const castedUser = new User(userReported as UserProps);
+      const username = req.body.username; //user_id del user que queremos bloquear
+      const userReported: IUser = await UserRepository.findByUsername(username);
+      const castedUser = new User(userReported as UserProps);
 
-   castedUser.report = castedUser.report + 1;
+      castedUser.report = castedUser.report + 1;
 
-    await UserRepository.editarUsuari(castedUser);
+      await UserRepository.editarUsuari(castedUser);
 
-    res.status(200);
+      res.status(200);
       res.json({
         message: 'User reported',
       });
@@ -95,7 +116,6 @@ export class UserController {
       });
     }
   }
-
 
   public static async getUserForUsername(
     req: Request,
@@ -205,7 +225,7 @@ export class UserController {
     }
   }
 
-  public static async deleteUser (req: Request, res: Response): Promise<void> {
+  public static async deleteUser(req: Request, res: Response): Promise<void> {
     try {
       const id: string = req.body.id;
       await UserRepository.deleteUser(id);
@@ -285,11 +305,7 @@ export class UserController {
     }
   }
 
-
-  public static async addFavourite(
-    req: Request,
-    res: Response,
-  ): Promise<void> {
+  public static async addFavourite(req: Request, res: Response): Promise<void> {
     try {
       const addFavouriteDto: AddFavouriteDto = req.body;
       const { id, username } = addFavouriteDto;
@@ -304,7 +320,6 @@ export class UserController {
         });
         return;
       }
-
 
       user.updateEventPref(event);
 
@@ -321,7 +336,6 @@ export class UserController {
       });
     }
   }
-
 
   public static async deleteFavourite(
     req: Request,
@@ -357,5 +371,4 @@ export class UserController {
       });
     }
   }
-
 }

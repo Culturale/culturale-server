@@ -2,13 +2,12 @@ import type { FilterQuery } from 'mongoose';
 
 import { ReviewModel } from '~/domain/entities';
 import { EventModel } from '~/domain/entities/event';
-import type { IUser } from '~/domain/entities/user';
+import type { IUser, UserProps } from '~/domain/entities/user';
 import { UserModel } from '~/domain/entities/user';
 import { User } from '~/domain/entities/user';
-import type { CreateUserDto } from '~/infrastructure';
 
 export class UserRepository {
-  public static async addUser(user: CreateUserDto): Promise<IUser> {
+  public static async addUser(user: UserProps): Promise<IUser> {
     const newUser = await UserModel.create({
       ...user,
       followers: [],
@@ -16,10 +15,12 @@ export class UserRepository {
       eventSub: [],
       preferits: [],
     });
-    return newUser;
+    return new User(newUser);
   }
 
-  public static async getAllUsers(filter: FilterQuery<IUser> = {}): Promise<IUser[]> {
+  public static async getAllUsers(
+    filter: FilterQuery<IUser> = {},
+  ): Promise<IUser[]> {
     const userDocs = await UserModel.find(filter)
       .populate({
         path: 'eventSub',
@@ -48,7 +49,7 @@ export class UserRepository {
   }
 
   public static async getReportedUsers(): Promise<IUser[]> {
-    const userDocs = await UserModel.find( { report: { $gt: 0 } }  )
+    const userDocs = await UserModel.find({ report: { $gt: 0 } })
       .populate({
         path: 'eventSub',
         model: EventModel,
@@ -62,14 +63,14 @@ export class UserRepository {
         model: 'User',
       });
     const users: IUser[] = [];
-  
+
     for (const doc of userDocs) {
       const user = new User(doc);
       users.push(user);
     }
-  
+
     return users;
-  }  
+  }
 
   public static async findById(userId: string): Promise<IUser> {
     const userDoc = await UserModel.findById(userId)
@@ -118,7 +119,8 @@ export class UserRepository {
       .populate({
         path: 'followers',
         model: 'User',
-      }).populate({
+      })
+      .populate({
         path: 'preferits',
         model: 'Event',
       });
@@ -148,28 +150,25 @@ export class UserRepository {
   }
 
   public static async deleteUser(idUser: string): Promise<void> {
-    
     await EventModel.updateMany(
       { participants: idUser },
-      { $pull: { participants: idUser } }
+      { $pull: { participants: idUser } },
     );
-  
+
     await UserModel.updateMany(
       { followers: idUser },
-      { $pull: { followers: idUser } }
+      { $pull: { followers: idUser } },
     );
-  
+
     await UserModel.updateMany(
       { followeds: idUser },
-      { $pull: { followeds: idUser } }
+      { $pull: { followeds: idUser } },
     );
-  
+
     await ReviewModel.deleteMany({ authorId: idUser });
 
     await UserModel.deleteOne({ _id: idUser });
-  
   }
-  
 
   public static async existParam(
     param: string,

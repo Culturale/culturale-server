@@ -1,5 +1,6 @@
 import Stripe from 'stripe';
-import { IStripe } from './stripe.interface';
+
+import type { IStripe } from './stripe.interface';
 
 export class StripeService implements IStripe {
   private stripeInstance;

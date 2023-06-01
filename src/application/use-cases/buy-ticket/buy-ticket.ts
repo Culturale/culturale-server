@@ -1,27 +1,31 @@
 import type { Request, Response } from 'express';
 
-import { UserController } from '../../controllers/user-controller/user-controller';
 import { StripeService } from '~/infrastructure/services';
-import { CreateUserDto } from '~/infrastructure';
+import { BuyTicketDto } from '~/infrastructure';
+import { EventRepository } from '~/domain/repositories';
+import { getActor } from '~/utils';
 
-export async function signUp(req: Request, res: Response) {
+export async function buyTicket(req: Request, res: Response) {
   try {
-    const createUserDto: CreateUserDto = req.body;
-    await UserController.createUser(req, res);
+    const buyTicketDto: BuyTicketDto = req.body;
+    const { eventId } = buyTicketDto;
+
+    const event = await EventRepository.findEvent(eventId);
+    const user = await getActor(req);
 
     const stripe = new StripeService();
 
-    const { email, name, phoneNumber } = createUserDto;
-    const stripeCustomerId = await stripe.createCustomer(
-      email,
-      name,
-      phoneNumber,
+    const paymentIntent = await stripe.createPayment(
+      user.stripeCustomerId,
+      parseFloat(event.price),
+      'eur',
     );
-    if (stripeCustomerId) {
-    }
 
-    res.status(201).json({
-      message: 'User created successfully',
+    res.status(200).json({
+      message: 'Payment intent created successfully',
+      paymentIntent,
+      publishableKey:
+        'pk_test_51NATp9IdIcZ9qhZBJTgkQxqerAysKhRFXH4B7FYG0P5zW6SaBgCVXRiALMs5i9ZGeYV0WxZlFoSFGSdbC7lUwzOy00AHnoBtlG',
     });
   } catch (e) {
     res.status(500).json({

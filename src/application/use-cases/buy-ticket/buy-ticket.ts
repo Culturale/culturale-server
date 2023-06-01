@@ -21,9 +21,12 @@ export async function buyTicket(req: Request, res: Response) {
       'eur',
     );
 
+    const ephemeralKey = await stripe.createEphemeralKey(user.stripeCustomerId);
+
     res.status(200).json({
       message: 'Payment intent created successfully',
-      paymentIntent,
+      paymentIntent: paymentIntent.client_secret,
+      ephemeralKey,
       publishableKey:
         'pk_test_51NATp9IdIcZ9qhZBJTgkQxqerAysKhRFXH4B7FYG0P5zW6SaBgCVXRiALMs5i9ZGeYV0WxZlFoSFGSdbC7lUwzOy00AHnoBtlG',
     });

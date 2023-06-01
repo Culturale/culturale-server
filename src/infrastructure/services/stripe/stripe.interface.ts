@@ -13,4 +13,6 @@ export interface IStripe {
     amount: number,
     currency: currency,
   ) => Promise<Stripe.PaymentIntent>;
+
+  createEphemeralKey: (customerId: string) => Promise<string>;
 }

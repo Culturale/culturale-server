@@ -42,4 +42,15 @@ export class StripeService implements IStripe {
 
     return paymentIntent;
   }
+
+  public async createEphemeralKey(customerId: string): Promise<string> {
+    const ephemeralKey = await this.stripeInstance.ephemeralKeys.create(
+      {
+        customer: customerId,
+      },
+      { apiVersion: '2022-11-15' },
+    );
+
+    return ephemeralKey.secret;
+  }
 }

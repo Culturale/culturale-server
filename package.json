@@ -36,6 +36,7 @@
   },
   "dependencies": {
     "@types/bcrypt": "^5.0.0",
+    "@types/stripe": "^8.0.417",
     "bcrypt": "^5.1.0",
     "class-validator": "^0.14.0",
     "cors": "^2.8.5",

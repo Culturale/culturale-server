@@ -25,4 +25,21 @@ export class StripeService implements IStripe {
 
     return res.id;
   }
+
+  public async createPayment(
+    customerId: string,
+    amount: number,
+    currency: 'eur',
+  ): Promise<Stripe.PaymentIntent> {
+    const paymentIntent = await this.stripeInstance.paymentIntents.create({
+      customer: customerId,
+      amount,
+      currency,
+      automatic_payment_methods: {
+        enabled: true,
+      },
+    });
+
+    return paymentIntent;
+  }
 }

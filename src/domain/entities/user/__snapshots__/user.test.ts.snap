@@ -15,6 +15,7 @@ User {
   "report": 0,
   "reviews": [],
   "stripeCustomerId": undefined,
+  "tickets": [],
   "username": "test-username",
   "usertype": "test-type",
 }

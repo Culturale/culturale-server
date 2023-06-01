@@ -19,6 +19,7 @@ export interface IUser {
   preferits?: IEvent[];
   report: number;
   stripeCustomerId?: string;
+  tickets?: string[];
 
   updateEventSub: (newEvent: IEvent) => void;
   deleteEventSub: (newEvent: IEvent) => void;
@@ -29,6 +30,7 @@ export interface IUser {
   deleteFolloweds: (followed: IUser) => void;
   updateEventPref: (newEvent: IEvent) => void;
   setStripeCustomerId: (id: string) => void;
+  addTicket: (eventId: string) => void;
 
   readonly id: string;
 }

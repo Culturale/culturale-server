@@ -85,6 +85,33 @@ export class EventController {
     }
   }
 
+  
+  public static async getEvent(req: Request, res: Response): Promise<void> {
+    try {
+      const eventId: string = req.params.id; // Obtener el ID del evento de los parámetros de la URL
+      const event: IEvent | null = await EventRepository.getEventById(eventId); // Obtener el evento por su ID
+  
+      if (!event) {
+        res.status(404);
+        res.json({
+          message: 'Event not found',
+        });
+        return;
+      }
+  
+      res.status(200);
+      res.json({
+        event,
+      });
+    } catch (e) {
+      res.status(500);
+      res.json({
+        error: e,
+      });
+    }
+  }
+  
+
   public static async getEventsPag(
     req: Request,
     res: Response

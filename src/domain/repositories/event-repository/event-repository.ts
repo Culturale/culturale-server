@@ -64,6 +64,22 @@ export class EventRepository {
       return events;
   }
 
+  public static async getEventById(eventId: string): Promise<IEvent | null> {
+    const event: IEvent | null = await EventModel.findById(eventId)
+      .populate({
+        path: 'participants',
+        model: 'User',
+      })
+      .populate({
+        path: 'valoracions',
+        model: 'Review',
+      })
+      .exec();
+  
+    return event;
+  }
+  
+
   public static async getEventsPag(skip: number, limit: number): Promise<IEvent[]> {
     const eventDocuments = await EventModel.find()
       .populate({

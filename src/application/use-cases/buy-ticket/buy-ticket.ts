@@ -27,6 +27,7 @@ export async function buyTicket(req: Request, res: Response) {
       message: 'Payment intent created successfully',
       paymentIntent: paymentIntent.client_secret,
       ephemeralKey,
+      customer: user.stripeCustomerId,
       publishableKey:
         'pk_test_51NATp9IdIcZ9qhZBJTgkQxqerAysKhRFXH4B7FYG0P5zW6SaBgCVXRiALMs5i9ZGeYV0WxZlFoSFGSdbC7lUwzOy00AHnoBtlG',
     });

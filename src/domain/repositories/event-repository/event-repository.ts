@@ -1,3 +1,5 @@
+import AWS from 'aws-sdk';
+import axios from 'axios';
 import mongoose from 'mongoose';
 
 import type { Chat, IChat } from '~/domain/entities/chat';
@@ -6,6 +8,7 @@ import { EventModel, Event } from '~/domain/entities/event';
 import type { CreateEventDto } from '~/infrastructure';
 import { S3Service } from '~/infrastructure/services/s3';
 import type { MongoId } from '~/types/types';
+
 
 
 type CategoriaEnum =
@@ -40,10 +43,46 @@ export class EventRepository {
     EventRepository.s3Service = new S3Service();
   }
 
+  // Configuración de AWS
+  static s3 = new AWS.S3({
+    accessKeyId: 'AKIA6NVZVAKMPLRO26QO',
+    secretAccessKey: '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',
+  });
+
+    // Función para descargar y subir la imagen a S3
+    static uploadImageToS3 = async (imageUrl: string, bucketName: string, key: string) => {
+      try {
+        // Descargar la imagen utilizando Axios
+        const response = await axios.get(imageUrl, {
+          responseType: 'arraybuffer',
+        });
+
+        // Convertir la respuesta a un Buffer
+        const imageBuffer = Buffer.from(response.data, 'binary');
+
+        // Parámetros para subir la imagen a S3
+        const uploadParams = {
+          Bucket: bucketName,
+          Key: key,
+          Body: imageBuffer,
+        };
+
+        // Subir la imagen a S3
+        const uploadResult = await this.s3.upload(uploadParams).promise();
+
+        console.log('Imagen subida exitosamente a S3:', uploadResult.Location);
+      } catch (error) {
+        console.error('Error al subir la imagen a S3:', error);
+      }
+    };
+
+
+
   public static async addEvent(
     event: CreateEventDto,
     chatId: MongoId,
   ): Promise<IEvent> {
+  
     const newEvent = await EventModel.create({
       ...event,
       chat: chatId,
@@ -51,21 +90,17 @@ export class EventRepository {
       valoracions: [],
     });
     
-
-    const photoBuffer = Buffer.from(newEvent.photo, 'base64');
-
-    // Subir la foto al servicio S3
-    const photoKey = `event-photos/${Date.now()}-${newEvent.photo}`;
-    await this.s3Service.uploadFile(photoBuffer, photoKey);
-
-    // Asignar la URL de la foto al evento
-    newEvent.photo = `URL_BASE/${photoKey}`;
-
-    // Guardar el evento actualizado en la base de datos
-    await newEvent.save();
+    const imageUrl = newEvent.photo; // Obtén la URL de la imagen desde el evento o la base de datos
+    const bucketName = `https://projecteaws.s3.eu-west-3.amazonaws.com/${newEvent.id}`;
+    const key = `${newEvent.id}.jpg`;
+    
+  
+    await EventRepository.uploadImageToS3(imageUrl, bucketName, key);
+  
 
     return newEvent;
   }
+
 
   public static async getAllEvents(): Promise<IEvent[]> {
     const eventDocument = await EventModel.find()

@@ -25,16 +25,17 @@ export class S3Service {
     });
   }
 
-  public async uploadFile(buffer: Buffer, fileName: string): Promise<S3.ManagedUpload.SendData | AWSError> {
+  public async uploadFile(buffer: Buffer,  body: any): Promise<S3.ManagedUpload.SendData | AWSError> {
     const uploadParams: S3.PutObjectRequest = {
       Bucket: this.bucketName,
       Body: buffer,
-      Key: fileName,
+      Key: body.name,
     };
-
+    console.log('entro1');
     const putObjectAsync = promisify(this.s3Client.putObject).bind(this.s3Client);
+    console.log('entro2');
     const res = await putObjectAsync(uploadParams);
-
+    console.log('entro3');
     return res as S3.ManagedUpload.SendData | AWSError;
   }
   

@@ -38,7 +38,7 @@ describe('Event Controller', function () {
       long: 789.012,
       price: '12 €',
       url: 'https://test-url.com',
-      photo: 'test-photo.jpg',
+      photo: '/content/dam/agenda/articles/2021/10/05/010/20211105-1-winterreise.jpg',
       categoria: 'agenda:categories/festes',
     };
     const res = {} as unknown as Response;
@@ -66,7 +66,7 @@ describe('Event Controller', function () {
           long: 789.012,
           price: '12 €',
           url: 'https://test-url.com',
-          photo: 'test-photo.jpg',
+          photo: '/content/dam/agenda/articles/2021/10/05/010/20211105-1-winterreise.jpg',
           categoria: 'agenda:categories/festes',
         }),
       });
@@ -100,7 +100,7 @@ describe('Event Controller', function () {
             long: 789.012,
             price: '12 €',
             url: 'https://test-url.com',
-            photo: 'test-photo.jpg',
+            photo: '/content/dam/agenda/articles/2021/10/05/010/20211105-1-winterreise.jpg',
             categoria: 'agenda:categories/festes',
           }),
         ],
@@ -155,7 +155,7 @@ describe('Event Controller', function () {
         long: 789.012,
         price: '12 €',
         url: 'https://test-url.com',
-        photo: 'test-photo.jpg',
+        photo: '/content/dam/agenda/articles/2021/10/05/010/20211105-1-winterreise.jpg',
         categoria: 'agenda:categories/festes',
       };
       // Crear el evento y guardar su id en la variable eventId
@@ -224,7 +224,7 @@ describe('Event Controller', function () {
         long: 789.012,
         price: '12 €',
         url: 'https://test-url.com',
-        photo: 'test-photo.jpg',
+        photo: '/content/dam/agenda/articles/2021/10/05/010/20211105-1-winterreise.jpg',
         categoria: 'agenda:categories/festes',
       };
       // Crear el evento y guardar su id en la variable eventId
@@ -290,7 +290,7 @@ describe('Event Controller', function () {
         long: 789.012,
         price: '12 €',
         url: 'https://test-url.com',
-        photo: 'test-photo.jpg',
+        photo: '/content/dam/agenda/articles/2021/10/05/010/20211105-1-winterreise.jpg',
         categoria: 'agenda:categories/festes',
       };
       eventid = await createTestEvent(req);
@@ -367,7 +367,7 @@ describe('Event Controller', function () {
       long: 789.012,
       price: '12 €',
       url: 'https://test-url.com',
-      photo: 'test-photo.jpg',
+      photo: '/content/dam/agenda/articles/2021/10/05/010/20211105-1-winterreise.jpg',
       categoria: 'agenda:categories/festes',
     };
     const resCreate = {} as unknown as Response;

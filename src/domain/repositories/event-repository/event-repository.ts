@@ -4,7 +4,9 @@ import type { Chat, IChat } from '~/domain/entities/chat';
 import type { IEvent } from '~/domain/entities/event';
 import { EventModel, Event } from '~/domain/entities/event';
 import type { CreateEventDto } from '~/infrastructure';
+import { S3Service } from '~/infrastructure/services/s3';
 import type { MongoId } from '~/types/types';
+
 
 type CategoriaEnum =
   | 'agenda:categories/activitats-virtuals'
@@ -30,6 +32,14 @@ interface EventFilters {
 }
 
 export class EventRepository {
+
+  public static s3Service: S3Service;
+
+
+  constructor() {
+    EventRepository.s3Service = new S3Service();
+  }
+
   public static async addEvent(
     event: CreateEventDto,
     chatId: MongoId,
@@ -40,6 +50,20 @@ export class EventRepository {
       participants: [],
       valoracions: [],
     });
+    
+
+    const photoBuffer = Buffer.from(newEvent.photo, 'base64');
+
+    // Subir la foto al servicio S3
+    const photoKey = `event-photos/${Date.now()}-${newEvent.photo}`;
+    await this.s3Service.uploadFile(photoBuffer, photoKey);
+
+    // Asignar la URL de la foto al evento
+    newEvent.photo = `URL_BASE/${photoKey}`;
+
+    // Guardar el evento actualizado en la base de datos
+    await newEvent.save();
+
     return newEvent;
   }
 

@@ -1,4 +1,3 @@
-import cheerio from 'cheerio';
 import mongoose from 'mongoose';
 
 import type { Chat, IChat } from '~/domain/entities/chat';

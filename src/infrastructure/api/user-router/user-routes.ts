@@ -24,6 +24,8 @@ userRouter.post('/users/edit', editUserDTO, UserController.editUser); //falta te
 
 userRouter.get('/users/username/:id', UserController.getUserForUsername);
 
+userRouter.get('/users/id/:id', UserController.getUserForId);
+
 userRouter.post('/users/newFollower', followDto, follow); //falta test ruta
 
 userRouter.post('/users/:id/syncContacts', syncContactDto, sync);

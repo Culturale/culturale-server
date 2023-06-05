@@ -1,6 +1,5 @@
 import { IsArray, ValidateNested, validate, IsString } from 'class-validator';
-
-import { NextFunction, Request, Response } from 'express';
+import type { NextFunction, Request, Response } from 'express';
 
 
 export class SyncContactDto {

@@ -6,7 +6,6 @@ import { like } from '~/application/use-cases/like-event/like';
 import { sync } from '~/application/use-cases/sync-contacts/sync';
 import { unfollow } from '~/application/use-cases/unfollow-user/unfollow';
 import { createUserDto, editUserDTO, loginDto, followDto, changePasswordDto, addFavouriteDto, syncContactDto} from '~/infrastructure/dtos';
-
 import { authMiddleware } from '~/infrastructure/middlewares';
 
 export const userRouter = express.Router();

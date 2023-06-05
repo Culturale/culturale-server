@@ -37,6 +37,10 @@ export class UserRepository {
       .populate({
         path: 'preferits',
         model: EventModel,
+      })
+      .populate({
+        path: 'contacts',
+        model: 'User',
       });
     const users: IUser[] = [];
 
@@ -93,6 +97,10 @@ export class UserRepository {
       .populate({
         path: 'preferits',
         model: 'Event',
+      })
+      .populate({
+        path: 'contacts',
+        model: 'User',
       });
 
     if (userDoc) {
@@ -123,6 +131,10 @@ export class UserRepository {
       .populate({
         path: 'preferits',
         model: 'Event',
+      })
+      .populate({
+        path: 'contacts',
+        model: 'User',
       });
 
     if (userDoc) {
@@ -132,13 +144,22 @@ export class UserRepository {
     return null;
   }
 
+  public static async findByPhone(telf: string): Promise<IUser> {
+    const userDoc = await UserModel.findOne({ phoneNumber: telf });
+      if (userDoc) {
+        const user: IUser = new User(userDoc);
+        return user;
+      }
+      return null;
+  }
+
   public static async editarUsuari(newUser: IUser): Promise<void> {
     const followers = newUser.followers.map((follower) => follower._id);
     const followeds = newUser.followeds.map((followed) =>  followed._id);
     const eventSub = newUser.eventSub.map((event) => event._id);
     const reviews = newUser.reviews.map((review) => review._id);
     const preferits = newUser.preferits.map((event) => event._id);
-   
+    const contacts = newUser.contacts.map((contact) => contact._id);
     
     await UserModel.findByIdAndUpdate(newUser._id, {
       ...newUser,
@@ -147,7 +168,7 @@ export class UserRepository {
       eventSub,
       reviews,
       preferits,
-      
+      contacts,
     });
   }
 

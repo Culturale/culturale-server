@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: culturale
-          image: culturale/culturale-api:v1.0.0
+          image: culturale/culturale-api:v1.0.1
           ports:
           - containerPort: 3000
           env:

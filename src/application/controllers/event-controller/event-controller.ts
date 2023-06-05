@@ -266,6 +266,11 @@ export class EventController {
    castedReview.report = castedReview.report + 1;
 
     await ReviewRepository.editarReview(castedReview);
+    const event: IEvent= await EventRepository.findEvent(idEvent);
+    const castedEvent = new Event(event as EventProps);
+    castedEvent.valoracions = castedEvent.valoracions.filter((valoracions) => valoracions.authorId !== idUSer);
+    castedEvent.valoracions.push(castedReview);
+    await EventRepository.editarEvent(castedEvent);
 
     res.status(200);
       res.json({

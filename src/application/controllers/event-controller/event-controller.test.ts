@@ -66,7 +66,7 @@ describe('Event Controller', function () {
           long: 789.012,
           price: '12 €',
           url: 'https://test-url.com',
-          photo: 'test-photo.jpg',
+          photo: 'https://festesmajorsdecatalunya.cat/wp-content/uploads/2018/07/380__02000023000006900012-2-700x445.jpg',
           categoria: 'agenda:categories/festes',
         }),
       });
@@ -100,8 +100,10 @@ describe('Event Controller', function () {
             long: 789.012,
             price: '12 €',
             url: 'https://test-url.com',
-            photo: 'test-photo.jpg',
+            photo: 'https://festesmajorsdecatalunya.cat/wp-content/uploads/2018/07/380__02000023000006900012-2-700x445.jpg',
             categoria: 'agenda:categories/festes',
+            participants:[],
+            valoracions: [],
           }),
         ],
       });

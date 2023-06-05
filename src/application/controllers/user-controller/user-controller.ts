@@ -399,4 +399,47 @@ export class UserController {
       });
     }
   }
+
+
+  public static async syncContacts(req: Request, res: Response): Promise<void> {
+    try {
+      const telfs: string[] = req.body.contacts.map((contact: any) => contact.phoneNumber);
+      const id = req.params.id;
+      const contacts: IUser[] = [];
+      const newUser: IUser = await UserRepository.findById(id);
+
+    try {
+      for (const telf of telfs) {
+        const user: IUser = await UserRepository.findByPhone(telf);
+        if (user) {
+          contacts.push(user);
+        }
+      }
+    } catch (error) {
+      res.status(500);
+      res.json({
+        error: error,
+    });
+  }
+
+      
+      const castedUser = new User(newUser as UserProps);
+      castedUser.updateContacts(contacts);
+    
+
+      await UserRepository.editarUsuari(castedUser);
+
+
+      res.status(200);
+      res.json({
+        message: 'Contacts synced',
+        contacts: newUser.contacts,
+      });
+    } catch (e) {
+      res.status(500);
+      res.json({
+        error: e,
+      });
+    }
+  }
 }

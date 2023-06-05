@@ -34,12 +34,26 @@ export class EventRepository {
     event: CreateEventDto,
     chatId: MongoId,
   ): Promise<IEvent> {
+    if(event.categoria == 'agenda:categories/activitats-virtuals') event.photo='https://monaeduca.org/wp-content/uploads/activitats-virtuals.1.png';
+    else if(event.categoria == 'agenda:categories/exposicions') event.photo='https://media.timeout.com/images/105827609/image.jpg';
+    else if(event.categoria == 'agenda:categories/concerts') event.photo='https://static-resources.mirai.com/wp-content/uploads/sites/1745/20230124101723/conciertos-Barcelona-2023.jpg';
+    else if(event.categoria == 'agenda:categories/teatre') event.photo='https://www.lugaris.com/app/uploads/2020/06/tivoli.jpg';
+    else if(event.categoria == 'agenda:categories/festivals-i-mostres') event.photo='https://www.speakeasybcn.com/perch/resources/blog/barcelona-spring-festival-tefl-iberia-w960h720.jpg';
+    else if(event.categoria == 'agenda:categories/rutes-i-visites') event.photo='https://turisme.llucanes.cat/wp-content/uploads/2020/05/Prats-Espai-Memoria-4-700x466.jpg';
+    else if(event.categoria == 'agenda:categories/infantil') event.photo='https://www.plusarts.es/pics_fotosproductos/28/big_fit_juegos-gigantes-plus-arts-1_1.jpg';
+    else if(event.categoria == 'agenda:categories/festes') event.photo='https://festesmajorsdecatalunya.cat/wp-content/uploads/2018/07/380__02000023000006900012-2-700x445.jpg';
+    else if(event.categoria == 'agenda:categories/conferencies') event.photo='https://i0.wp.com/tribunadarqueologia.blog.gencat.cat/wp-content/uploads/2023/03/IMG_20230329_181440.jpg?resize=809%2C607&ssl=1';
+    else if(event.categoria == 'agenda:categories/fires-i-mercats') event.photo='https://www.vilanova.cat/img/img_73681602.jpg';
+    else if(event.categoria == 'agenda:categories/dansa') event.photo='https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.europapress.es%2Fcatalunya%2Fnoticia-festival-dansa-metropolitana-programa-mas-300-actividades-12-municipios-barcelona-20220225123526.html&psig=AOvVaw3wBL7F7lPTf5ygJOiq47BJ&ust=1686064656262000&source=images&cd=vfe&ved=0CBEQjRxqFwoTCPjbgrq2rP8CFQAAAAAdAAAAABAE';
+    else if(event.categoria == 'agenda:categories/cicles') event.photo='https://ciclescatalunya.cat/wp-content/uploads/2018/10/slider1_cicles_catalunya.jpg';
+ 
     const newEvent = await EventModel.create({
       ...event,
       chat: chatId,
       participants: [],
       valoracions: [],
     });
+    
     return newEvent;
   }
 

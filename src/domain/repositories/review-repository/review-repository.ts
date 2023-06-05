@@ -21,7 +21,9 @@ export class ReviewRepository {
   public static async findValoracioById(id: ObjectId): Promise<IReview> {
     return ReviewModel.findById(id);
   }
-
+  public static async findValoracioByEventUser(idEvent: string, idUSer: string): Promise<IReview> {
+    return ReviewModel.findOne({eventId: idEvent, authorId: idUSer});
+  }
   public static async editarReview(newReview: IReview): Promise<void> {
     await ReviewModel.findByIdAndUpdate(newReview._id, {
       ...newReview,

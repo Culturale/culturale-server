@@ -258,8 +258,9 @@ export class EventController {
 
   public static async reportReview (req: Request, res: Response): Promise<void> {
     try {
-    const idReview = req.body.idReview; //user_id del user que queremos bloquear
-    const reviewReported: IReview = await ReviewRepository.findValoracioById(idReview);
+    const idEvent = req.body.idEvent; //user_id del user que queremos bloquear
+    const idUSer = req.body.idUser; //user_id del user que quiere bloquear
+    const reviewReported: IReview = await ReviewRepository.findValoracioByEventUser(idEvent, idUSer);
     const castedReview = new Review(reviewReported as reviewProps);
 
    castedReview.report = castedReview.report + 1;

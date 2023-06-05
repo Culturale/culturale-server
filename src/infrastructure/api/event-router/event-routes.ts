@@ -1,6 +1,6 @@
 import express from 'express';
 
-import { EventController } from '~/application';
+import { EventController, paymentSucceeded } from '~/application';
 import { buyTicket } from '~/application/use-cases/buy-ticket/buy-ticket';
 import { deleteReview } from '~/application/use-cases/deleteReview';
 import { makeReview } from '~/application/use-cases/makeEventReview';
@@ -12,6 +12,7 @@ import {
 } from '~/infrastructure/dtos';
 import { makeReviewDTO } from '~/infrastructure/dtos/make-review.dto';
 import { authMiddleware } from '~/infrastructure/middlewares';
+import { StripeService } from '~/infrastructure/services';
 
 export const eventRouter = express.Router();
 
@@ -68,3 +69,33 @@ eventRouter.delete('/events/deleteReview', deleteReview);
 eventRouter.post('/events/delete', EventController.deleteEvent);
 
 eventRouter.post('/events/buyTicket', authMiddleware, buyTicketDto, buyTicket);
+
+eventRouter.post(
+  '/stripeWebhook',
+  express.raw({ type: 'application/json' }),
+  (request, response) => {
+    const sig = request.headers['stripe-signature'];
+
+    let event;
+
+    try {
+      const stripe = new StripeService();
+      event = stripe.constructEvent(request, sig);
+    } catch (err) {
+      response.status(400).send(`Webhook Error: ${err.message}`);
+      return;
+    }
+
+    switch (event.type) {
+      case 'payment_intent.succeeded':
+        const paymentIntentSucceeded = event.data.object;
+        paymentSucceeded(paymentIntentSucceeded);
+        break;
+      default:
+        console.log(`Unhandled event type ${event.type}`);
+    }
+
+    // Return a 200 response to acknowledge receipt of the event
+    // response.send();
+  },
+);

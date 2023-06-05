@@ -1,4 +1,4 @@
-import Stripe from 'stripe';
+import type Stripe from 'stripe';
 
 type currency = 'eur';
 export interface IStripe {
@@ -15,4 +15,6 @@ export interface IStripe {
   ) => Promise<Stripe.PaymentIntent>;
 
   createEphemeralKey: (customerId: string) => Promise<string>;
+
+  constructEvent: (request: any, signature: string | string[]) => Stripe.Event;
 }

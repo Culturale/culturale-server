@@ -4,6 +4,8 @@ import type { IStripe } from './stripe.interface';
 
 export class StripeService implements IStripe {
   private stripeInstance;
+  private endpointSecret =
+    'whsec_dc869852394bd7535de7ffba18078a99daf637532e2b8af74611bbdb80381291';
 
   constructor() {
     this.stripeInstance = new Stripe(
@@ -30,6 +32,7 @@ export class StripeService implements IStripe {
     customerId: string,
     amount: number,
     currency: 'eur',
+    metadata?: Record<string, any>,
   ): Promise<Stripe.PaymentIntent> {
     const paymentIntent = await this.stripeInstance.paymentIntents.create({
       customer: customerId,
@@ -38,6 +41,7 @@ export class StripeService implements IStripe {
       automatic_payment_methods: {
         enabled: true,
       },
+      metadata,
     });
 
     return paymentIntent;
@@ -52,5 +56,16 @@ export class StripeService implements IStripe {
     );
 
     return ephemeralKey.secret;
+  }
+
+  public constructEvent(
+    request: any,
+    signature: string | string[],
+  ): Stripe.Event {
+    return this.stripeInstance.webhooks.constructEvent(
+      request,
+      signature,
+      this.endpointSecret,
+    );
   }
 }

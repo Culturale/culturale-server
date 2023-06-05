@@ -1,8 +1,8 @@
 import type { Request, Response } from 'express';
 
-import { StripeService } from '~/infrastructure/services';
-import { BuyTicketDto } from '~/infrastructure';
 import { EventRepository } from '~/domain/repositories';
+import type { BuyTicketDto } from '~/infrastructure';
+import { StripeService } from '~/infrastructure/services';
 import { getActor } from '~/utils';
 
 export async function buyTicket(req: Request, res: Response) {
@@ -19,6 +19,10 @@ export async function buyTicket(req: Request, res: Response) {
       user.stripeCustomerId,
       parseFloat(event.price),
       'eur',
+      {
+        eventId,
+        userId: user.id,
+      },
     );
 
     const ephemeralKey = await stripe.createEphemeralKey(user.stripeCustomerId);

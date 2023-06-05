@@ -48,12 +48,7 @@ export class EventRepository {
     else if(event.categoria == 'agenda:categories/dansa') event.photo='https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.europapress.es%2Fcatalunya%2Fnoticia-festival-dansa-metropolitana-programa-mas-300-actividades-12-municipios-barcelona-20220225123526.html&psig=AOvVaw3wBL7F7lPTf5ygJOiq47BJ&ust=1686064656262000&source=images&cd=vfe&ved=0CBEQjRxqFwoTCPjbgrq2rP8CFQAAAAAdAAAAABAE';
     else if(event.categoria == 'agenda:categories/cicles') event.photo='https://ciclescatalunya.cat/wp-content/uploads/2018/10/slider1_cicles_catalunya.jpg';
     
-    const cheerio = require('cheerio');
-    const $ = cheerio.load(event.denominacio);
-
-    // Obtener solo el contenido de texto sin etiquetas HTML
-    event.denominacio = $.root().text();
-
+    
     const newEvent = await EventModel.create({
       ...event,
       chat: chatId,

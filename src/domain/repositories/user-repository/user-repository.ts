@@ -133,19 +133,21 @@ export class UserRepository {
   }
 
   public static async editarUsuari(newUser: IUser): Promise<void> {
-    const followers = newUser.followers.map((follower) => follower.id);
-    const followeds = newUser.followeds.map((followed) => followed.id);
-    const eventSub = newUser.eventSub.map((event) => event.id);
+    const followers = newUser.followers.map((follower) => follower._id);
+    const followeds = newUser.followeds.map((followed) =>  followed._id);
+    const eventSub = newUser.eventSub.map((event) => event._id);
     const reviews = newUser.reviews.map((review) => review._id);
-    const preferits = newUser.preferits.map((event) => event.id);
-
-    await UserModel.findByIdAndUpdate(newUser.id, {
+    const preferits = newUser.preferits.map((event) => event._id);
+   
+    
+    await UserModel.findByIdAndUpdate(newUser._id, {
       ...newUser,
       followers,
       followeds,
       eventSub,
       reviews,
       preferits,
+      
     });
   }
 

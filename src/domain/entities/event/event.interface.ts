@@ -25,16 +25,16 @@ export interface IEvent {
   descripcio: string;
   dataIni: Date;
   dataFi: Date;
-  horari?: string;
+  horari: string;
   adress: string;
-  lat?: number;
-  long?: number;
+  lat: number;
+  long: number;
   price?: string;
   url?: string;
   photo?: string;
   chat: IChat;
-  valoracions?: IReview[];
-  participants?: IUser[];
+  valoracions: IReview[];
+  participants: IUser[];
   categoria: CategoriaEnum;
 
   updateValoracions: (newValoracio: IReview) => void;

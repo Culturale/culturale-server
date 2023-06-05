@@ -1,6 +1,7 @@
 import express from 'express';
 
 import { EventController } from '~/application';
+import { deleteReview } from '~/application/use-cases/deleteReview';
 import { makeReview } from '~/application/use-cases/makeEventReview';
 import { createEventDto, editEventDTO, addParticipantDto} from '~/infrastructure/dtos';
 import { makeReviewDTO } from '~/infrastructure/dtos/make-review.dto';
@@ -17,8 +18,15 @@ eventRouter.delete('/events/deleteParticipant', EventController.deleteParticipan
 
 eventRouter.get('/events/:id/messages', EventController.getAllMessages);
 eventRouter.get('/events', EventController.getAllEvents);
+eventRouter.get('/events/code/:id', EventController.getEvent);
 
-//GET /event/denominacio/:denominacio
+eventRouter.get('/events/50', EventController.getEventsPag);
+eventRouter.get('/events/mapa', EventController.getEventsMapa);
+
+
+//GET /events/filters
+eventRouter.get('/events/filters', EventController.getEventsByFilters);
+
 eventRouter.get('/events/denominacio/:denominacio', EventController.getEventbydenominacio);
 
 //GET /event/dataIni/:dataIni
@@ -30,5 +38,10 @@ eventRouter.get('/events/categoria/:categoria', EventController.getEventbycatego
 
 eventRouter.post('/events/edit', editEventDTO, EventController.editEvent );
 
-eventRouter.post('/events/addReview', makeReviewDTO, makeReview );
+eventRouter.post('/events/addReview', makeReviewDTO, makeReview);
+
+eventRouter.get('/events/getReportedReviews', EventController.getReportedReviews);
+eventRouter.put('/events/reportReview', EventController.reportReview);
+eventRouter.delete('/events/deleteReview', deleteReview); 
+
 eventRouter.post('/events/delete', EventController.deleteEvent );

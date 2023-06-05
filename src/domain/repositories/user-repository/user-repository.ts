@@ -1,23 +1,59 @@
+import type { FilterQuery } from 'mongoose';
+
 import { ReviewModel } from '~/domain/entities';
 import { EventModel } from '~/domain/entities/event';
-import type { IUser } from '~/domain/entities/user';
+import type { IUser, UserProps } from '~/domain/entities/user';
 import { UserModel } from '~/domain/entities/user';
 import { User } from '~/domain/entities/user';
-import type { CreateUserDto } from '~/infrastructure';
 
 export class UserRepository {
-  public static async addUser(user: CreateUserDto): Promise<IUser> {
+  public static async addUser(user: UserProps): Promise<IUser> {
     const newUser = await UserModel.create({
       ...user,
       followers: [],
       followeds: [],
       eventSub: [],
+      preferits: [],
     });
-    return newUser;
+    return new User(newUser);
   }
 
-  public static async getAllUsers(): Promise<IUser[]> {
-    const userDocs = await UserModel.find()
+  public static async getAllUsers(
+    filter: FilterQuery<IUser> = {},
+  ): Promise<IUser[]> {
+    const userDocs = await UserModel.find(filter)
+      .populate({
+        path: 'eventSub',
+        model: EventModel,
+      })
+      .populate({
+        path: 'followers',
+        model: 'User',
+      })
+      .populate({
+        path: 'followeds',
+        model: 'User',
+      })
+      .populate({
+        path: 'preferits',
+        model: EventModel,
+      })
+      .populate({
+        path: 'contacts',
+        model: 'User',
+      });
+    const users: IUser[] = [];
+
+    for (const doc of userDocs) {
+      const user = new User(doc);
+      users.push(user);
+    }
+
+    return users;
+  }
+
+  public static async getReportedUsers(): Promise<IUser[]> {
+    const userDocs = await UserModel.find({ report: { $gt: 0 } })
       .populate({
         path: 'eventSub',
         model: EventModel,
@@ -57,6 +93,14 @@ export class UserRepository {
       .populate({
         path: 'followers',
         model: 'User',
+      })
+      .populate({
+        path: 'preferits',
+        model: 'Event',
+      })
+      .populate({
+        path: 'contacts',
+        model: 'User',
       });
 
     if (userDoc) {
@@ -83,6 +127,14 @@ export class UserRepository {
       .populate({
         path: 'followers',
         model: 'User',
+      })
+      .populate({
+        path: 'preferits',
+        model: 'Event',
+      })
+      .populate({
+        path: 'contacts',
+        model: 'User',
       });
 
     if (userDoc) {
@@ -93,17 +145,11 @@ export class UserRepository {
   }
 
   public static async findByPhone(telf: string): Promise<IUser> {
-    try {
-
-      const userDoc = await UserModel.findOne({ phoneNumber: telf });
+    const userDoc = await UserModel.findOne({ phoneNumber: telf });
       if (userDoc) {
         const user: IUser = new User(userDoc);
-        console.log(user);
         return user;
       }
-    }catch(error) {
-      console.error(error);
-    }
       return null;
   }
 
@@ -112,6 +158,7 @@ export class UserRepository {
     const followeds = newUser.followeds.map((followed) =>  followed.id);
     const eventSub = newUser.eventSub.map((event) => event.id);
     const reviews = newUser.reviews.map((review) => review._id);
+    const preferits = newUser.preferits.map((event) => event.id);
     const contacts = newUser.contacts.map((contact) => contact._id);
     
     await UserModel.findByIdAndUpdate(newUser.id, {
@@ -120,8 +167,30 @@ export class UserRepository {
       followeds,
       eventSub,
       reviews,
+      preferits,
       contacts,
     });
+  }
+
+  public static async deleteUser(idUser: string): Promise<void> {
+    await EventModel.updateMany(
+      { participants: idUser },
+      { $pull: { participants: idUser } },
+    );
+
+    await UserModel.updateMany(
+      { followers: idUser },
+      { $pull: { followers: idUser } },
+    );
+
+    await UserModel.updateMany(
+      { followeds: idUser },
+      { $pull: { followeds: idUser } },
+    );
+
+    await ReviewModel.deleteMany({ authorId: idUser });
+
+    await UserModel.deleteOne({ _id: idUser });
   }
 
   public static async existParam(

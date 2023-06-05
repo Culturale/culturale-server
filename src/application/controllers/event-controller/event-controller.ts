@@ -1,4 +1,5 @@
 import type { Request, Response } from 'express';
+import shuffle from 'lodash/shuffle';
 
 import type {
   IUser,
@@ -6,19 +7,46 @@ import type {
   IEvent,
   EventProps,
   IChat,
+  IReview,
+  reviewProps,
 } from '~/domain/entities';
+import { Review } from '~/domain/entities';
 import { Event } from '~/domain/entities/event';
 import {
   UserRepository,
   ChatRepository,
   EventRepository,
   MessageRepository,
+  ReviewRepository,
 } from '~/domain/repositories';
 import type {
   CreateEventDto,
   AddParticipantDto,
   EditEventDTO,
 } from '~/infrastructure';
+
+interface EventFilters {
+  denominacio?: { $regex: string, $options: 'i' };
+  categoria?: { $eq: CategoriaEnum};
+  dataIni?: { $gte: Date };
+  dataFi?: { $lte: Date };
+  horari?: string;
+  price?: { $lte: string};
+}
+
+type CategoriaEnum =
+  | 'agenda:categories/activitats-virtuals'
+  | 'agenda:categories/exposicions'
+  | 'agenda:categories/concerts'
+  | 'agenda:categories/teatre'
+  | 'agenda:categories/festivals-i-mostres'
+  | 'agenda:categories/rutes-i-visites'
+  | 'agenda:categories/infantil'
+  | 'agenda:categories/festes'
+  | 'agenda:categories/conferencies'
+  | 'agenda:categories/fires-i-mercats'
+  | 'agenda:categories/dansa'
+  | 'agenda:categories/cicles';
 
 export class EventController {
   public static async createEvent(req: Request, res: Response): Promise<void> {
@@ -56,6 +84,201 @@ export class EventController {
       });
     }
   }
+
+  
+  public static async getEvent(req: Request, res: Response): Promise<void> {
+    try {
+      const eventId: string = req.params.id; // Obtener el ID del evento de los parámetros de la URL
+      const event: IEvent | null = await EventRepository.getEventById(eventId); // Obtener el evento por su ID
+  
+      if (!event) {
+        res.status(404);
+        res.json({
+          message: 'Event not found',
+        });
+        return;
+      }
+  
+      res.status(200);
+      res.json({
+        event,
+      });
+    } catch (e) {
+      res.status(500);
+      res.json({
+        error: e,
+      });
+    }
+  }
+  
+
+  public static async getEventsPag(
+    req: Request,
+    res: Response
+  ): Promise<void> {
+    try {
+      const page: number = parseInt(req.query.page as string) || 1;
+      const limit = 50;
+      const skip: number = (page - 1) * limit;
+  
+      const events: IEvent[] = await EventRepository.getEventsPag(skip, limit);
+  
+      res.status(200);
+      res.json({
+        events,
+      });
+    } catch (e) {
+      res.status(500);
+      res.json({
+        error: e,
+      });
+    }
+  }
+  
+  
+  public static async getEventsMapa(req: Request, res: Response): Promise<void> {
+    try {
+      const lat1 = Number(req.query.lat1 as string);
+      const lon1 = Number(req.query.lon1 as string);
+      const lat2 = Number(req.query.lat2 as string);
+      const lon2 = Number(req.query.lon2 as string);
+
+  
+      // Verificar que se hayan proporcionado las coordenadas
+      if (!lat1 || !lon1 || !lat2 || !lon2) {
+        res.status(400).json({ error: 'Falta información de coordenadas' });
+        return;
+      }
+  
+      if (isNaN(lat1) || isNaN(lon1) || isNaN(lat2) || isNaN(lon2)) {
+        res.status(400).json({ error: 'Valores de coordenadas no válidos' });
+        return;
+      }
+
+
+      if (typeof lat1 !== 'number' || typeof lon1 !== 'number' || typeof lat2 !== 'number' || typeof lon2 !== 'number') {
+        res.status(400).json({ error: 'Valores de coordenadas no válidos 2' });
+        return;
+      }
+      
+
+      
+      // Obtener los eventos dentro del área del mapa
+      const events: IEvent[] = await EventRepository.getEventsWithinMapArea(lat1, lon1, lat2, lon2);
+  
+      // Ordenar los eventos por la cantidad de participantes de forma descendente
+      events.sort((a, b) => b.participants.length - a.participants.length);
+  
+      const maxParticipants = events[0]?.participants.length;
+
+      // Filtrar los eventos con el número máximo de participantes
+      const maxParticipantEvents = events.filter(event => event.participants.length === maxParticipants);
+  
+      // Si hay más de 10 eventos con el mismo número de participantes, seleccionar aleatoriamente 10
+      const topEvents = maxParticipantEvents.length > 10 ? shuffle(maxParticipantEvents).slice(0, 10) : maxParticipantEvents;
+  
+  
+      res.status(200).json({ events: topEvents });
+    } catch (e) {
+      res.status(500).json({ error: e });
+    }
+  }
+  
+
+
+  public static async getEventsByFilters(req: Request, res: Response): Promise<void> {
+    const filter: EventFilters = {};
+  
+    // Obtén los valores de los parámetros de consulta
+    const {denominacio, categoria, dataIni, dataFi, horari, price } = req.query;
+  
+    // Asigna los valores de los parámetros de consulta al filtro
+    if (denominacio) {
+      filter.denominacio = { $regex: denominacio as string, $options: 'i' };
+    }
+    if (categoria) {
+      filter.categoria = { $eq: categoria as CategoriaEnum};
+    }
+    if (dataIni) {
+      filter.dataIni = { $gte: new Date(dataIni as string) };
+    }
+    if (dataFi) {
+      filter.dataFi = { $lte: new Date(dataFi as string) };
+    }
+    if (horari) {
+      filter.horari = horari as string;
+    }
+    if (price) {
+      filter.price = { $lte: price as string };
+    }
+  
+    try {
+      // Filtra los eventos según los parámetros proporcionados
+      const events: IEvent[] = await EventRepository.find(filter);
+  
+      // Envía los eventos filtrados como respuesta
+      res.json({
+        events,
+      });
+    }  catch (e) {
+      res.status(500);
+      res.json({
+        error: e,
+      });
+    }
+  }
+
+  public static async getReportedReviews(req: Request, res: Response): Promise<void> {
+    try {
+      const events: IReview[] = await ReviewRepository.getReportedValoracio();
+      res.status(200);
+      res.json({
+        events,
+      });
+    } catch (e) {
+      res.status(500);
+      res.json({
+        error: e,
+      });
+    }
+  }
+  
+  public static async deleteReview (req: Request, res: Response): Promise<void> {
+      try {
+        const id: string = req.body.id;
+        await ReviewRepository.deleteReview(id);
+        res.status(200);
+      } catch (e) {
+        res.status(500);
+        res.json({
+          error: e,
+        });
+      }
+    }
+
+  public static async reportReview (req: Request, res: Response): Promise<void> {
+    try {
+    const idReview = req.body.idReview; //user_id del user que queremos bloquear
+    const reviewReported: IReview = await ReviewRepository.findValoracioById(idReview);
+    const castedReview = new Review(reviewReported as reviewProps);
+
+   castedReview.report = castedReview.report + 1;
+
+    await ReviewRepository.editarReview(castedReview);
+
+    res.status(200);
+      res.json({
+        message: 'Review reported',
+      });
+    } catch (e) {
+      res.status(500);
+      res.json({
+        error: e,
+      });
+    }
+  }
+
+
 
   public static async editEvent(req: Request, res: Response): Promise<void> {
     try {
@@ -253,10 +476,10 @@ export class EventController {
     res: Response,
   ): Promise<void> {
     try {
-      const event: IEvent[] = await EventRepository.getEventbydenominacio(
+      const events: IEvent[] = await EventRepository.getEventbydenominacio(
         req.params.denominacio,
       );
-      if (event.length == 0) {
+      if (events.length == 0) {
         res.status(404);
         res.json({
           error: 'No event with that denomination found',
@@ -264,7 +487,7 @@ export class EventController {
       }
       res.status(200);
       res.json({
-        event,
+        events,
       });
     } catch (e) {
       res.status(500);

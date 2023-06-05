@@ -20,7 +20,6 @@ export type Categoria =
   | 'agenda:categories/dansa'
   | 'agenda:categories/cicles';
 
-
 export type EventProps = {
   _id?: MongoId;
   codi: number;
@@ -28,17 +27,17 @@ export type EventProps = {
   descripcio: string;
   dataIni: Date;
   dataFi: Date;
-  horari?: string;
+  horari: string;
   adress: string;
-  lat?: number;
-  long?: number;
+  lat: number;
+  long: number;
+  categoria: Categoria;
   price?: string;
   url?: string;
   photo?: string;
   chat?: IChat;
   participants?: IUser[];
   valoracions?: IReview[];
-  categoria: Categoria;
 };
 
 export class Event implements IEvent {
@@ -52,9 +51,9 @@ export class Event implements IEvent {
   public adress: string;
   public lat: number;
   public long: number;
-  public price: string;
-  public url: string;
-  public photo: string;
+  public price?: string;
+  public url?: string;
+  public photo?: string;
   public chat: IChat;
   public participants: IUser[];
   public valoracions: IReview[];

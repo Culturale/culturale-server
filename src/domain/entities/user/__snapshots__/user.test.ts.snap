@@ -11,8 +11,11 @@ User {
   "name": "test-name",
   "password": "test-password",
   "phoneNumber": "test-phone",
+  "preferits": [],
   "profilePicture": "test-profilePicture",
+  "report": 0,
   "reviews": [],
+  "stripeCustomerId": undefined,
   "username": "test-username",
   "usertype": "test-type",
 }

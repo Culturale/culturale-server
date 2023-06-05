@@ -18,6 +18,9 @@ export type UserProps = {
   followeds?: IUser[];
   eventSub?: IEvent[];
   reviews?: IReview[];
+  preferits?: IEvent[];
+  report?: number;
+  stripeCustomerId?: string;
   contacts?: IUser[];
 };
 
@@ -34,6 +37,9 @@ export class User implements IUser {
   public followeds: IUser[];
   public eventSub: IEvent[];
   public reviews: IReview[];
+  public preferits: IEvent[];
+  public report: number;
+  public stripeCustomerId?: string;
   public contacts: IUser[];
 
   constructor(props: UserProps) {
@@ -50,6 +56,9 @@ export class User implements IUser {
       followeds,
       eventSub,
       reviews,
+      preferits,
+      report,
+      stripeCustomerId,
       contacts,
     } = props;
     this._id = _id;
@@ -64,6 +73,9 @@ export class User implements IUser {
     this.followeds = followeds || [];
     this.eventSub = eventSub || [];
     this.reviews = reviews || [];
+    this.preferits = preferits || [];
+    this.report = report;
+    this.stripeCustomerId = stripeCustomerId;
     this.contacts = contacts || [];
   }
 
@@ -116,6 +128,23 @@ export class User implements IUser {
       (followed) => followed.id !== newUser.id,
     );
     this.followeds = updatedFolloweds;
+  }
+  public updateEventPref(newEvent: IEvent): void {
+    if (!this.preferits.find((preferit) => preferit.id === newEvent.id)) {
+      const newEvents = [...this.preferits, newEvent];
+      this.preferits = newEvents;
+    }
+  }
+
+  public setStripeCustomerId(id: string): void {
+    this.stripeCustomerId = id;
+  }
+
+  public deleteFavourite(newEvent: IEvent): void {
+    const updatedEvents = this.preferits.filter(
+      (preferits) => preferits.id !== newEvent.id,
+    );
+    this.preferits = updatedEvents;
   }
 
   public updateContacts(newContacts: IUser[]): void {

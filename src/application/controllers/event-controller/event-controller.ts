@@ -260,15 +260,12 @@ export class EventController {
     try {
       
     const idreview = req.body.reviewId; //user_id del user que queremos bloquear
-    console.log(idreview);
     const reviewReported: IReview = await ReviewRepository.findValoracioById(idreview);
     const castedReview = new Review(reviewReported as reviewProps);
-    console.log(castedReview);
     castedReview.report = castedReview.report + 1;
     await ReviewRepository.editarReview(castedReview);
     const event: IEvent= await EventRepository.findEvent(castedReview.eventId);
     const castedEvent = new Event(event as EventProps);
-    console.log(castedEvent);
     castedEvent.valoracions = castedEvent.valoracions.filter((valoracions) => valoracions.id !== idreview);
     castedEvent.valoracions.push(castedReview);
     await EventRepository.editarEvent(castedEvent);

@@ -297,6 +297,7 @@ describe('User Controller', function () {
           followeds: [],
           reviews: [],
           eventSub: [],
+          contacts: [],
           report: 0,
         }),
       });

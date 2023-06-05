@@ -161,7 +161,7 @@ export class UserRepository {
     const preferits = newUser.preferits.map((event) => event._id);
     const contacts = newUser.contacts.map((contact) => contact._id);
     
-    await UserModel.findByIdAndUpdate(newUser.id, {
+    await UserModel.findByIdAndUpdate(newUser._id, {
       ...newUser,
       followers,
       followeds,

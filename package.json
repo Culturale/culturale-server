@@ -38,6 +38,7 @@
     "@types/bcrypt": "^5.0.0",
     "@types/stripe": "^8.0.417",
     "bcrypt": "^5.1.0",
+    "cheerio": "^1.0.0-rc.12",
     "class-validator": "^0.14.0",
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",

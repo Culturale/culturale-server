@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: culturale
-          image: culturale/culturale-api:latest
+          image: culturale/culturale-api:v1.0.1
           ports:
           - containerPort: 3000
           env:
@@ -50,6 +50,11 @@ spec:
               configMapKeyRef:
                 name: server-config
                 key: NODE_LOCAL_PORT
+          - name: SECRET
+            valueFrom:
+              secretKeyRef:
+                name: server-secret
+                key: encrypt-password
 ---
 apiVersion: v1
 kind: Service

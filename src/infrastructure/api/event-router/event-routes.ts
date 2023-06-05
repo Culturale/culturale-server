@@ -33,6 +33,7 @@ eventRouter.delete(
 
 eventRouter.get('/events/:id/messages', EventController.getAllMessages);
 eventRouter.get('/events', EventController.getAllEvents);
+eventRouter.get('/events/code/:id', EventController.getEvent);
 
 eventRouter.get('/events/50', EventController.getEventsPag);
 eventRouter.get('/events/mapa', EventController.getEventsMapa);

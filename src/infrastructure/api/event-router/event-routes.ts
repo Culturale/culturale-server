@@ -87,16 +87,12 @@ eventRouter.post(
       return;
     }
 
-    switch (event.type) {
-      case 'payment_intent.succeeded':
-        const paymentIntentSucceeded = event.data.object;
-        paymentSucceeded(paymentIntentSucceeded);
-        break;
-      default:
-        console.log(`Unhandled event type ${event.type}`);
+    if (event.type === 'payment_intent.succeeded') {
+      const paymentIntentSucceeded = event.data.object;
+      paymentSucceeded(paymentIntentSucceeded);
     }
 
     // Return a 200 response to acknowledge receipt of the event
-    // response.send();
+    response.send();
   },
 );

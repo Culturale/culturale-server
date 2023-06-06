@@ -6,19 +6,7 @@ import { StripeService } from '~/infrastructure/services';
 import { getActor } from '~/utils';
 
 function getValueOfEuros(price: string) {
-  const euroValueRegex = /€(\d+(\.\d{1,2})?)/g;
-  const matches = price.match(euroValueRegex);
-
-  if (matches) {
-    const euroValues = matches.map((match: string) => {
-      const valueString = match.slice(1); // Remove the euro symbol
-      return parseFloat(valueString);
-    });
-
-    return euroValues;
-  } else {
-    return [];
-  }
+  return price.includes('€') ? parseFloat(price.match(/\d+/)?.[0]) * 100 : 100;
 }
 
 export async function buyTicket(req: Request, res: Response) {
@@ -31,8 +19,7 @@ export async function buyTicket(req: Request, res: Response) {
 
     const stripe = new StripeService();
 
-    const euroValues = getValueOfEuros(event.price);
-    const price = euroValues[0] * 100;
+    const price = getValueOfEuros(event.price);
 
     const paymentIntent = await stripe.createPayment(
       user.stripeCustomerId,

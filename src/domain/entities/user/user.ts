@@ -21,6 +21,7 @@ export type UserProps = {
   preferits?: IEvent[];
   report?: number;
   stripeCustomerId?: string;
+  tickets?: string[];
   contacts?: IUser[];
 };
 
@@ -40,6 +41,7 @@ export class User implements IUser {
   public preferits: IEvent[];
   public report: number;
   public stripeCustomerId?: string;
+  public tickets: string[];
   public contacts: IUser[];
 
   constructor(props: UserProps) {
@@ -59,6 +61,7 @@ export class User implements IUser {
       preferits,
       report,
       stripeCustomerId,
+      tickets,
       contacts,
     } = props;
     this._id = _id;
@@ -76,6 +79,7 @@ export class User implements IUser {
     this.preferits = preferits || [];
     this.report = report;
     this.stripeCustomerId = stripeCustomerId;
+    this.tickets = tickets || [];
     this.contacts = contacts || [];
   }
 
@@ -160,5 +164,11 @@ export class User implements IUser {
   public get followersUsernames(): string[] {
     const ids = this.followers.map((follower) => follower.username);
     return ids;
+  }
+
+  public addTicket(eventId: string): void {
+    const newTickets = [...this.tickets, eventId];
+
+    this.tickets = newTickets;
   }
 }

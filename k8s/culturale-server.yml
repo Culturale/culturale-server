@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: culturale
-          image: culturale/culturale-api:v1.0.5
+          image: culturale/culturale-api:v1.0.6
           imagePullPolicy: "Always"
           ports:
           - containerPort: 3000

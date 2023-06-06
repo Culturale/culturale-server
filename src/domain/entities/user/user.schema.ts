@@ -18,6 +18,8 @@ const UserSchema = new Schema({
   report: { required: true, type: Number, default: 0 },
   stripeCustomerId: { required: false, type: String },
   tickets: [{ required: false, type: String }],
+  contacts: [{ required: false, type: Schema.Types.ObjectId, model: 'User' }],
+
 });
 
 const UserModel = model<IUser>('User', UserSchema);

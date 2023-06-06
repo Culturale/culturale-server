@@ -10,3 +10,4 @@ export * from './addParticipant.dto';
 export * from './changePassword.dto';
 export * from './addFavourite.dto';
 export * from './buyTicket.dto';
+export * from './sync-contacts.dto';
